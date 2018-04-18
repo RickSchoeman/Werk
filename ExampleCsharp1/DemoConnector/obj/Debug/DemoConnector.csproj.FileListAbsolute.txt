@@ -1,0 +1,9 @@
+C:\Users\ricks\Downloads\ExampleCsharp1\DemoConnector\obj\Debug\DemoConnector.csprojResolveAssemblyReference.cache
+C:\Users\ricks\Downloads\ExampleCsharp1\DemoConnector\obj\Debug\DemoConnector.csproj.CoreCompileInputs.cache
+C:\Users\ricks\Downloads\ExampleCsharp1\DemoConnector\bin\Debug\DemoConnector.exe.config
+C:\Users\ricks\Downloads\ExampleCsharp1\DemoConnector\bin\Debug\DemoConnector.exe
+C:\Users\ricks\Downloads\ExampleCsharp1\DemoConnector\bin\Debug\DemoConnector.pdb
+C:\Users\ricks\Downloads\ExampleCsharp1\DemoConnector\bin\Debug\Ionic.Zip.dll
+C:\Users\ricks\Downloads\ExampleCsharp1\DemoConnector\bin\Debug\Ionic.Zip.xml
+C:\Users\ricks\Downloads\ExampleCsharp1\DemoConnector\obj\Debug\DemoConnector.exe
+C:\Users\ricks\Downloads\ExampleCsharp1\DemoConnector\obj\Debug\DemoConnector.pdb

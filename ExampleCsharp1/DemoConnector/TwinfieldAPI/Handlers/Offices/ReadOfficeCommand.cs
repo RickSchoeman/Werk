@@ -1,0 +1,22 @@
+﻿using System.Xml;
+using DemoConnector.TwinfieldAPI.Controllers;
+using DemoConnector.TwinfieldAPI.Controllers.Utilities;
+
+namespace DemoConnector.TwinfieldAPI.Handlers.Offices
+{
+    public class ReadOfficeCommand
+    {
+        public string Office { get; set; }
+        public string OfficeCode { get; set; }
+
+        internal XmlDocument ToXml()
+        {
+            var command = new XmlDocument();
+            var readElement = command.AppendNewElement("read");
+            readElement.AppendNewElement("type").InnerText = "office";
+            readElement.AppendNewElement("office").InnerText = Office;
+            readElement.AppendNewElement("code").InnerText = OfficeCode;
+            return command;
+        }
+    }
+}

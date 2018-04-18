@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="fe83326c-1a7f-47c9-aeb3-3e51baa1dc9b" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="https://c3.twinfield.com/webservices/BankStatementService.svc?wsdl" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="BankStatementService.wsdl" MetadataType="Wsdl" ID="47a56934-f20b-4715-8376-373eeb2b1be7" SourceId="1" SourceUrl="https://c3.twinfield.com/webservices/BankStatementService.svc?wsdl" />
+    <MetadataFile FileName="BankStatementService.xsd" MetadataType="Schema" ID="b5c1c815-59d2-484b-80cc-f2d3486305c8" SourceId="1" SourceUrl="https://c3.twinfield.com/webservices/BankStatementService.svc?xsd=xsd0" />
+    <MetadataFile FileName="BankStatementService1.xsd" MetadataType="Schema" ID="5f021160-624c-4dc0-a46c-e1c237ccab59" SourceId="1" SourceUrl="https://c3.twinfield.com/webservices/BankStatementService.svc?xsd=xsd1" />
+    <MetadataFile FileName="BankStatementService2.xsd" MetadataType="Schema" ID="3324401f-79cb-4a08-ab8d-5516a241dd7a" SourceId="1" SourceUrl="https://c3.twinfield.com/webservices/BankStatementService.svc?xsd=xsd2" />
+    <MetadataFile FileName="BankStatementService3.xsd" MetadataType="Schema" ID="38abea20-d4c8-4e2f-bb59-e6c7c2e3e77b" SourceId="1" SourceUrl="https://c3.twinfield.com/webservices/BankStatementService.svc?xsd=xsd3" />
+    <MetadataFile FileName="BankStatementService4.xsd" MetadataType="Schema" ID="74b2ed41-93b0-4311-9766-5a439edc5422" SourceId="1" SourceUrl="https://c3.twinfield.com/webservices/BankStatementService.svc?xsd=xsd4" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

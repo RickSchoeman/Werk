@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="0d0d1c04-500f-42b4-8207-d5d3a54a3520" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="https://accounting.twinfield.com/webservices/CashBookService.svc?wsdl" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="CashBookService.xsd" MetadataType="Schema" ID="3de7c9a6-77fc-431c-b93b-7f5682cd1b73" SourceId="1" SourceUrl="https://accounting.twinfield.com/webservices/CashBookService.svc?xsd=xsd3" />
+    <MetadataFile FileName="CashBookService1.xsd" MetadataType="Schema" ID="746e7ff5-c6c4-4a3a-b5cf-689689b8e390" SourceId="1" SourceUrl="https://accounting.twinfield.com/webservices/CashBookService.svc?xsd=xsd2" />
+    <MetadataFile FileName="CashBookService.wsdl" MetadataType="Wsdl" ID="2b799b30-7d89-487e-8c41-31bb4ad86e59" SourceId="1" SourceUrl="https://accounting.twinfield.com/webservices/CashBookService.svc?wsdl" />
+    <MetadataFile FileName="CashBookService2.xsd" MetadataType="Schema" ID="e672976e-1591-473b-b450-450b79e43e66" SourceId="1" SourceUrl="https://accounting.twinfield.com/webservices/CashBookService.svc?xsd=xsd4" />
+    <MetadataFile FileName="CashBookService3.xsd" MetadataType="Schema" ID="556e9886-9bcf-490a-a1c0-1a3704aed1e7" SourceId="1" SourceUrl="https://accounting.twinfield.com/webservices/CashBookService.svc?xsd=xsd1" />
+    <MetadataFile FileName="CashBookService4.xsd" MetadataType="Schema" ID="b1f9a630-a12a-4b14-a503-80b8a538df6f" SourceId="1" SourceUrl="https://accounting.twinfield.com/webservices/CashBookService.svc?xsd=xsd0" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="7019d6d6-a187-4b76-93e2-0c84c06854d1" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="https://accounting.twinfield.com/webservices/BankBookService.svc?wsdl" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="BankBookService.xsd" MetadataType="Schema" ID="b7b3c417-b14f-4100-868f-fd79a5a578cc" SourceId="1" SourceUrl="https://accounting.twinfield.com/webservices/BankBookService.svc?xsd=xsd4" />
+    <MetadataFile FileName="BankBookService1.xsd" MetadataType="Schema" ID="34b710ea-e7a1-4f75-8a3d-0abd1c6dd243" SourceId="1" SourceUrl="https://accounting.twinfield.com/webservices/BankBookService.svc?xsd=xsd3" />
+    <MetadataFile FileName="BankBookService2.xsd" MetadataType="Schema" ID="d26ecd28-e056-4e23-8f47-dce254663d76" SourceId="1" SourceUrl="https://accounting.twinfield.com/webservices/BankBookService.svc?xsd=xsd2" />
+    <MetadataFile FileName="BankBookService3.xsd" MetadataType="Schema" ID="23b7aca1-02c9-43e0-a5f9-3231e19dd337" SourceId="1" SourceUrl="https://accounting.twinfield.com/webservices/BankBookService.svc?xsd=xsd1" />
+    <MetadataFile FileName="BankBookService4.xsd" MetadataType="Schema" ID="83c6d1fd-8ffb-4f90-851a-3ce50802b957" SourceId="1" SourceUrl="https://accounting.twinfield.com/webservices/BankBookService.svc?xsd=xsd0" />
+    <MetadataFile FileName="BankBookService.wsdl" MetadataType="Wsdl" ID="b5f3455f-cb6a-485f-86e8-500827d31f83" SourceId="1" SourceUrl="https://accounting.twinfield.com/webservices/BankBookService.svc?wsdl" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

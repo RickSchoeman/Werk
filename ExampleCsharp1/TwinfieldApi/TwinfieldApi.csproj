@@ -1,0 +1,810 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{AE7D0120-0DF2-4564-A43D-99A547D113BD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TwinfieldApi</RootNamespace>
+    <AssemblyName>TwinfieldApi</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Output\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\Output\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Ionic.Zip">
+      <HintPath>..\packages\DotNetZip.1.9.1.8\lib\net20\Ionic.Zip.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Activities\ActivateActivityCommand.cs" />
+    <Compile Include="Activities\Activity.cs" />
+    <Compile Include="Activities\ActivityService.cs" />
+    <Compile Include="Activities\ActivitySummary.cs" />
+    <Compile Include="Activities\CreateActivityCommand.cs" />
+    <Compile Include="Activities\DeleteActivityCommand.cs" />
+    <Compile Include="Activities\ReadActivityCommand.cs" />
+    <Compile Include="Articles\ActivateArticleCommand.cs" />
+    <Compile Include="Articles\CreateArticleCommand.cs" />
+    <Compile Include="Articles\DeleteArticleCommand.cs" />
+    <Compile Include="Articles\DeleteSubArticleCommand.cs" />
+    <Compile Include="AssetMethods\ActivateAssetMethodCommand.cs" />
+    <Compile Include="AssetMethods\AssetMethod.cs" />
+    <Compile Include="AssetMethods\AssetMethodService.cs" />
+    <Compile Include="AssetMethods\AssetMethodSummary.cs" />
+    <Compile Include="AssetMethods\CreateAssetMethodCommand.cs" />
+    <Compile Include="AssetMethods\DeleteAssetMethodCommand.cs" />
+    <Compile Include="AssetMethods\ReadAssetMethodCommand.cs" />
+    <Compile Include="BankStatements\BankStatement.cs" />
+    <Compile Include="BankStatements\BankStatementService.cs" />
+    <Compile Include="BankTransactions\BankTransaction.cs" />
+    <Compile Include="BankTransactions\BankTransactionService.cs" />
+    <Compile Include="BankTransactions\BankTransactionSummary.cs" />
+    <Compile Include="BankTransactions\CreateBankTransactionCommand.cs" />
+    <Compile Include="BankTransactions\ReadBankTransactionCommand.cs" />
+    <Compile Include="Bookkeeping\BookkeepingService.cs" />
+    <Compile Include="Bookkeeping\ReadTransactionCommand.cs" />
+    <Compile Include="Bookkeeping\Transaction.cs" />
+    <Compile Include="Browse\Query\BrowseDefinition.cs" />
+    <Compile Include="Browse\Query\BrowseQuery.cs" />
+    <Compile Include="Browse\Data\BrowseResult.cs" />
+    <Compile Include="Browse\BrowseService.cs" />
+    <Compile Include="Browse\Query\ReadBrowseDefinitionCommand.cs" />
+    <Compile Include="Budget\Budget.cs" />
+    <Compile Include="Budget\BudgetService.cs" />
+    <Compile Include="CashBooks\CashBook.cs" />
+    <Compile Include="CashBooks\CashBookService.cs" />
+    <Compile Include="CostCenters\ActivateCostCenterCommand.cs" />
+    <Compile Include="CostCenters\CostCenter.cs" />
+    <Compile Include="CostCenters\CostCenterService.cs" />
+    <Compile Include="CostCenters\CostCenterSummary.cs" />
+    <Compile Include="CostCenters\CreateCostCenterCommand.cs" />
+    <Compile Include="CostCenters\DeleteCostCenterCommand.cs" />
+    <Compile Include="CostCenters\ReadCostCenterCommand.cs" />
+    <Compile Include="Extras\Countries\CountryService.cs" />
+    <Compile Include="Extras\Countries\CountrySummary.cs" />
+    <Compile Include="Currencies\CreateCurrencyCommand.cs" />
+    <Compile Include="Currencies\Currencies.cs" />
+    <Compile Include="Currencies\CurrenciesService.cs" />
+    <Compile Include="Currencies\CurrenciesSummary.cs" />
+    <Compile Include="Currencies\DeleteCurrencyCommand.cs" />
+    <Compile Include="Currencies\DeleteCurrencyRateCommand.cs" />
+    <Compile Include="Currencies\ReadCurrenciesCommand.cs" />
+    <Compile Include="Customers\ActivateCustomerCommand.cs" />
+    <Compile Include="Customers\CreateCustomerCommand.cs" />
+    <Compile Include="Customers\Customer.cs" />
+    <Compile Include="Customers\CustomerService.cs" />
+    <Compile Include="Customers\CustomerSummary.cs" />
+    <Compile Include="Customers\DeleteCustomerCommand.cs" />
+    <Compile Include="Customers\DeletePostingRuleCommand.cs" />
+    <Compile Include="Customers\ReadCustomerCommandcs.cs" />
+    <Compile Include="DeletedTransactions\DeletedTransaction.cs" />
+    <Compile Include="DeletedTransactions\DeletedTransactionService.cs" />
+    <Compile Include="Extras\DistByPeriods\DistByPeriodService.cs" />
+    <Compile Include="Extras\DistByPeriods\DistByPeriodSummary.cs" />
+    <Compile Include="Extras\InvoiceTypes\InvoiceTypeService.cs" />
+    <Compile Include="Extras\InvoiceTypes\InvoiceTypeSummary.cs" />
+    <Compile Include="Extras\TimeQuantities\TimeQuantityService.cs" />
+    <Compile Include="Extras\TimeQuantities\TimeQuantitySummary.cs" />
+    <Compile Include="Extras\TransactionTypes\TransactionTypeService.cs" />
+    <Compile Include="Extras\TransactionTypes\TransactionTypeSummary.cs" />
+    <Compile Include="Extras\Translations\TranslationService.cs" />
+    <Compile Include="Extras\Translations\TranslationSummary.cs" />
+    <Compile Include="Extras\UserRoles\UserRoleService.cs" />
+    <Compile Include="Extras\UserRoles\UserRoleSummary.cs" />
+    <Compile Include="Extras\VAT\VatCountryService.cs" />
+    <Compile Include="Extras\VAT\VatCountrySummary.cs" />
+    <Compile Include="Extras\VAT\VatGroupService.cs" />
+    <Compile Include="Extras\VAT\VatGroupSummary.cs" />
+    <Compile Include="Extras\VAT\VatNrOfRelationsService.cs" />
+    <Compile Include="Extras\VAT\VatNrOfRelationsSummary.cs" />
+    <Compile Include="FixedAssets\ActivateFixedAssetCommand.cs" />
+    <Compile Include="GeneralLedgers\ActivateGeneralLedgerCommand.cs" />
+    <Compile Include="DimensionGroups\CreateDimensionGroupCommand.cs" />
+    <Compile Include="DimensionGroups\DeleteDimensionGroupCommand.cs" />
+    <Compile Include="DimensionGroups\DimensionGroup.cs" />
+    <Compile Include="DimensionGroups\DimensionGroupService.cs" />
+    <Compile Include="DimensionGroups\DimensionGroupSummary.cs" />
+    <Compile Include="DimensionGroups\ReadDimensionGroupCommand.cs" />
+    <Compile Include="Dimensions\CreateDimensionCommand.cs" />
+    <Compile Include="Dimensions\Dimension.cs" />
+    <Compile Include="Dimensions\DimensionSummary.cs" />
+    <Compile Include="Dimensions\ReadDimensionCommand.cs" />
+    <Compile Include="Articles\Article.cs" />
+    <Compile Include="Articles\ArticleService.cs" />
+    <Compile Include="Articles\ArticleSummary.cs" />
+    <Compile Include="Articles\ReadArticleCommand.cs" />
+    <Compile Include="DimensionTypes\UpdateDimensionTypeCommand.cs" />
+    <Compile Include="DimensionTypes\DimensionType.cs" />
+    <Compile Include="DimensionTypes\DimensionTypeService.cs" />
+    <Compile Include="DimensionTypes\DimensionTypeSummary.cs" />
+    <Compile Include="DimensionTypes\ReadDimensionTypeCommand.cs" />
+    <Compile Include="FixedAssets\CreateFixedAssetCommand.cs" />
+    <Compile Include="FixedAssets\DeleteFixedAssetCommand.cs" />
+    <Compile Include="FixedAssets\FixedAsset.cs" />
+    <Compile Include="FixedAssets\FixedAssetService.cs" />
+    <Compile Include="FixedAssets\FixedAssetSummary.cs" />
+    <Compile Include="FixedAssets\ReadFixedAssetCommand.cs" />
+    <Compile Include="GeneralLedgers\CreateGeneralLedgerCommand.cs" />
+    <Compile Include="GeneralLedgers\DeleteGeneralLedgerCommand.cs" />
+    <Compile Include="GeneralLedgers\GeneralLedger.cs" />
+    <Compile Include="GeneralLedgers\GeneralLedgerService.cs" />
+    <Compile Include="GeneralLedgers\GeneralLedgerSummary.cs" />
+    <Compile Include="GeneralLedgers\ReadGeneralLedgerCommand.cs" />
+    <Compile Include="Offices\Office.cs" />
+    <Compile Include="Offices\OfficeService.cs" />
+    <Compile Include="Offices\OfficeSummary.cs" />
+    <Compile Include="Offices\ReadOfficeCommand.cs" />
+    <Compile Include="Extras\Payments\PaymentService.cs" />
+    <Compile Include="Extras\Payments\PaymentSummary.cs" />
+    <Compile Include="Period\Period.cs" />
+    <Compile Include="Period\PeriodService.cs" />
+    <Compile Include="Projects\ActivateProjectCommand.cs" />
+    <Compile Include="Projects\CreateProjectCommand.cs" />
+    <Compile Include="Projects\DeleteProjectCommand.cs" />
+    <Compile Include="Projects\Project.cs" />
+    <Compile Include="Projects\ProjectService.cs" />
+    <Compile Include="Projects\ProjectSummary.cs" />
+    <Compile Include="Projects\ReadProjectCommand.cs" />
+    <Compile Include="PurchaseTransactions\CreatePurchaseTransactionCommand.cs" />
+    <Compile Include="PurchaseTransactions\PurchaseTransaction.cs" />
+    <Compile Include="PurchaseTransactions\PurchaseTransactionService.cs" />
+    <Compile Include="PurchaseTransactions\PurchaseTransactionSummary.cs" />
+    <Compile Include="PurchaseTransactions\ReadPurchaseTransactionCommand.cs" />
+    <Compile Include="Rates\ActivateRateCommand.cs" />
+    <Compile Include="Rates\CreateRateCommand.cs" />
+    <Compile Include="Rates\DeleteRateChangeCommand.cs" />
+    <Compile Include="Rates\DeleteRateCommand.cs" />
+    <Compile Include="Rates\Rate.cs" />
+    <Compile Include="Rates\RateService.cs" />
+    <Compile Include="Rates\RateSummary.cs" />
+    <Compile Include="Rates\ReadRateCommand.cs" />
+    <Compile Include="Extras\ReminderScenarios\ReminderScenarioSummary.cs" />
+    <Compile Include="Extras\ReminderScenarios\ReminderScenarioService.cs" />
+    <Compile Include="Extras\Reports\ReportService.cs" />
+    <Compile Include="Extras\Reports\ReportSummary.cs" />
+    <Compile Include="SalesInvoice\CreateSalesInvoiceCommand.cs" />
+    <Compile Include="SalesInvoice\ReadSalesInvoiceCommand.cs" />
+    <Compile Include="SalesInvoice\SalesInvoice.cs" />
+    <Compile Include="SalesInvoice\SalesInvoiceService.cs" />
+    <Compile Include="SalesInvoice\SalesInvoiceSummary.cs" />
+    <Compile Include="SalesTransactions\CreateSalesTransaction.cs" />
+    <Compile Include="SalesTransactions\ReadSalesTransactionCommand.cs" />
+    <Compile Include="SalesTransactions\SalesTransaction.cs" />
+    <Compile Include="SalesTransactions\SalesTransactionSummary.cs" />
+    <Compile Include="SalesTransactions\SalesTransactionService.cs" />
+    <Compile Include="Service References\TwinfieldBankStatementService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\TwinfieldBudgetService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\TwinfieldCashBookService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\TwinfieldDeclarationsService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\TwinfieldDeletedTransactionService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\TwinfieldPeriodService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\TwinfieldTransactionBlockedValueService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Services\ClientInterfaces.cs" />
+    <Compile Include="Services\IClientFactory.cs" />
+    <Compile Include="Services\ServiceReferenceToInterfaceMapping.cs" />
+    <Compile Include="Extras\SubArticles\SubArticleService.cs" />
+    <Compile Include="Extras\SubArticles\SubArticleSummary.cs" />
+    <Compile Include="Suppliers\ActivateSupplierCommand.cs" />
+    <Compile Include="Suppliers\CreateSupplierCommand.cs" />
+    <Compile Include="Suppliers\DeletePostingRuleCommand.cs" />
+    <Compile Include="Suppliers\DeleteSupplierCommand.cs" />
+    <Compile Include="Suppliers\ReadSupplierCommand.cs" />
+    <Compile Include="Suppliers\Supplier.cs" />
+    <Compile Include="Suppliers\SupplierService.cs" />
+    <Compile Include="Suppliers\SupplierSummary.cs" />
+    <Compile Include="Extras\TaxGroups\TaxGroupService.cs" />
+    <Compile Include="Extras\TaxGroups\TaxGroupSummary.cs" />
+    <Compile Include="TransactionBlockedValue\TransactionBlockedValueService.cs" />
+    <Compile Include="Users\ActivateUserCommand.cs" />
+    <Compile Include="Users\CreateUserCommand.cs" />
+    <Compile Include="Users\DeleteUserCommand.cs" />
+    <Compile Include="Users\ReadUserCommand.cs" />
+    <Compile Include="Users\User.cs" />
+    <Compile Include="Users\UserService.cs" />
+    <Compile Include="Users\UserSummary.cs" />
+    <Compile Include="Utilities\Extensions.cs" />
+    <Compile Include="Organization\ListOfficesCommand.cs" />
+    <Compile Include="Organization\OfficeSummary.cs" />
+    <Compile Include="BankBooks\BankBook.cs" />
+    <Compile Include="Organization\OfficeSummaryList.cs" />
+    <Compile Include="Service References\TwinfieldBankBookService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\TwinfieldFinderService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\TwinfieldLoginSessionService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\TwinfieldProcessXmlService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\TwinfieldSessionService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="BankBooks\BankBookService.cs" />
+    <Compile Include="Dimensions\DimensionService.cs" />
+    <Compile Include="Organization\OrganizationService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\FinderService.cs" />
+    <Compile Include="Session.cs" />
+    <Compile Include="Services\SessionService.cs" />
+    <Compile Include="Services\ProcessXmlService.cs" />
+    <Compile Include="Services\ClientFactory.cs" />
+    <Compile Include="Utilities\ZlibCompressor.cs" />
+    <Compile Include="VATs\CreateVatCommand.cs" />
+    <Compile Include="VATs\DeleteVatCommand.cs" />
+    <Compile Include="VATs\ReadVatCommand.cs" />
+    <Compile Include="VATs\Vat.cs" />
+    <Compile Include="VATs\VatService.cs" />
+    <Compile Include="VATs\VatSummary.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+    <None Include="Properties\DataSources\System.Xml.XmlNode.datasource" />
+    <None Include="Service References\TwinfieldBankBookService\BankBookService.wsdl" />
+    <None Include="Service References\TwinfieldBankBookService\BankBookService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\TwinfieldBankBookService\BankBookService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\TwinfieldBankBookService\BankBookService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\TwinfieldBankBookService\BankBookService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\TwinfieldBankBookService\TwinfieldApi.TwinfieldBankBookService.ProcessResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldBankBookService\TwinfieldApi.TwinfieldBankBookService.QueryResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldBankBookService\TwinfieldApi.TwinfieldBankBookService.QueryResult.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldBankStatementService\BankStatementService.wsdl" />
+    <None Include="Service References\TwinfieldBankStatementService\BankStatementService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\TwinfieldBankStatementService\BankStatementService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\TwinfieldBankStatementService\BankStatementService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\TwinfieldBankStatementService\BankStatementService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\TwinfieldBankStatementService\BankStatementService4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\TwinfieldBankStatementService\TwinfieldApi.TwinfieldBankStatementService.ProcessResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldBankStatementService\TwinfieldApi.TwinfieldBankStatementService.QueryResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldBankStatementService\TwinfieldApi.TwinfieldBankStatementService.QueryResult.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldBudgetService\BudgetService.wsdl" />
+    <None Include="Service References\TwinfieldBudgetService\BudgetService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\TwinfieldBudgetService\BudgetService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\TwinfieldBudgetService\BudgetService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\TwinfieldBudgetService\BudgetService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\TwinfieldBudgetService\BudgetService4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\TwinfieldBudgetService\BudgetService5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\TwinfieldBudgetService\TwinfieldApi.TwinfieldBudgetService.ProcessResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldBudgetService\TwinfieldApi.TwinfieldBudgetService.QueryResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldBudgetService\TwinfieldApi.TwinfieldBudgetService.QueryResult.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldCashBookService\CashBookService.wsdl" />
+    <None Include="Service References\TwinfieldCashBookService\CashBookService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\TwinfieldCashBookService\CashBookService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\TwinfieldCashBookService\CashBookService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\TwinfieldCashBookService\CashBookService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\TwinfieldCashBookService\CashBookService4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\TwinfieldCashBookService\TwinfieldApi.TwinfieldCashBookService.ProcessResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldCashBookService\TwinfieldApi.TwinfieldCashBookService.QueryResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldCashBookService\TwinfieldApi.TwinfieldCashBookService.QueryResult.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldDeclarationsService\declarations.wsdl" />
+    <None Include="Service References\TwinfieldDeclarationsService\TwinfieldApi.TwinfieldDeclarationsService.DeclarationSummary.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldDeclarationsService\TwinfieldApi.TwinfieldDeclarationsService.GetAllSummariesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldDeclarationsService\TwinfieldApi.TwinfieldDeclarationsService.GetIctReturnAsXbrlResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldDeclarationsService\TwinfieldApi.TwinfieldDeclarationsService.GetIctReturnAsXmlResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldDeclarationsService\TwinfieldApi.TwinfieldDeclarationsService.GetNumberOfDeclarationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldDeclarationsService\TwinfieldApi.TwinfieldDeclarationsService.GetRangeOfSummariesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldDeclarationsService\TwinfieldApi.TwinfieldDeclarationsService.GetTaxGroupVatReturnAsXbrlResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldDeclarationsService\TwinfieldApi.TwinfieldDeclarationsService.GetTaxGroupVatReturnAsXmlResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldDeclarationsService\TwinfieldApi.TwinfieldDeclarationsService.GetTaxGroupVatReturnPaymentReferenceResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldDeclarationsService\TwinfieldApi.TwinfieldDeclarationsService.GetVatReturnAsXbrlResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldDeclarationsService\TwinfieldApi.TwinfieldDeclarationsService.GetVatReturnAsXmlResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldDeclarationsService\TwinfieldApi.TwinfieldDeclarationsService.GetVatReturnPaymentReferenceResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldDeclarationsService\TwinfieldApi.TwinfieldDeclarationsService.MessageOfLoadMessage.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldDeclarationsService\TwinfieldApi.TwinfieldDeclarationsService.MessageOfSetStatusMessages.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldDeclarationsService\TwinfieldApi.TwinfieldDeclarationsService.SetToApprovedResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldDeclarationsService\TwinfieldApi.TwinfieldDeclarationsService.SetToRejectedResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldDeclarationsService\TwinfieldApi.TwinfieldDeclarationsService.SetToSentResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldDeletedTransactionService\DeletedTransactionsService.wsdl" />
+    <None Include="Service References\TwinfieldDeletedTransactionService\DeletedTransactionsService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\TwinfieldDeletedTransactionService\DeletedTransactionsService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\TwinfieldDeletedTransactionService\DeletedTransactionsService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\TwinfieldDeletedTransactionService\DeletedTransactionsService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\TwinfieldDeletedTransactionService\DeletedTransactionsService4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\TwinfieldDeletedTransactionService\TwinfieldApi.TwinfieldDeletedTransactionService.QueryResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldDeletedTransactionService\TwinfieldApi.TwinfieldDeletedTransactionService.QueryResult.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldFinderService\finder.wsdl" />
+    <None Include="Service References\TwinfieldFinderService\TwinfieldApi.TwinfieldFinderService.FinderData.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldFinderService\TwinfieldApi.TwinfieldFinderService.MessageOfErrorCodes.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldFinderService\TwinfieldApi.TwinfieldFinderService.SearchResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldLoginSessionService\session.wsdl" />
+    <None Include="Service References\TwinfieldLoginSessionService\TwinfieldApi.TwinfieldLoginSessionService.AccessTokenLogonResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldLoginSessionService\TwinfieldApi.TwinfieldLoginSessionService.Header.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldLoginSessionService\TwinfieldApi.TwinfieldLoginSessionService.LogonAction.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldLoginSessionService\TwinfieldApi.TwinfieldLoginSessionService.LogonResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldLoginSessionService\TwinfieldApi.TwinfieldLoginSessionService.LogonResult.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldLoginSessionService\TwinfieldApi.TwinfieldLoginSessionService.OAuthLogonResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldPeriodService\PeriodService.wsdl" />
+    <None Include="Service References\TwinfieldPeriodService\PeriodService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\TwinfieldPeriodService\PeriodService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\TwinfieldPeriodService\PeriodService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\TwinfieldPeriodService\PeriodService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\TwinfieldPeriodService\PeriodService4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\TwinfieldPeriodService\PeriodService5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\TwinfieldPeriodService\TwinfieldApi.TwinfieldPeriodService.ProcessResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldPeriodService\TwinfieldApi.TwinfieldPeriodService.QueryResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldPeriodService\TwinfieldApi.TwinfieldPeriodService.QueryResult.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldProcessXmlService\processxml.wsdl" />
+    <None Include="Service References\TwinfieldProcessXmlService\TwinfieldApi.TwinfieldProcessXmlService.ProcessXmlCompressedResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldProcessXmlService\TwinfieldApi.TwinfieldProcessXmlService.ProcessXmlDocumentResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldProcessXmlService\TwinfieldApi.TwinfieldProcessXmlService.ProcessXmlStringResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldSessionService\session.wsdl" />
+    <None Include="Service References\TwinfieldSessionService\TwinfieldApi.TwinfieldSessionService.AbandonResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldSessionService\TwinfieldApi.TwinfieldSessionService.ChangePasswordResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldSessionService\TwinfieldApi.TwinfieldSessionService.ChangePasswordResult.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldSessionService\TwinfieldApi.TwinfieldSessionService.GetRoleResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldSessionService\TwinfieldApi.TwinfieldSessionService.Header.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldSessionService\TwinfieldApi.TwinfieldSessionService.KeepAliveResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldSessionService\TwinfieldApi.TwinfieldSessionService.LogonAction.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldSessionService\TwinfieldApi.TwinfieldSessionService.LogonResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldSessionService\TwinfieldApi.TwinfieldSessionService.LogonResult.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldSessionService\TwinfieldApi.TwinfieldSessionService.SelectCompanyResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldSessionService\TwinfieldApi.TwinfieldSessionService.SelectCompanyResult.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldSessionService\TwinfieldApi.TwinfieldSessionService.SmsLogonResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldSessionService\TwinfieldApi.TwinfieldSessionService.SMSLogonResult.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldSessionService\TwinfieldApi.TwinfieldSessionService.SmsSendCodeResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TwinfieldTransactionBlockedValueService\TransactionBlockedValueService.wsdl" />
+    <None Include="Service References\TwinfieldTransactionBlockedValueService\TransactionBlockedValueService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\TwinfieldTransactionBlockedValueService\TransactionBlockedValueService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\TwinfieldTransactionBlockedValueService\TransactionBlockedValueService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\TwinfieldTransactionBlockedValueService\TransactionBlockedValueService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\TwinfieldTransactionBlockedValueService\TransactionBlockedValueService4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\TwinfieldTransactionBlockedValueService\TwinfieldApi.TwinfieldTransactionBlockedValueService.ProcessResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\TwinfieldBankBookService\" />
+    <WCFMetadataStorage Include="Service References\TwinfieldBankStatementService\" />
+    <WCFMetadataStorage Include="Service References\TwinfieldBudgetService\" />
+    <WCFMetadataStorage Include="Service References\TwinfieldCashBookService\" />
+    <WCFMetadataStorage Include="Service References\TwinfieldDeclarationsService\" />
+    <WCFMetadataStorage Include="Service References\TwinfieldDeletedTransactionService\" />
+    <WCFMetadataStorage Include="Service References\TwinfieldFinderService\" />
+    <WCFMetadataStorage Include="Service References\TwinfieldLoginSessionService\" />
+    <WCFMetadataStorage Include="Service References\TwinfieldPeriodService\" />
+    <WCFMetadataStorage Include="Service References\TwinfieldProcessXmlService\" />
+    <WCFMetadataStorage Include="Service References\TwinfieldSessionService\" />
+    <WCFMetadataStorage Include="Service References\TwinfieldTransactionBlockedValueService\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TwinfieldLoginSessionService\session.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TwinfieldLoginSessionService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TwinfieldLoginSessionService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TwinfieldLoginSessionService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TwinfieldSessionService\session.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TwinfieldSessionService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TwinfieldSessionService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TwinfieldSessionService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TwinfieldProcessXmlService\processxml.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TwinfieldProcessXmlService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TwinfieldProcessXmlService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TwinfieldProcessXmlService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TwinfieldBankBookService\BankBookService.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TwinfieldBankBookService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TwinfieldBankBookService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TwinfieldBankBookService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TwinfieldFinderService\finder.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TwinfieldFinderService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TwinfieldFinderService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TwinfieldFinderService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TwinfieldBudgetService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TwinfieldBudgetService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TwinfieldBudgetService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TwinfieldCashBookService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TwinfieldCashBookService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TwinfieldCashBookService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TwinfieldBankStatementService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TwinfieldBankStatementService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TwinfieldBankStatementService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TwinfieldPeriodService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TwinfieldPeriodService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TwinfieldPeriodService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TwinfieldDeletedTransactionService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TwinfieldDeletedTransactionService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TwinfieldDeletedTransactionService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TwinfieldTransactionBlockedValueService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TwinfieldTransactionBlockedValueService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TwinfieldTransactionBlockedValueService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TwinfieldDeclarationsService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TwinfieldDeclarationsService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TwinfieldDeclarationsService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

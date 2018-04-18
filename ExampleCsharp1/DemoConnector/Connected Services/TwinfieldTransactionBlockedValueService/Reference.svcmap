@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="36ab4566-8c79-4e93-8407-82caa7013615" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="https://c3.twinfield.com/webservices/TransactionBlockedValueService.svc?wsdl" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="TransactionBlockedValueService.xsd" MetadataType="Schema" ID="7be876b8-dbb7-4657-97bb-26eb7b107218" SourceId="1" SourceUrl="https://c3.twinfield.com/webservices/TransactionBlockedValueService.svc?xsd=xsd3" />
+    <MetadataFile FileName="TransactionBlockedValueService1.xsd" MetadataType="Schema" ID="1e57ce7f-5b87-4e92-8c82-f67f1eebdb92" SourceId="1" SourceUrl="https://c3.twinfield.com/webservices/TransactionBlockedValueService.svc?xsd=xsd0" />
+    <MetadataFile FileName="TransactionBlockedValueService2.xsd" MetadataType="Schema" ID="de0df7a9-b9da-43a2-888f-1cd07c41dd65" SourceId="1" SourceUrl="https://c3.twinfield.com/webservices/TransactionBlockedValueService.svc?xsd=xsd4" />
+    <MetadataFile FileName="TransactionBlockedValueService.wsdl" MetadataType="Wsdl" ID="569d3a03-d6c4-4ce5-a573-0fe851ef3cb6" SourceId="1" SourceUrl="https://c3.twinfield.com/webservices/TransactionBlockedValueService.svc?wsdl" />
+    <MetadataFile FileName="TransactionBlockedValueService3.xsd" MetadataType="Schema" ID="e1afec60-a8f4-4420-b007-ba368292ac20" SourceId="1" SourceUrl="https://c3.twinfield.com/webservices/TransactionBlockedValueService.svc?xsd=xsd2" />
+    <MetadataFile FileName="TransactionBlockedValueService4.xsd" MetadataType="Schema" ID="3622f85d-8dbf-4b5d-9c51-1c550919c781" SourceId="1" SourceUrl="https://c3.twinfield.com/webservices/TransactionBlockedValueService.svc?xsd=xsd1" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

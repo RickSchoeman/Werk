@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="e784434f-2f5e-4879-b64a-a0a76e938d20" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="https://c3.twinfield.com/webservices/DeletedTransactionsService.svc?wsdl" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="DeletedTransactionsService.xsd" MetadataType="Schema" ID="1e7449da-2133-499d-b65e-d476bc3ae753" SourceId="1" SourceUrl="https://c3.twinfield.com/webservices/DeletedTransactionsService.svc?xsd=xsd0" />
+    <MetadataFile FileName="DeletedTransactionsService.wsdl" MetadataType="Wsdl" ID="0553c347-8746-43c6-b941-c8cfadd80ffe" SourceId="1" SourceUrl="https://c3.twinfield.com/webservices/DeletedTransactionsService.svc?wsdl" />
+    <MetadataFile FileName="DeletedTransactionsService1.xsd" MetadataType="Schema" ID="1dbe05df-ff59-400d-ae8f-944bbf3b7e5d" SourceId="1" SourceUrl="https://c3.twinfield.com/webservices/DeletedTransactionsService.svc?xsd=xsd4" />
+    <MetadataFile FileName="DeletedTransactionsService2.xsd" MetadataType="Schema" ID="98e6e73e-e253-4f7d-baf8-364271865e61" SourceId="1" SourceUrl="https://c3.twinfield.com/webservices/DeletedTransactionsService.svc?xsd=xsd3" />
+    <MetadataFile FileName="DeletedTransactionsService3.xsd" MetadataType="Schema" ID="ea4d10e5-1558-4548-8891-37376224ec41" SourceId="1" SourceUrl="https://c3.twinfield.com/webservices/DeletedTransactionsService.svc?xsd=xsd1" />
+    <MetadataFile FileName="DeletedTransactionsService4.xsd" MetadataType="Schema" ID="799b4e06-da7e-4f0b-a173-7440018883a8" SourceId="1" SourceUrl="https://c3.twinfield.com/webservices/DeletedTransactionsService.svc?xsd=xsd2" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>
