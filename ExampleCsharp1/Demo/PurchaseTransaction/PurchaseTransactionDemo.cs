@@ -62,7 +62,7 @@ namespace Demo
                 },
                 Line = lines
             };
-            purchaseTransactionService.CreatePurchaseTransaction(purchase);
+//            purchaseTransactionService.CreatePurchaseTransaction(purchase);
 
             if (!FindPurchaseTransactions())
             {

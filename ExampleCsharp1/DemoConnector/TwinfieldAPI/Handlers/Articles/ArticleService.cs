@@ -95,11 +95,5 @@ namespace DemoConnector.TwinfieldAPI.Handlers.Articles
             };
             processXml.Process(command.ToXml());
         }
-
-        public bool WriteHeader(Article header)
-        {
-            var response = processXml.Process(header.ToXml());
-            return response.IsSuccess();
-        }
     }
 }

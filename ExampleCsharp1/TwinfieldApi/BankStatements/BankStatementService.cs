@@ -24,7 +24,7 @@ namespace TwinfieldApi.BankStatements
             this.clientFactory = clientFactory;
         }
 
-        public BankStatements FindBankBook(DateTime statementdateFrom, DateTime statementDateTo, Boolean includePostedStatements)
+        public BankStatements FindBankStatements(DateTime statementdateFrom, DateTime statementDateTo, Boolean includePostedStatements)
         {
             var queryyResult = Query(new GetBankStatements
             {

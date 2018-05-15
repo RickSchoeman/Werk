@@ -10,7 +10,7 @@ namespace Demo.Extras.Translation
 {
     class TranslationDemo
     {
-        private const string TranslationType = "INV";
+        private const string TranslationType = "XLT";
         private readonly TranslationService translationService;
 
         public TranslationDemo(Session session)

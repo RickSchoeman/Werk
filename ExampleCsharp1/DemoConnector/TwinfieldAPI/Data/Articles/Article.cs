@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Xml;
 using DemoConnector.TwinfieldAPI.Controllers;
 using DemoConnector.TwinfieldAPI.Controllers.Utilities;
@@ -13,16 +14,13 @@ namespace DemoConnector.TwinfieldAPI.Data.Articles
             XmlNodeList elemList = element.GetElementsByTagName("line");
             for (int i = 0; i < elemList.Count; i++)
             {
-                if (elemList[i].SelectInnerText("name").Equals(null) ||
-                    elemList[i].SelectInnerText("name") != null ||
-                    elemList[i].SelectInnerText("name") != "" ||
-                    elemList[i].SelectInnerText("name").Equals(""))
+                if (elemList[i].SelectInnerText("name") != null)
                 {
                     var line = new Line
                     {
                         Unitspriceexcl = elemList[i].SelectInnerText("unitspriceexcl"),
                         Unitspriceinc = elemList[i].SelectInnerText("unitspriceincl"),
-                        Units = elemList[i].SelectInnerText("units"),
+                        Units = int.Parse(elemList[i].SelectInnerText("units")),
                         Name = elemList[i].SelectInnerText("name"),
                         Shortname = elemList[i].SelectInnerText("shortname"),
                         Subcode = elemList[i].SelectInnerText("subcode"),
@@ -37,25 +35,64 @@ namespace DemoConnector.TwinfieldAPI.Data.Articles
                 }
             }
 
+            var type = Type.Normal;
+            bool allowChangeVatCode = false;
+            bool allowChangePerformanceType = false;
+            bool allowDiscountorPremium = false;
+            bool allowChangeUnitsPrice = false;
+            bool allowDecimalQuantity = false;
+
+            if (element.SelectInnerText("header/allowchangevatcode") == "true")
+            {
+                allowChangeVatCode = true;
+            }
+
+            if (element.SelectInnerText("header/allowchangeperformancetype") == "true")
+            {
+                allowChangePerformanceType = true;
+            }
+
+            if (element.SelectInnerText("header/allowdiscountorpremium") == "true")
+            {
+                allowDiscountorPremium = true;
+            }
+
+            if (element.SelectInnerText("header/allowchangeunitprice") == "true")
+            {
+                allowChangeUnitsPrice = true;
+            }
+
+            if (element.SelectInnerText("header/allowdecimalquantity") == "true")
+            {
+                allowDecimalQuantity = true;
+            }
+            if (element.SelectInnerText("header/type") == Type.Discount.ToString())
+            {
+                type = Type.Discount;
+            }
+
+            if (element.SelectInnerText("header/type") == Type.Premium.ToString())
+            {
+                type = Type.Premium;
+            }
             return new Article
             {
                 Header = new Header
                 {
                     Office = element.SelectInnerText("header/office"),
                     Code = element.SelectInnerText("header/code"),
-                    Type = element.SelectInnerText("header/type"),
+                    Type = type,
                     Name = element.SelectInnerText("header/name"),
                     Shortname = element.SelectInnerText("header/shortname"),
                     Unitnamesingular = element.SelectInnerText("header/unitnamesingular"),
                     Unitnameplural = element.SelectInnerText("header/unitnameplural"),
                     Vatcode = element.SelectInnerText("header/vatcode"),
-                    Allowchangevatcode = element.SelectInnerText("header/allowchangevatcode"),
+                    Allowchangevatcode = allowChangeVatCode,
                     Performancetype = element.SelectInnerText("header/performancetype"),
-                    Allowchangeperformancetype = element.SelectInnerText("header/allowchangeperformancetype"),
-                    Percentage = element.SelectInnerText("header/percentage"),
-                    Allowdiscountorpremium = element.SelectInnerText("header/allowdiscountorpremium"),
-                    Allowchangeunitsprice = element.SelectInnerText("header/allowchangeunitprice"),
-                    Allowdecimalquantity = element.SelectInnerText("header/allowdecimalquantity")
+                    Allowchangeperformancetype = allowChangePerformanceType,
+                    Allowdiscountorpremium = allowDiscountorPremium,
+                    Allowchangeunitsprice = allowChangeUnitsPrice,
+                    Allowdecimalquantity = allowDecimalQuantity
                 },
                 Lines = new Lines
                 {
@@ -64,77 +101,58 @@ namespace DemoConnector.TwinfieldAPI.Data.Articles
             };
         }
 
+        public Article()
+        {
+            Header = new Header
+            {
+                Type = Type.Normal,
+                Allowdiscountorpremium = false,
+                Allowchangevatcode = false,
+                Allowdecimalquantity = false,
+                Allowchangeunitsprice = false,
+                Allowchangeperformancetype = false,
+                Vatcode = "IN"
+            };
+        }
+
         public Header Header { get; set; }
         public Lines Lines { get; set; }
-
-        internal XmlDocument ToXml()
-        {
-            var document = new XmlDocument();
-            var article = document.AppendNewElement("article");
-            article.AppendNewElement("header/office").InnerText = Header.Office;
-            article.AppendNewElement("header/code").InnerText = Header.Code;
-            article.AppendNewElement("header/type").InnerText = Header.Type;
-            article.AppendNewElement("header/name").InnerText = Header.Name;
-            article.AppendNewElement("header/shortname").InnerText = Header.Shortname;
-            article.AppendNewElement("header/unitnamesingular").InnerText = Header.Unitnamesingular;
-            article.AppendNewElement("header/unitnameplural").InnerText = Header.Unitnameplural;
-            article.AppendNewElement("header/vatcode").InnerText = Header.Vatcode;
-            article.AppendNewElement("header/allowchangevatcode").InnerText = Header.Allowchangevatcode;
-            article.AppendNewElement("header/allowdiscounterpremium").InnerText = Header.Allowdiscountorpremium;
-            article.AppendNewElement("header/allowchangeunitprice").InnerText = Header.Allowchangeunitsprice;
-            article.AppendNewElement("header/allowdecimalquantity").InnerText = Header.Allowdecimalquantity;
-            for (int i = 0; i < Lines.Line.Count; i++)
-            {
-                if (!Lines.Line[i].Equals(null) || Lines.Line[i] != null || Lines.Line[i].Name.Equals("") ||
-                    Lines.Line[i].Name != "")
-                {
-                    var line = Lines.Line[i];
-                    article.AppendNewElement("lines/line[@id='" + i + "']/unitspriceexcl").InnerText =
-                        line.Unitspriceexcl;
-                    article.AppendNewElement("lines/line[@id='" + i + "']/unitspriceincl").InnerText =
-                        line.Unitspriceinc;
-                    article.AppendNewElement("lines/line[@id='" + i + "']/units").InnerText = line.Units;
-                    article.AppendNewElement("lines/line[@id='" + i + "']/name").InnerText = line.Name;
-                    article.AppendNewElement("lines/line[@id='" + i + "']/shortname").InnerText = line.Shortname;
-                    article.AppendNewElement("lines/line[@id='" + i + "']/subcode").InnerText = line.Subcode;
-                    article.AppendNewElement("lines/line[@id='" + i + "']/freetext1").InnerText = line.Freetext1;
-                    article.AppendNewElement("lines/line[@id='" + i + "']/freetext2").InnerText = line.Freetext2;
-                    article.AppendNewElement("lines/line[@id='" + i + "']/freetext3").InnerText = line.Freetext3;
-                    article.AppendNewElement("lines/line[@id='" + i + "']/freetext4").InnerText = line.Freetext4;
-                    article.AppendNewElement("lines/line[@id='" + i + "']/freetext5").InnerText = line.Freetext5;
-                    article.AppendNewElement("lines/line[@id='" + i + "']/freetext6").InnerText = line.Freetext6;
-                }
-            }
-
-            return document;
-        }
     }
 
     public class Header
     {
         public string Office { get; set; }
         public string Code { get; set; }
-        public string Type { get; set; }
+        public Type Type { get; set; }
         public string Name { get; set; }
         public string Shortname { get; set; }
         public string Unitnamesingular { get; set; }
         public string Unitnameplural { get; set; }
         public string Vatcode { get; set; }
-        public string Allowchangevatcode { get; set; }
+        public bool Allowchangevatcode { get; set; }
         public string Performancetype { get; set; }
-        public string Allowchangeperformancetype { get; set; }
-        public string Percentage { get; set; }
-        public string Allowdiscountorpremium { get; set; }
-        public string Allowchangeunitsprice { get; set; }
-        public string Allowdecimalquantity { get; set; }
+        public bool Allowchangeperformancetype { get; set; }
+
+        public bool Percentage => Type != Type.Normal;
+
+        public bool Allowdiscountorpremium { get; set; }
+        public bool Allowchangeunitsprice { get; set; }
+        public bool Allowdecimalquantity { get; set; }
+    }
+
+    public enum Type
+    {
+        Normal,
+        Discount,
+        Premium
     }
 
     public class Line
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string Unitspriceexcl { get; set; }
         public string Unitspriceinc { get; set; }
-        public string Units { get; set; }
+        public int Units { get; set; }
         public string Name { get; set; }
         public string Shortname { get; set; }
         public string Subcode { get; set; }

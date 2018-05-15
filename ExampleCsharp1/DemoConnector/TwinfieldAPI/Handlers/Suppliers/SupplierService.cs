@@ -100,10 +100,6 @@ namespace DemoConnector.TwinfieldAPI.Handlers.Suppliers
             processXml.Process(command.ToXml());
         }
 
-        public bool WriteSupplier(Supplier supplier)
-        {
-            var response = processXml.Process(supplier.ToXml());
-            return response.IsSuccess();
-        }
+
     }
 }

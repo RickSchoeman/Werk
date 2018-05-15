@@ -21,8 +21,8 @@ namespace DemoConnector.TwinfieldAPI.Handlers.SalesInvoice
             h1.AppendNewElement("customer").InnerText = SalesInvoice.Header.Customer;
             h1.AppendNewElement("period").InnerText = SalesInvoice.Header.Period;
             h1.AppendNewElement("currency").InnerText = SalesInvoice.Header.Currency;
-            h1.AppendNewElement("status").InnerText = SalesInvoice.Header.Status;
-            h1.AppendNewElement("paymentmethod").InnerText = SalesInvoice.Header.Paymentmethod;
+            h1.AppendNewElement("status").InnerText = SalesInvoice.Header.Status.ToString();
+            h1.AppendNewElement("paymentmethod").InnerText = SalesInvoice.Header.Paymentmethod.ToString();
             var l1 = createElement.AppendNewElement("lines");
             for (int i = 0; i < SalesInvoice.Lines.Line.Count; i++)
             {
@@ -33,8 +33,8 @@ namespace DemoConnector.TwinfieldAPI.Handlers.SalesInvoice
                     l2.SetAttribute("id", (i + 1).ToString());
                     l2.AppendNewElement("article").InnerText = line.Article;
                     l2.AppendNewElement("subarticle").InnerText = line.Subarticle;
-                    l2.AppendNewElement("quantity").InnerText = line.Quantity;
-                    l2.AppendNewElement("units").InnerText = line.Units;
+                    l2.AppendNewElement("quantity").InnerText = line.Quantity.ToString();
+                    l2.AppendNewElement("units").InnerText = line.Units.ToString();
                     l2.AppendNewElement("unitspriceexcl").InnerText = line.Unitspriceexcl;
                 }
             }

@@ -1,41 +1,77 @@
 ﻿using System.Collections.Generic;
 using System.Xml;
-using DemoConnector.TwinfieldAPI.Controllers;
+using DemoConnector.TwinfieldAPI.Data.Relations;
 using DemoConnector.TwinfieldAPI.Controllers.Utilities;
 
 namespace DemoConnector.TwinfieldAPI.Data.Customers
 {
-    public class Customer
+    public class Customer : Relation
     {
         internal static Customer FromXml(XmlElement element)
         {
+            var paymentconditions = new List<Paymentcondition>();
+            XmlNodeList elemListPaymentconditions = element.GetElementsByTagName("paymentcondition");
+            for (int i = 0; i < elemListPaymentconditions.Count; i++)
+            {
+                if (elemListPaymentconditions[i].SelectInnerText("discountdays") != null)
+                {
+                    var paymentcondition = new Paymentcondition
+                    {
+                        Discountdays = int.Parse(elemListPaymentconditions[i].SelectInnerText("discountdays")),
+                        Discountpercentage = decimal.Parse(elemListPaymentconditions[i].SelectInnerText("discountpercentage"))
+                    };
+                    paymentconditions.Add(paymentcondition);
+                }
+            }
+
+            var lines = new List<Line>();
+            XmlNodeList elemListLine = element.GetElementsByTagName("line");
+            for (int i = 0; i < elemListLine.Count; i++)
+            {
+                if (elemListLine[i] != null)
+                {
+                    var line = new Line
+                    {
+                        Office = elemListLine[i].SelectInnerText("office"),
+                        Dimension1 = elemListLine[i].SelectInnerText("dimension1"),
+                        Dimension2 = elemListLine[i].SelectInnerText("dimension2"),
+                        Dimension3 = elemListLine[i].SelectInnerText("dimension3"),
+                        Ratio = decimal.Parse(elemListLine[i].SelectInnerText("ratio")),
+                        Vatcode = elemListLine[i].SelectInnerText("vatcode"),
+                        Description = elemListLine[i].SelectInnerText("description")
+                    };
+                    lines.Add(line);
+                }
+            }
+
             var addresses = new List<Address>();
             XmlNodeList listAddress = element.GetElementsByTagName("address");
             for (int i = 0; i < listAddress.Count; i++)
             {
                 if (listAddress[i].FirstChild.InnerText != listAddress[i].SelectInnerText("field2"))
                 {
-                    if (listAddress[i].SelectInnerText("name") != null || !listAddress[i].SelectInnerText("name").Equals(null))
+                    if (listAddress[i].SelectInnerText("name") != null)
                     {
-                    var a = listAddress[i];
-                    var addres = new Address
-                    {
-                        Name = a.SelectInnerText("name"),
-                        Country = a.SelectInnerText("country"),
-                        City = a.SelectInnerText("city"),
-                        Postcode = a.SelectInnerText("postcode"),
-                        Telephone = a.SelectInnerText("telephone"),
-                        Telefax = a.SelectInnerText("telefax"),
-                        Email = a.SelectInnerText("email"),
-                        Contact = a.SelectInnerText("contact"),
-                        Field1 = a.SelectInnerText("field1"),
-                        Field2 = a.SelectInnerText("field2"),
-                        Field3 = a.SelectInnerText("field3"),
-                        Field4 = a.SelectInnerText("field4"),
-                        Field5 = a.SelectInnerText("field5"),
-                        Field6 = a.SelectInnerText("field6")
-                    };
-                    addresses.Add(addres);
+                        var a = listAddress[i];
+                        var addres = new Address
+                        {
+                            Name = a.SelectInnerText("name"),
+                            Country = a.SelectInnerText("country"),
+                            CountryName = a.SelectSingleNode("//country/@name")?.Value,
+                            City = a.SelectInnerText("city"),
+                            Postcode = a.SelectInnerText("postcode"),
+                            Telephone = a.SelectInnerText("telephone"),
+                            Telefax = a.SelectInnerText("telefax"),
+                            Email = a.SelectInnerText("email"),
+                            Contact = a.SelectInnerText("contact"),
+                            Field1 = a.SelectInnerText("field1"),
+                            Field2 = a.SelectInnerText("field2"),
+                            Field3 = a.SelectInnerText("field3"),
+                            Field4 = a.SelectInnerText("field4"),
+                            Field5 = a.SelectInnerText("field5"),
+                            Field6 = a.SelectInnerText("field6")
+                        };
+                        addresses.Add(addres);
                     }
 
                 }
@@ -45,7 +81,7 @@ namespace DemoConnector.TwinfieldAPI.Data.Customers
             XmlNodeList listBanks = element.GetElementsByTagName("bank");
             for (int i = 0; i < listBanks.Count; i++)
             {
-                if (!listBanks[i].Equals(null) || listBanks[i] != null || !listBanks[i].SelectInnerText("ascription").Equals("") || listBanks[i].SelectInnerText("ascription") != "")
+                if (listBanks[i] != null)
                 {
                     var b = listBanks[i];
                     var bank = new Bank
@@ -74,7 +110,7 @@ namespace DemoConnector.TwinfieldAPI.Data.Customers
             XmlNodeList listPost = element.GetElementsByTagName("postingrule");
             for (int i = 0; i < listPost.Count; i++)
             {
-                if (!listPost[i].Equals(null) || listPost[i] != null || !listPost[i].SelectInnerText("currency").Equals("") || listPost[i].SelectInnerText("currency") != "")
+                if (listPost[i] != null)
                 {
                     var p = listPost[i];
                     var postingrule = new Postingrule
@@ -84,20 +120,105 @@ namespace DemoConnector.TwinfieldAPI.Data.Customers
                         Description = p.SelectInnerText("description"),
                         Lines = new Lines
                         {
-                            Line = new Line
-                            {
-                                Office = p.SelectInnerText("lines/line/office"),
-                                Dimension1 = p.SelectInnerText("lines/line/dimension1"),
-                                Dimension2 = p.SelectInnerText("lines/line/dimension2"),
-                                Dimension3 = p.SelectInnerText("lines/line/dimension3"),
-                                Ratio = p.SelectInnerText("lines/line/ratio"),
-                                Vatcode = p.SelectInnerText("lines/line/vatcode"),
-                                Description = p.SelectInnerText("lines/line/description")
-                            }
+                            Line = lines
                         }
                     };
                     postingrules.Add(postingrule);
                 }
+            }
+
+            bool inuse = false;
+            Relations.Behaviour behaviour = Behaviour.Normal;
+            Subanalyse subanalyse = Subanalyse.False;
+            bool payAvailable = false;
+            bool ebilling = false;
+            CollectionSchema collectionSchema = CollectionSchema.Core;
+            bool vatObligatory = false;
+            SendReminder sendReminder = SendReminder.False;
+            bool blocked = false;
+            bool freetext1 = false;
+            Relations.Type type = Relations.Type.Purchase;
+            bool Fixed = false;
+            MatchType matchType = MatchType.Notmatchable;
+
+            if (element.SelectInnerText("inuse") == "true")
+            {
+                inuse = true;
+            }
+
+            if (element.SelectInnerText("behaviour") == Relations.Behaviour.System.ToString())
+            {
+                behaviour = Behaviour.System;
+            }
+
+            if (element.SelectInnerText("behaviour") == Relations.Behaviour.Template.ToString())
+            {
+                behaviour = Behaviour.Template;
+            }
+
+            if (element.SelectInnerText("financials/subanalyse") == Subanalyse.Maybe.ToString())
+            {
+                subanalyse = Subanalyse.Maybe;
+            }
+
+            if (element.SelectInnerText("financials/subanalyse") == Subanalyse.True.ToString())
+            {
+                subanalyse = Subanalyse.True;
+            }
+
+            if (element.SelectInnerText("financials/payavailable") == "true")
+            {
+                payAvailable = true;
+            }
+
+            if (element.SelectInnerText("financials/ebilling") == "true")
+            {
+                ebilling = true;
+            }
+
+            if (element.SelectInnerText("financials/collectionschema") == CollectionSchema.B2B.ToString())
+            {
+                collectionSchema = CollectionSchema.B2B;
+            }
+
+            if (element.SelectInnerText("financials/vatobligatory") == "true")
+            {
+                vatObligatory = true;
+            }
+
+            if (element.SelectInnerText("creditmanagement/sendreminder") == SendReminder.True.ToString())
+            {
+                sendReminder = SendReminder.True;
+            }
+
+            if (element.SelectInnerText("creditmanagement/sendreminder") == SendReminder.Email.ToString())
+            {
+                sendReminder = SendReminder.Email;
+            }
+
+            if (element.SelectInnerText("creditmanagement/blocked") == "true")
+            {
+                blocked = true;
+            }
+
+            if (element.SelectInnerText("creditmanagement/freetext1") == "true")
+            {
+                freetext1 = true;
+            }
+
+            if (element.SelectSingleNode("//financials/vatcode/@type")?.Value == Relations.Type.Sales.ToString().ToLower())
+            {
+                type = Relations.Type.Sales;
+            }
+
+            if (element.SelectSingleNode("//financials/vatcode/@fixed")?.Value == "true")
+            {
+                Fixed = true;
+            }
+
+            if (element.SelectInnerText("financials/matchtype") == MatchType.Matchable.ToString().ToLower())
+            {
+                matchType = MatchType.Matchable;
             }
 
             return new Customer
@@ -108,35 +229,40 @@ namespace DemoConnector.TwinfieldAPI.Data.Customers
                 Uid = element.SelectInnerText("uid"),
                 Name = element.SelectInnerText("name"),
                 Shortname = element.SelectInnerText("shortname"),
-                Inuse = element.SelectInnerText("inuse"),
-                Behaviour = element.SelectInnerText("behaviour"),
-                Touched = element.SelectInnerText("touched"),
-                Beginperiod = element.SelectInnerText("beginperiod"),
-                Beginyear = element.SelectInnerText("beginyear"),
-                Endperiod = element.SelectInnerText("endperiod"),
-                Endyear = element.SelectInnerText("endyear"),
+                Inuse = inuse,
+                Behaviour = behaviour,
+                Touched = int.Parse(element.SelectInnerText("touched")),
+                Beginperiod = int.Parse(element.SelectInnerText("beginperiod")),
+                Beginyear = int.Parse(element.SelectInnerText("beginyear")),
+                Endperiod = int.Parse(element.SelectInnerText("endperiod")),
+                Endyear = int.Parse(element.SelectInnerText("endyear")),
                 Website = element.SelectInnerText("website"),
                 Cocnumber = element.SelectInnerText("cocnumber"),
                 Vatnumber = element.SelectInnerText("vatnumber"),
                 Editdimensionname = element.SelectInnerText("editdimensionname"),
                 Financials = new Financials
                 {
-                    Matchtype = element.SelectInnerText("financials/matchtype"),
+                    Matchtype = matchType,
                     Accounttype = element.SelectInnerText("financials/accounttype"),
-                    Subanalyse = element.SelectInnerText("financials/subanalyse"),
-                    Duedays = element.SelectInnerText("financials/duedays"),
-                    Level = element.SelectInnerText("financials/level"),
-                    Payavailable = element.SelectInnerText("financials/payavailable"),
-                    Meansofpayment = element.SelectInnerText("financials/meansofpayment"),
+                    Subanalyse = subanalyse,
+                    Duedays = int.Parse(element.SelectInnerText("financials/duedays")),
+                    Level = int.Parse(element.SelectInnerText("financials/level")),
+                    Payavailable = payAvailable,
                     Paycode = element.SelectInnerText("financials/paycode"),
-                    Ebilling = element.SelectInnerText("financials/ebilling"),
+                    Ebilling = ebilling,
                     Ebillmail = element.SelectInnerText("financials/ebillmail"),
-                    Substitutionlevel = element.SelectInnerText("financials/substitutionlevel"),
+                    Substitutionlevel = int.Parse(element.SelectInnerText("financials/substitutionlevel")),
                     Substitutewith = element.SelectInnerText("financials/substitutewith"),
                     Relationsreference = element.SelectInnerText("financials/relationsreference"),
                     Vattype = element.SelectInnerText("financials/vattype"),
-                    Vatcode = element.SelectInnerText("financials/vatcode"),
-                    Vatobligatory = element.SelectInnerText("financials/vatobligatory"),
+                    Vatcode = new VatCode
+                    {
+                        Name = element.SelectSingleNode("//financials/vatcode/@name")?.Value,
+                        Shortname = element.SelectSingleNode("//financials/vatcode/@shortname")?.Value,
+                        Type = type,
+                        Fixed = Fixed,
+                    },
+                    Vatobligatory = vatObligatory,
                     Performancetype = element.SelectInnerText("financials/performancetype"),
                     Collectmandate = new Collectmandate
                     {
@@ -144,16 +270,16 @@ namespace DemoConnector.TwinfieldAPI.Data.Customers
                         Signaturedate = element.SelectInnerText("financials/collectmandate/signaturedate"),
                         Firstrundate = element.SelectInnerText("financials/collectmandate/firstrundate")
                     },
-                    Collectionschema = element.SelectInnerText("financials/collectionschema")
+                    Collectionschema = collectionSchema
                 },
                 Creditmanagement = new Creditmanagement
                 {
                     Responsibleuser = element.SelectInnerText("creditmanagement/responsibleuser"),
-                    Basecreditlimit = element.SelectInnerText("creditmanagement/basecreditlimit"),
-                    Sendreminder = element.SelectInnerText("creditmanagement/sendreminder"),
+                    Basecreditlimit = float.Parse(element.SelectInnerText("creditmanagement/basecreditlimit")),
+                    Sendreminder = sendReminder,
                     Reminderemail = element.SelectInnerText("creditmanagement/remindermail"),
-                    Blocked = element.SelectInnerText("creditmanagement/blocked"),
-                    Freetext1 = element.SelectInnerText("creditmanagement/freetext1"),
+                    Blocked = blocked,
+                    Freetext1 = freetext1,
                     Freetext2 = element.SelectInnerText("creditmanagement/freetext2"),
                     Freetext3 = element.SelectInnerText("creditmanagement/freetext3"),
                     Comment = element.SelectInnerText("creditmanagement/comment")
@@ -180,176 +306,79 @@ namespace DemoConnector.TwinfieldAPI.Data.Customers
                 },
                 Paymentconditions = new Paymentconditions
                 {
-                    Paymentcondition = new Paymentcondition
-                    {
-                        Discountdays = element.SelectInnerText("paymentconditions/paymentcondition/discountdays"),
-                        Discountpercentage = element.SelectInnerText("paymentconditions/paymentcondition/discountpercentage")
-                    }
+                    Paymentcondition = paymentconditions
                 }
             };
         }
 
-        public string Office { get; set; }
-        public string Type { get; set; }
-        public string Code { get; set; }
-        public string Uid { get; set; }
-        public string Name { get; set; }
-        public string Shortname { get; set; }
-        public string Inuse { get; set; }
-        public string Behaviour { get; set; }
-        public string Touched { get; set; }
-        public string Beginperiod { get; set; }
-        public string Beginyear { get; set; }
-        public string Endperiod { get; set; }
-        public string Endyear { get; set; }
-        public string Website { get; set; }
-        public string Cocnumber { get; set; }
-        public string Vatnumber { get; set; }
-        public string Editdimensionname { get; set; }
-        public Financials Financials { get; set; }
         public Creditmanagement Creditmanagement { get; set; }
-        public  Invoicing Invoicing { get; set; }
-        public Addresses Addresses { get; set; }
-        public Banks Banks { get; set; }
-        public Groups Groups { get; set; }
-        public Postingrules Postingrules { get; set; }
-        public Paymentconditions Paymentconditions { get; set; }
-    }
+        public Invoicing Invoicing { get; set; } 
 
-    public class Financials
-    {
-        public string Matchtype { get; set; }
-        public string Accounttype { get; set; }
-        public string Subanalyse { get; set; }
-        public string Duedays { get; set; }
-        public string Level { get; set; }
-        public string Payavailable { get; set; }
-        public string Meansofpayment { get; set; }
-        public string Paycode { get; set; }
-        public string Ebilling { get; set; }
-        public string Ebillmail { get; set; }
-        public string Substitutionlevel { get; set; }
-        public string Substitutewith { get; set; }
-        public string Relationsreference { get; set; }
-        public string Vattype { get; set; }
-        public string Vatcode { get; set; }
-        public string Vatobligatory { get; set; }
-        public string Performancetype { get; set; }
-        public Collectmandate Collectmandate { get; set; }
-        public string Collectionschema { get; set; }
-    }
+        public Customer()
+        {
+            Type = "DEB";       //Dimension type of customers is DEB.
+            Beginperiod = 1;
+            Beginyear = 1;
+            Endperiod = 1;
+            Endyear = 1;
+            Financials = new Financials
+            {
+                Matchtype = MatchType.Customersupplier,     //Fixed value customersupplier.
+                Accounttype = "inherit",            //Fixed value inherit.
+                Subanalyse = Subanalyse.False,      //Fixed value false
+                Duedays = 100,
+                Substitutionlevel = 1,              //Level of the balancesheet account. Fixed value 1.
+                Payavailable = false,               //Determines if direct debit is possible.
+                Ebilling = false,                   //Determines if the sales invoices will be sent electronically to the customer.
+                Vatobligatory = false,              
+                Collectionschema = CollectionSchema.Core,       //Collection schema information. Apply this information only when the customer invoices are collected by SEPA direct debit.
+                Collectmandate = new Collectmandate
+                {
+                    Id = "1"
+                },
+                Vatcode = new VatCode()
+            };
+            Creditmanagement = new Creditmanagement
+            {
+                Sendreminder = SendReminder.False,      //Determines if and how a customer will be reminded.
+                Blocked = false,            //Indicates if related projects for this customer are blocked in time & expenses.
+                Freetext1 = true,           //Right of use
+                Basecreditlimit = 500,      //The credit limit amount.
 
-    public class Collectmandate
-    {
-        public string Id { get; set; }
-        public string Signaturedate { get; set; }
-        public string Firstrundate { get; set; }
+            };
+            Banks = new Banks();
+            Postingrules = new Postingrules();
+            Addresses = new Addresses();
+            Paymentconditions = new Paymentconditions();
+        }
+
+
     }
 
     public class Creditmanagement
+        {
+            public string Responsibleuser { get; set; }
+            public float Basecreditlimit { get; set; }
+            public SendReminder Sendreminder { get; set; }
+            public string Reminderemail { get; set; }
+            public bool Blocked { get; set; }
+            public bool Freetext1 { get; set; }
+            public string Freetext2 { get; set; }
+            public string Freetext3 { get; set; }
+            public string Comment { get; set; }
+        }
+
+    public enum SendReminder
     {
-        public string Responsibleuser { get; set; }
-        public string Basecreditlimit { get; set; }
-        public string Sendreminder { get; set; }
-        public string Reminderemail { get; set; }
-        public string Blocked { get; set; }
-        public string Freetext1 { get; set; }
-        public string Freetext2 { get; set; }
-        public string Freetext3 { get; set; }
-        public string Comment { get; set; }
+        True,
+        Email,
+        False
     }
 
-    public class Invoicing
-    {
-        public string Discountarticle { get; set; }
-    }
+        public class Invoicing
+        {
+            public string Discountarticle { get; set; }
+        }
 
-    public class Addresses
-    {
-        public List<Address> Address { get; set; }
-    }
-
-    public class Address
-    {
-        public string Name { get; set; }
-        public string Country { get; set; }
-        public string City { get; set; }
-        public string Postcode { get; set; }
-        public string Telephone { get; set; }
-        public string Telefax { get; set; }
-        public string Contact { get; set; }
-        public string Email { get; set; }
-        public string Field1 { get; set; }
-        public string Field2 { get; set; }
-        public string Field3 { get; set; }
-        public string Field4 { get; set; }
-        public string Field5 { get; set; }
-        public string Field6 { get; set; }
-    }
-
-    public class Banks
-    {
-        public List<Bank> Bank { get; set; }
-    }
-
-    public class Bank
-    {
-        public string Ascription { get; set; }
-        public string Accountnumber { get; set; }
-        public Address Address { get; set; }
-        public string Bankname { get; set; }
-        public string Biccode { get; set; }
-        public string City { get; set; }
-        public string Country { get; set; }
-        public string Iban { get; set; }
-        public string Natbiccode { get; set; }
-        public string Postcode { get; set; }
-        public string State { get; set; }
-    }
-
-    public class Groups
-    {
-        public string Group { get; set; }
-    }
-
-    public class Postingrules
-    {
-        public List<Postingrule> Postingrule { get; set; }
-    }
-
-    public class Postingrule
-    {
-        public string Id { get; set; }
-        public string Currency { get; set; }
-        public string Amount { get; set; }
-        public string Description { get; set; }
-        public Lines Lines { get; set; }
-    }
-
-    public class Lines
-    {
-        public Line Line { get; set; }
-    }
-
-    public class Line
-    {
-        public string Office { get; set; }
-        public string Dimension1 { get; set; }
-        public string Dimension2 { get; set; }
-        public string Dimension3 { get; set; }
-        public string Ratio { get; set; }
-        public string Vatcode { get; set; }
-        public string Description { get; set; }
-    }
-
-    public class Paymentconditions
-    {
-        public Paymentcondition Paymentcondition { get; set; }
-    }
-
-    public class Paymentcondition
-    {
-        public string Discountdays { get; set; }
-        public string Discountpercentage { get; set; }
-    }
+    
 }

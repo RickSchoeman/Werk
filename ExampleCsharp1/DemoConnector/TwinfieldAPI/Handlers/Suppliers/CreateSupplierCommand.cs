@@ -18,29 +18,29 @@ namespace DemoConnector.TwinfieldAPI.Handlers.Suppliers
             createElement.AppendNewElement("code").InnerText = Supplier.Code;
             createElement.AppendNewElement("name").InnerText = Supplier.Name;
             createElement.AppendNewElement("shortname").InnerText = Supplier.Shortname;
-            createElement.AppendNewElement("beginperiod").InnerText = Supplier.Beginperiod;
-            createElement.AppendNewElement("beginyear").InnerText = Supplier.Beginyear;
-            createElement.AppendNewElement("endperiod").InnerText = Supplier.Endperiod;
-            createElement.AppendNewElement("endyear").InnerText = Supplier.Endyear;
+            createElement.AppendNewElement("beginperiod").InnerText = Supplier.Beginperiod.ToString();
+            createElement.AppendNewElement("beginyear").InnerText = Supplier.Beginyear.ToString();
+            createElement.AppendNewElement("endperiod").InnerText = Supplier.Endperiod.ToString();
+            createElement.AppendNewElement("endyear").InnerText = Supplier.Endyear.ToString();
             createElement.AppendNewElement("website").InnerText = Supplier.Website;
             var f1 = createElement.AppendNewElement("financials");
-            f1.AppendNewElement("matchtype").InnerText = Supplier.financials.Matchtype;
-            f1.AppendNewElement("accounttype").InnerText = Supplier.financials.Accounttype;
-            f1.AppendNewElement("subanalyse").InnerText = Supplier.financials.Subanalyse;
-            f1.AppendNewElement("duedays").InnerText = Supplier.financials.Duedays;
-            f1.AppendNewElement("level").InnerText = Supplier.financials.Level;
-            f1.AppendNewElement("payavailable").InnerText = Supplier.financials.Payavailable;
-            f1.AppendNewElement("meansofpayment").InnerText = Supplier.financials.Meansofpayment;
-            f1.AppendNewElement("paycode").InnerText = Supplier.financials.Paycode;
-            f1.AppendNewElement("substitutionlevel").InnerText = Supplier.financials.Substitutionlevel;
-            f1.AppendNewElement("substitutewith").InnerText = Supplier.financials.Substitutewith;
-            f1.AppendNewElement("relationsreference").InnerText = Supplier.financials.Relationsreference;
+            f1.AppendNewElement("matchtype").InnerText = Supplier.Financials.Matchtype.ToString();
+            f1.AppendNewElement("accounttype").InnerText = Supplier.Financials.Accounttype;
+            f1.AppendNewElement("subanalyse").InnerText = Supplier.Financials.Subanalyse.ToString();
+            f1.AppendNewElement("duedays").InnerText = Supplier.Financials.Duedays.ToString();
+            f1.AppendNewElement("level").InnerText = Supplier.Financials.Level.ToString();
+            f1.AppendNewElement("payavailable").InnerText = Supplier.Financials.Payavailable.ToString();
+            f1.AppendNewElement("meansofpayment").InnerText = Supplier.Financials.Meansofpayment.ToString();
+            f1.AppendNewElement("paycode").InnerText = Supplier.Financials.Paycode;
+            f1.AppendNewElement("substitutionlevel").InnerText = Supplier.Financials.Substitutionlevel.ToString();
+            f1.AppendNewElement("substitutewith").InnerText = Supplier.Financials.Substitutewith;
+            f1.AppendNewElement("relationsreference").InnerText = Supplier.Financials.Relationsreference;
             var a1 = createElement.AppendNewElement("addresses");
-            for (int i = 0; i < Supplier.addresses.Address.Count; i++)
+            for (int i = 0; i < Supplier.Addresses.Address.Count; i++)
             {
-                if (!Supplier.addresses.Address[i].Equals(null) || Supplier.addresses.Address[i] != null || !Supplier.addresses.Address[i].Name.Equals("") || Supplier.addresses.Address[i].Name != "")
+                if (Supplier.Addresses.Address[i] != null)
                 {
-                    var address = Supplier.addresses.Address[i];
+                    var address = Supplier.Addresses.Address[i];
                     var a2 = a1.AppendNewElement("address");
                     a2.SetAttribute("id", i.ToString());
                     a2.AppendNewElement("name").InnerText = address.Name;
@@ -60,11 +60,11 @@ namespace DemoConnector.TwinfieldAPI.Handlers.Suppliers
             }
 
             var b1 = createElement.AppendNewElement("banks");
-            for (int i = 0; i < Supplier.banks.Bank.Count; i++)
+            for (int i = 0; i < Supplier.Banks.Bank.Count; i++)
             {
-                if (!Supplier.banks.Bank[i].Equals(null) || Supplier.banks.Bank[i] != null || !Supplier.banks.Bank[i].Ascription.Equals("") || Supplier.banks.Bank[i].Ascription != "")
+                if (Supplier.Banks.Bank[i] != null)
                 {
-                    var bank = Supplier.banks.Bank[i];
+                    var bank = Supplier.Banks.Bank[i];
                     var b2 = b1.AppendNewElement("bank");
                     b2.SetAttribute("id", i.ToString());
                     b2.AppendNewElement("ascription").InnerText = bank.Ascription;
@@ -86,29 +86,29 @@ namespace DemoConnector.TwinfieldAPI.Handlers.Suppliers
 //            var g1 = createElement.AppendNewElement("groups");
 //            g1.AppendNewElement("group").InnerText = Supplier.groups.Group;
             var p1 = createElement.AppendNewElement("postingrules");
-            for (int i = 0; i < Supplier.postingrules.Postingrule.Count; i++)
+            for (int i = 0; i < Supplier.Postingrules.Postingrule.Count; i++)
             {
-                if (!Supplier.postingrules.Postingrule[i].Equals(null) || Supplier.postingrules.Postingrule[i] != null || !Supplier.postingrules.Postingrule[i].Currency.Equals("") || Supplier.postingrules.Postingrule[i].Currency != "")
+                if (Supplier.Postingrules.Postingrule[i] != null)
                 {
-                    var postingrule = Supplier.postingrules.Postingrule[i];
+                    var postingrule = Supplier.Postingrules.Postingrule[i];
                     var p2 = p1.AppendNewElement("postingrule");
                     p2.SetAttribute("id", (i + 1).ToString());
                     p2.AppendNewElement("currency").InnerText = postingrule.Currency;
                     p2.AppendNewElement("amount").InnerText = postingrule.Amount;
                     p2.AppendNewElement("description").InnerText = postingrule.Description;
                     var l1 = p2.AppendNewElement("lines");
-                    for (int j = 0; j < postingrule.lines.Line.Count; j++)
+                    for (int j = 0; j < postingrule.Lines.Line.Count; j++)
                     {
-                        if (!postingrule.lines.Line[j].Equals(null) || postingrule.lines.Line[j] != null || !postingrule.lines.Line[j].Office.Equals("") || postingrule.lines.Line[j].Office != "")
+                        if (postingrule.Lines.Line[j] != null)
                         {
-                            var line = postingrule.lines.Line[j];
+                            var line = postingrule.Lines.Line[j];
                             var l2 = l1.AppendNewElement("line");
                             l2.SetAttribute("id", j.ToString());
                             l2.AppendNewElement("office").InnerText = line.Office;
                             l2.AppendNewElement("dimension1").InnerText = line.Dimension1;
                             l2.AppendNewElement("dimension2").InnerText = line.Dimension2;
                             l2.AppendNewElement("dimension3").InnerText = line.Dimension3;
-                            l2.AppendNewElement("ratio").InnerText = line.Ratio;
+                            l2.AppendNewElement("ratio").InnerText = line.Ratio.ToString();
                             l2.AppendNewElement("vatcode").InnerText = line.Vatcode;
                             l2.AppendNewElement("description").InnerText = line.Description;
                         }
@@ -117,15 +117,15 @@ namespace DemoConnector.TwinfieldAPI.Handlers.Suppliers
             }
 
             var pc1 = createElement.AppendNewElement("paymentconditions");
-            for (int i = 0; i < Supplier.paymentconditions.Paymentcondition.Count; i++)
+            for (int i = 0; i < Supplier.Paymentconditions.Paymentcondition.Count; i++)
             {
-                if (!Supplier.paymentconditions.Paymentcondition[i].Equals(null) || Supplier.paymentconditions.Paymentcondition[i] != null || !Supplier.paymentconditions.Paymentcondition[i].Discountdays.Equals("") || Supplier.paymentconditions.Paymentcondition[i].Discountdays != "")
+                if (Supplier.Paymentconditions.Paymentcondition[i] != null)
                 {
-                    var paymentcondition = Supplier.paymentconditions.Paymentcondition[i];
+                    var paymentcondition = Supplier.Paymentconditions.Paymentcondition[i];
                     var pc2 = pc1.AppendNewElement("paymentcondition");
                     pc2.SetAttribute("id", (i + 1).ToString());
-                    pc2.AppendNewElement("discountdays").InnerText = paymentcondition.Discountdays;
-                    pc2.AppendNewElement("discountpercentage").InnerText = paymentcondition.Discountpercentage;
+                    pc2.AppendNewElement("discountdays").InnerText = paymentcondition.Discountdays.ToString();
+                    pc2.AppendNewElement("discountpercentage").InnerText = paymentcondition.Discountpercentage.ToString();
                 }
             }
 

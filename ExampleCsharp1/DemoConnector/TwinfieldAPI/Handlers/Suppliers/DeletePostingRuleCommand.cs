@@ -19,7 +19,7 @@ namespace DemoConnector.TwinfieldAPI.Handlers.Suppliers
             var p1 = element.AppendNewElement("postingrules");
             var p2 = p1.AppendNewElement("postingrule");
             p2.SetAttribute("status", "deleted");
-            p2.SetAttribute("id", Supplier.postingrules.Postingrule[0].Id);
+            p2.SetAttribute("id", Supplier.Postingrules.Postingrule[0].Id);
             return command;
         }
     }

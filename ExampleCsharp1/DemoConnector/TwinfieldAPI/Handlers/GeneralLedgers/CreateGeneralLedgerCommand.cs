@@ -1,4 +1,5 @@
-﻿using System.Xml;
+﻿using System;
+using System.Xml;
 using DemoConnector.TwinfieldAPI.Controllers;
 using DemoConnector.TwinfieldAPI.Controllers.Utilities;
 using DemoConnector.TwinfieldAPI.Data.GeneralLedgers;
@@ -17,27 +18,17 @@ namespace DemoConnector.TwinfieldAPI.Handlers.GeneralLedgers
             createElement.AppendNewElement("type").InnerText = GeneralLedger.Type;
             createElement.AppendNewElement("code").InnerText = GeneralLedger.Code;
             createElement.AppendNewElement("name").InnerText = GeneralLedger.Name;
-            createElement.AppendNewElement("website").InnerText = GeneralLedger.Website;
-            createElement.AppendNewElement("cocnumber").InnerText = GeneralLedger.Cocnumber;
-            createElement.AppendNewElement("vatnumber").InnerText = GeneralLedger.Vatnumber;
             var f = createElement.AppendNewElement("financials");
-            f.AppendNewElement("payavailable").InnerText = GeneralLedger.financials.Payavailable;
-            f.AppendNewElement("meansofpayment").InnerText = GeneralLedger.financials.Meansofpayment;
-            f.AppendNewElement("paycode").InnerText = GeneralLedger.financials.Paycode;
-            f.AppendNewElement("ebilling").InnerText = GeneralLedger.financials.Ebilling;
-            f.AppendNewElement("ebillmail").InnerText = GeneralLedger.financials.Ebillmail;
-            f.AppendNewElement("substitutionlevel").InnerText = GeneralLedger.financials.Substitutionlevel;
-            f.AppendNewElement("substitutewith").InnerText = GeneralLedger.financials.Substitutewith;
-            f.AppendNewElement("relationsreference").InnerText = GeneralLedger.financials.Relationsreference;
-            f.AppendNewElement("vattype").InnerText = GeneralLedger.financials.Vattype;
-            f.AppendNewElement("vatcode").InnerText = GeneralLedger.financials.Vatcode;
-            f.AppendNewElement("vatobligatory").InnerText = GeneralLedger.financials.Vatobligatory;
-            f.AppendNewElement("performancetype").InnerText = GeneralLedger.financials.Performancetype;
-            var c = f.AppendNewElement("collectmandate");
-            c.AppendNewElement("id").InnerText = GeneralLedger.financials.Collectmandate.Id;
-            c.AppendNewElement("signaturedate").InnerText = GeneralLedger.financials.Collectmandate.Signaturedate;
-            c.AppendNewElement("firstrundate").InnerText = GeneralLedger.financials.Collectmandate.Firstrundate;
-            f.AppendNewElement("collectionschema").InnerText = GeneralLedger.financials.Collectionschema;
+            Console.WriteLine(GeneralLedger.Financials.Matchtype + "test");
+            f.AppendNewElement("matchtype").InnerText = GeneralLedger.Financials.Matchtype.ToString();
+            f.AppendNewElement("accounttype").InnerText = GeneralLedger.Financials.Accounttype;
+            f.AppendNewElement("subanalyse").InnerText = GeneralLedger.Financials.Subanalyse.ToString();
+            f.AppendNewElement("level").InnerText = GeneralLedger.Financials.Level.ToString();
+            var v = f.AppendNewElement("vatcode");
+            v.SetAttribute("name", GeneralLedger.Financials.Vatcode.Name);
+            v.SetAttribute("shortname", GeneralLedger.Financials.Vatcode.Shortname);
+            v.SetAttribute("type", GeneralLedger.Financials.Vatcode.Type.ToString());
+            v.SetAttribute("fixed", GeneralLedger.Financials.Vatcode.Fixed.ToString());
             return command;
         }
     }

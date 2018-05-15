@@ -90,11 +90,5 @@ namespace DemoConnector.TwinfieldAPI.Handlers.FixedAssets
             };
             processXml.Process(command.ToXml());
         }
-
-        public bool WriteFixedAsset(FixedAsset fixedAsset)
-        {
-            var response = processXml.Process(fixedAsset.ToXml());
-            return response.IsSuccess();
-        }
     }
 }

@@ -26,6 +26,7 @@ namespace TwinfieldApi.Customers
                     {
                         Name = a.SelectInnerText("name"),
                         Country = a.SelectInnerText("country"),
+                        CountryName = a.SelectSingleNode("//country/@name")?.Value,
                         City = a.SelectInnerText("city"),
                         Postcode = a.SelectInnerText("postcode"),
                         Telephone = a.SelectInnerText("telephone"),
@@ -277,6 +278,7 @@ namespace TwinfieldApi.Customers
     {
         public string Name { get; set; }
         public string Country { get; set; }
+        public string CountryName { get; set; }
         public string City { get; set; }
         public string Postcode { get; set; }
         public string Telephone { get; set; }

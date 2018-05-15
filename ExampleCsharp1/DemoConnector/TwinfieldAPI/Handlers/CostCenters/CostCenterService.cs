@@ -89,11 +89,5 @@ namespace DemoConnector.TwinfieldAPI.Handlers.CostCenters
             };
             processXml.Process(command.ToXml());
         }
-
-        public bool WriteCostCenter(CostCenter costCenter)
-        {
-            var response = processXml.Process(costCenter.ToXml());
-            return response.IsSuccess();
-        }
     }
 }

@@ -21,7 +21,7 @@ namespace Demo
         public void Run()
         {
             Console.WriteLine("Read bank statement");
-            var bankStatements = bankStatementService.FindBankBook(new DateTime(2000, 3, 15), DateTime.Now, true);
+            var bankStatements = bankStatementService.FindBankStatements(new DateTime(2000, 3, 15), DateTime.Now, true);
             if (bankStatements == null)
             {
                 Console.WriteLine("Bank statement not found");

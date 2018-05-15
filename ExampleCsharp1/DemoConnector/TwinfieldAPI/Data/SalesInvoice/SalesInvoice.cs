@@ -9,25 +9,54 @@ namespace DemoConnector.TwinfieldAPI.Data.SalesInvoice
     {
         internal static SalesInvoice FromXml(XmlElement element)
         {
+            bool allowDiscountorPremium = false;
+            PerformanceType? performanceTypeLine = PerformanceType.Goods;
+            PerformanceType? performanceTypeVat = PerformanceType.Goods;
+            Status status = Status.Default;
+            PaymentMethod? paymentMethod = PaymentMethod.Bank;
+            int invoiceAddressNumber;
+            int deleverAddressNumber;
+            int invoiceNumber;
+            int quantity;
+            int units;
+            
             var lines = new List<Line>();
             XmlNodeList elemListLine = element.GetElementsByTagName("line");
             for (int i = 0; i < elemListLine.Count; i++)
             {
-                if (!elemListLine[i].SelectInnerText("article").Equals(null) || !elemListLine[i].SelectInnerText("article").Equals("") || elemListLine[i].SelectInnerText("article") != null || elemListLine[i].SelectInnerText("article") != "")
+                if (elemListLine[i].SelectInnerText("article") != null)
                 {
+                    if (elemListLine[i].SelectInnerText("allowdiscountorpremium") == "true")
+                    {
+                        allowDiscountorPremium = true;
+                    }
+
+                    if (elemListLine[i].SelectInnerText("performancetype") == PerformanceType.Services.ToString().ToLower())
+                    {
+                        performanceTypeLine = PerformanceType.Services;
+                    }
+
+                    if (string.IsNullOrEmpty(elemListLine[i].SelectInnerText("performancetype")))
+                    {
+                        performanceTypeLine = null;
+                    }
+
+                    int.TryParse(elemListLine[i].SelectInnerText("quantity"), out quantity);
+                    int.TryParse(elemListLine[i].SelectInnerText("units"), out units);
+
                     var line = new Line
                     {
                         Article = elemListLine[i].SelectInnerText("article"),
                         Subarticle = elemListLine[i].SelectInnerText("subarticle"),
-                        Quantity = elemListLine[i].SelectInnerText("quantity"),
-                        Units = elemListLine[i].SelectInnerText("units"),
+                        Quantity = quantity,
+                        Units = units,
                         Unitspriceexcl = elemListLine[i].SelectInnerText("unitspriceexcl"),
                         Unitspriceinc = elemListLine[i].SelectInnerText("unitspriceinc"),
                         Vatcode = elemListLine[i].SelectInnerText("vatcode"),
-                        Allowdiscountorpremium = elemListLine[i].SelectInnerText("allowdiscountorpremium"),
+                        Allowdiscountorpremium = allowDiscountorPremium,
                         Description = elemListLine[i].SelectInnerText("description"),
                         Performancedate = elemListLine[i].SelectInnerText("performancedate"),
-                        Performancetype = elemListLine[i].SelectInnerText("performancetype"),
+                        Performancetype = performanceTypeLine,
                         Freetext1 = elemListLine[i].SelectInnerText("freetext1"),
                         Freetext2 = elemListLine[i].SelectInnerText("freetext2"),
                         Freetext3 = elemListLine[i].SelectInnerText("freetext3"),
@@ -43,20 +72,69 @@ namespace DemoConnector.TwinfieldAPI.Data.SalesInvoice
             XmlNodeList elemListVatLine = element.GetElementsByTagName("vatline");
             for (int i = 0; i < elemListVatLine.Count; i++)
             {
-                if (!elemListVatLine[i].SelectInnerText("vatcode").Equals(null) || !elemListVatLine[i].SelectInnerText("vatcode").Equals("") || elemListVatLine[i].SelectInnerText("vatcode") != null || elemListVatLine[i].SelectInnerText("vatcode") != "")
+                if (elemListVatLine[i].SelectInnerText("vatcode") != null)
                 {
+                    if (elemListVatLine[i].SelectInnerText("performancetype") == PerformanceType.Services.ToString().ToLower())
+                    {
+                        performanceTypeVat = PerformanceType.Services;
+                    }
+
+                    if (string.IsNullOrEmpty(elemListVatLine[i].SelectInnerText("performancetype")))
+                    {
+                        performanceTypeVat = null;
+                    }
+
                     var vatLine = new Vatline
                     {
                         Vatcode = elemListVatLine[i].SelectInnerText("vatcode"),
                         Vatvalue = elemListVatLine[i].SelectInnerText("vatvalue"),
-                        Performancetype = elemListVatLine[i].SelectInnerText("performancetype"),
+                        Performancetype = performanceTypeVat,
                         Performancedate = elemListVatLine[i].SelectInnerText("performancedate")
                     };
                     vatlines.Add(vatLine);
                 }
             }
 
-            return new SalesInvoice
+            if (element.SelectInnerText("header/status") == Status.Concept.ToString().ToLower())
+            {
+                status = Status.Concept;
+            }
+
+            if (element.SelectInnerText("header/status") == Status.Final.ToString().ToLower())
+            {
+                status = Status.Final;
+            }
+
+            if (element.SelectInnerText("header/paymentmethod") == PaymentMethod.Cash.ToString().ToLower())
+            {
+                paymentMethod = PaymentMethod.Cash;
+            }
+
+            if (element.SelectInnerText("header/paymentmethod") == PaymentMethod.Cashondelivery.ToString().ToLower())
+            {
+                paymentMethod = PaymentMethod.Cashondelivery;
+            }
+
+            if (element.SelectInnerText("header/paymentmethod") == PaymentMethod.Cheque.ToString().ToLower())
+            {
+                paymentMethod = PaymentMethod.Cheque;
+            }
+
+            if (element.SelectInnerText("header/paymentmethod") == PaymentMethod.Da.ToString().ToLower())
+            {
+                paymentMethod = PaymentMethod.Da;
+            }
+
+            if (string.IsNullOrWhiteSpace(element.SelectInnerText("header/paymentmethod")))
+            {
+                paymentMethod = null;
+            }
+
+            int.TryParse(element.SelectInnerText("header/invoiceaddressnumber"), out invoiceAddressNumber);
+            int.TryParse(element.SelectInnerText("header/deliveraddressnumber"), out deleverAddressNumber);
+            int.TryParse(element.SelectInnerText("header/invoicenumber"), out invoiceNumber);
+
+            var salesInvoice =  new SalesInvoice
             {
                 Header = new Header
                 {
@@ -68,13 +146,13 @@ namespace DemoConnector.TwinfieldAPI.Data.SalesInvoice
                     Customer = element.SelectInnerText("header/customer"),
                     Period = element.SelectInnerText("header/period"),
                     Currency = element.SelectInnerText("header/currency"),
-                    Status = element.SelectInnerText("header/status"),
-                    Paymentmethod = element.SelectInnerText("header/paymentmethod"),
-                    Invoiceaddressnumber = element.SelectInnerText("header/invoiceaddressnumber"),
-                    Deliveraddressnumber = element.SelectInnerText("header/deliveraddressnumber"),
+                    Status = status,
+                    Paymentmethod = paymentMethod,
+                    Invoiceaddressnumber = invoiceAddressNumber,
+                    Deliveraddressnumber = deleverAddressNumber,
                     Headertext = element.SelectInnerText("header/headertext"),
                     Footertext = element.SelectInnerText("header/footertext"),
-                    Invoicenumber = element.SelectInnerText("header/invoicenumber")
+                    Invoicenumber = invoiceNumber
                 },
                 Lines = new Lines
                 {
@@ -88,20 +166,38 @@ namespace DemoConnector.TwinfieldAPI.Data.SalesInvoice
                 Vatlines = new Vatlines
                 {
                     Vatline = vatlines
-                },
-                Financials = new Financials
-                {
-                    Code = element.SelectInnerText("financials/code"),
-                    Number = element.SelectInnerText("financials/number")
                 }
             };
+            if (element.SelectInnerText("header/status") == "final")
+            {
+                salesInvoice.Financials = new Financials
+                {
+                    Code = element.SelectInnerText("financials/code"),
+                    Number = int.Parse(element.SelectInnerText("financials/number"))
+                };
+            }
+            return salesInvoice;
         }
         public Header Header { get; set; }
         public Lines Lines { get; set; }
         public Totals Totals { get; set; }
         public Vatlines Vatlines { get; set; }
         public Financials Financials { get; set; }
-        
+
+
+        public SalesInvoice()
+        {
+            Header = new Header
+            {
+                Invoicetype = "FACTUUR",
+                Status = Status.Concept,
+                
+            };
+            Vatlines = new Vatlines
+            {
+                Vatline = new List<Vatline>()
+            };
+        }
     }
 
     public class Header
@@ -114,30 +210,50 @@ namespace DemoConnector.TwinfieldAPI.Data.SalesInvoice
         public string Customer { get; set; }
         public string Period { get; set; }
         public string Currency { get; set; }
-        public string Status { get; set; }
-        public string Paymentmethod { get; set; }
-        public string Invoiceaddressnumber { get; set; }
-        public string Deliveraddressnumber { get; set; }
+        public Status Status { get; set; }
+        public PaymentMethod? Paymentmethod { get; set; }
+        public int Invoiceaddressnumber { get; set; }
+        public int Deliveraddressnumber { get; set; }
         public string Headertext { get; set; }
         public string Footertext { get; set; }
-        public string Invoicenumber { get; set; }
+        public int Invoicenumber { get; set; }
+
+        public string InvoiceTypeAndNumber
+        {
+            get { return Invoicetype + "," + Invoicenumber; }
+        }
     }
-    
+
+    public enum Status
+    {
+        Default,
+        Concept,
+        Final
+    }
+
+    public enum PaymentMethod
+    {
+        Cash,
+        Bank,
+        Cheque,
+        Cashondelivery,
+        Da
+    }
     
     
     public class Line
     {
         public string Article { get; set; }
         public string Subarticle { get; set; }
-        public string Quantity { get; set; }
-        public string Units { get; set; }
+        public int Quantity { get; set; }
+        public int Units { get; set; }
         public string Unitspriceexcl { get; set; }
         public string Unitspriceinc { get; set; }
         public string Vatcode { get; set; }
-        public string Allowdiscountorpremium { get; set; }
+        public bool Allowdiscountorpremium { get; set; }
         public string Description { get; set; }
         public string Performancedate { get; set; }
-        public string Performancetype { get; set; }
+        public PerformanceType? Performancetype { get; set; }
         public string Freetext1 { get; set; }
         public string Freetext2 { get; set; }
         public string Freetext3 { get; set; }
@@ -145,9 +261,15 @@ namespace DemoConnector.TwinfieldAPI.Data.SalesInvoice
         public string Valueexcl { get; set; }
         public string Vatvalue { get; set; }
         public string Valueinc { get; set; }
-        public string Id { get; set; }
+        public int Id { get; set; }
     }
-    
+
+    public enum PerformanceType
+    {
+        Services,
+        Goods
+    }
+
     public class Lines
     {
         public List<Line> Line { get; set; }
@@ -163,7 +285,7 @@ namespace DemoConnector.TwinfieldAPI.Data.SalesInvoice
     {
         public string Vatcode { get; set; }
         public string Vatvalue { get; set; }
-        public string Performancetype { get; set; }
+        public PerformanceType? Performancetype { get; set; }
         public string Performancedate { get; set; }
     }
     
@@ -175,7 +297,7 @@ namespace DemoConnector.TwinfieldAPI.Data.SalesInvoice
     public class Financials
     {
         public string Code { get; set; }
-        public string Number { get; set; }
+        public int Number { get; set; }
     }
 
 }

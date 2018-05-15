@@ -50,8 +50,8 @@ namespace Demo
 //            var invoiceType = new InvoiceTypeDemo(session);
 //            invoiceType.Run();
 
-//            var salesInvoice = new SalesInvoiceDemo(session);
-//            salesInvoice.Run();
+            var salesInvoice = new SalesInvoiceDemo(session);
+            salesInvoice.Run();
 
 //
 //            var project = new ProjectDemo(session);
@@ -120,8 +120,8 @@ namespace Demo
 //            var office =new OfficeDemo(session);
 //            office.Run();
 
-//            var customer = new CustomerDemo(session);
-//            customer.Run();
+            var customer = new CustomerDemo(session);
+            customer.Run();
 
 //            var generalLedger = new GeneralLedgerDemo(session);
 //            generalLedger.Run();
@@ -168,8 +168,8 @@ namespace Demo
 //            var translation = new TranslationDemo(session);
 //            translation.Run();
 
-            var apiDemo = new ApiDemo();
-            apiDemo.Run("https://login.twinfield.com", "API000110", "SforSoftware12", "TWINAPPS", "NLA000218");
+//            var apiDemo = new ApiDemo();
+//            apiDemo.Run("https://login.twinfield.com", "API000110", "SforSoftware12", "TWINAPPS", "NLA000218");
 
 
 

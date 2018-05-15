@@ -18,60 +18,64 @@ namespace DemoConnector.TwinfieldAPI.Handlers.FixedAssets
             createElement.AppendNewElement("code").InnerText = FixedAsset.Code;
             createElement.AppendNewElement("name").InnerText = FixedAsset.Name;
             createElement.AppendNewElement("shortname").InnerText = FixedAsset.Shortname;
-            createElement.AppendNewElement("beginperiod").InnerText = FixedAsset.Beginperiod;
-            createElement.AppendNewElement("beginyear").InnerText = FixedAsset.Beginyear;
-            createElement.AppendNewElement("endperiod").InnerText = FixedAsset.Endperiod;
-            createElement.AppendNewElement("endyear").InnerText = FixedAsset.Endyear;
+            createElement.AppendNewElement("beginperiod").InnerText = FixedAsset.Beginperiod.ToString();
+            createElement.AppendNewElement("beginyear").InnerText = FixedAsset.Beginyear.ToString();
+            createElement.AppendNewElement("endperiod").InnerText = FixedAsset.Endperiod.ToString();
+            createElement.AppendNewElement("endyear").InnerText = FixedAsset.Endyear.ToString();
             var f1 = createElement.AppendNewElement("financials");
-            f1.AppendNewElement("matchtype").InnerText = FixedAsset.financials.Matchtype;
-            f1.AppendNewElement("accounttype").InnerText = FixedAsset.financials.Accounttype;
-            f1.AppendNewElement("subanalyse").InnerText = FixedAsset.financials.Subanalyse;
-            f1.AppendNewElement("duedays").InnerText = FixedAsset.financials.Duedays;
-            f1.AppendNewElement("level").InnerText = FixedAsset.financials.Level;
-            f1.AppendNewElement("payavailable").InnerText = FixedAsset.financials.Payavailable;
-            f1.AppendNewElement("meansofpayment").InnerText = FixedAsset.financials.Meansofpayment;
-            f1.AppendNewElement("paycode").InnerText = FixedAsset.financials.Paycode;
-            f1.AppendNewElement("ebilling").InnerText = FixedAsset.financials.Ebilling;
-            f1.AppendNewElement("ebillmail").InnerText = FixedAsset.financials.Ebillmail;
-            f1.AppendNewElement("substitutionlevel").InnerText = FixedAsset.financials.Substitutionlevel;
-            f1.AppendNewElement("substitutewith").InnerText = FixedAsset.financials.Substitutewith;
-            f1.AppendNewElement("relationsreference").InnerText = FixedAsset.financials.Relationsreference;
-            f1.AppendNewElement("vattype").InnerText = FixedAsset.financials.Vattype;
-            f1.AppendNewElement("vatcode").InnerText = FixedAsset.financials.Vatcode;
-            f1.AppendNewElement("vatobligatory").InnerText = FixedAsset.financials.Vatobligatory;
-            f1.AppendNewElement("performancetype").InnerText = FixedAsset.financials.Performancetype;
+            f1.AppendNewElement("matchtype").InnerText = FixedAsset.Financials.Matchtype.ToString();
+            f1.AppendNewElement("accounttype").InnerText = FixedAsset.Financials.Accounttype;
+            f1.AppendNewElement("subanalyse").InnerText = FixedAsset.Financials.Subanalyse.ToString();
+            f1.AppendNewElement("duedays").InnerText = FixedAsset.Financials.Duedays.ToString();
+            f1.AppendNewElement("level").InnerText = FixedAsset.Financials.Level.ToString();
+            f1.AppendNewElement("payavailable").InnerText = FixedAsset.Financials.Payavailable.ToString();
+            f1.AppendNewElement("meansofpayment").InnerText = FixedAsset.Financials.Meansofpayment.ToString();
+            f1.AppendNewElement("paycode").InnerText = FixedAsset.Financials.Paycode;
+            f1.AppendNewElement("ebilling").InnerText = FixedAsset.Financials.Ebilling.ToString();
+            f1.AppendNewElement("ebillmail").InnerText = FixedAsset.Financials.Ebillmail;
+            f1.AppendNewElement("substitutionlevel").InnerText = FixedAsset.Financials.Substitutionlevel.ToString();
+            f1.AppendNewElement("substitutewith").InnerText = FixedAsset.Financials.Substitutewith;
+            f1.AppendNewElement("relationsreference").InnerText = FixedAsset.Financials.Relationsreference;
+            f1.AppendNewElement("vattype").InnerText = FixedAsset.Financials.Vattype;
+            var v = f1.AppendNewElement("vatcode");
+            v.SetAttribute("name", FixedAsset.Financials.Vatcode.Name);
+            v.SetAttribute("shortname", FixedAsset.Financials.Vatcode.Shortname);
+            v.SetAttribute("type", FixedAsset.Financials.Vatcode.Type.ToString());
+            v.SetAttribute("fixed", FixedAsset.Financials.Vatcode.Fixed.ToString());
+            f1.AppendNewElement("vatobligatory").InnerText = FixedAsset.Financials.Vatobligatory.ToString();
+            f1.AppendNewElement("performancetype").InnerText = FixedAsset.Financials.Performancetype;
             var col = f1.AppendNewElement("collectmandate");
-            col.AppendNewElement("id").InnerText = FixedAsset.financials.Collectmandate.Id;
-            col.AppendNewElement("signaturedate").InnerText = FixedAsset.financials.Collectmandate.Signaturedate;
-            col.AppendNewElement("firstrundate").InnerText = FixedAsset.financials.Collectmandate.Firstrundate;
-            f1.AppendNewElement("collectionschema").InnerText = FixedAsset.financials.Collectionschema;
+            col.AppendNewElement("id").InnerText = FixedAsset.Financials.Collectmandate.Id;
+            col.AppendNewElement("signaturedate").InnerText = FixedAsset.Financials.Collectmandate.Signaturedate;
+            col.AppendNewElement("firstrundate").InnerText = FixedAsset.Financials.Collectmandate.Firstrundate;
+            f1.AppendNewElement("collectionschema").InnerText = FixedAsset.Financials.Collectionschema.ToString();
             var a1 = createElement.AppendNewElement("fixedassets");
-            a1.AppendNewElement("residualvalue").InnerText = FixedAsset.fixedAssets.Residualvalue;
-            a1.AppendNewElement("stopvalue").InnerText = FixedAsset.fixedAssets.Stopvalue;
-            a1.AppendNewElement("method").InnerText = FixedAsset.fixedAssets.Method;
-            a1.AppendNewElement("beginperiod").InnerText = FixedAsset.fixedAssets.Beginperiod;
-            a1.AppendNewElement("purchasedate").InnerText = FixedAsset.fixedAssets.Purchasedate;
-            a1.AppendNewElement("selldate").InnerText = FixedAsset.fixedAssets.Selldate;
-            a1.AppendNewElement("freetext1").InnerText = FixedAsset.fixedAssets.Freetext1;
-            a1.AppendNewElement("freetext2").InnerText = FixedAsset.fixedAssets.Freetext2;
-            a1.AppendNewElement("freetext3").InnerText = FixedAsset.fixedAssets.Freetext3;
-            a1.AppendNewElement("freetext4").InnerText = FixedAsset.fixedAssets.Freetext4;
-            a1.AppendNewElement("freetext5").InnerText = FixedAsset.fixedAssets.Freetext5;
-            a1.AppendNewElement("nrofperiods").InnerText = FixedAsset.fixedAssets.Nrofperiods;
-            a1.AppendNewElement("percentage").InnerText = FixedAsset.fixedAssets.Percentage;
-            a1.AppendNewElement("lastdepreciation").InnerText = FixedAsset.fixedAssets.Lastdepreciation;
-            a1.AppendNewElement("status").InnerText = FixedAsset.fixedAssets.Status;
+            a1.AppendNewElement("residualvalue").InnerText = FixedAsset.FixedAssets.Residualvalue;
+            a1.AppendNewElement("stopvalue").InnerText = FixedAsset.FixedAssets.Stopvalue;
+            a1.AppendNewElement("method").InnerText = FixedAsset.FixedAssets.Method;
+            a1.AppendNewElement("beginperiod").InnerText = FixedAsset.FixedAssets.Beginperiod;
+            a1.AppendNewElement("purchasedate").InnerText = FixedAsset.FixedAssets.Purchasedate;
+            a1.AppendNewElement("selldate").InnerText = FixedAsset.FixedAssets.Selldate;
+            a1.AppendNewElement("freetext1").InnerText = FixedAsset.FixedAssets.Freetext1;
+            a1.AppendNewElement("freetext2").InnerText = FixedAsset.FixedAssets.Freetext2;
+            a1.AppendNewElement("freetext3").InnerText = FixedAsset.FixedAssets.Freetext3;
+            a1.AppendNewElement("freetext4").InnerText = FixedAsset.FixedAssets.Freetext4;
+            a1.AppendNewElement("freetext5").InnerText = FixedAsset.FixedAssets.Freetext5;
+            a1.AppendNewElement("nrofperiods").InnerText = FixedAsset.FixedAssets.Nrofperiods.ToString();
+            a1.AppendNewElement("percentage").InnerText = FixedAsset.FixedAssets.Percentage.ToString();
+            a1.AppendNewElement("lastdepreciation").InnerText = FixedAsset.FixedAssets.Lastdepreciation;
+            a1.AppendNewElement("status").InnerText = FixedAsset.FixedAssets.Status.ToString();
             var t1 = a1.AppendNewElement("translines");
-            for (int i = 0; i < FixedAsset.fixedAssets.Translines.Transline.Count; i++)
+            for (int i = 0; i < FixedAsset.FixedAssets.Translines.Transline.Count; i++)
             {
-                if (!FixedAsset.fixedAssets.Translines.Transline[i].Equals(null) ||FixedAsset.fixedAssets.Translines.Transline[i] != null || !FixedAsset.fixedAssets.Translines.Transline[i].Code.Equals("") || FixedAsset.fixedAssets.Translines.Transline[i].Code != "")
+                if (FixedAsset.FixedAssets.Translines.Transline[i] != null)
                 {
-                    var transline = FixedAsset.fixedAssets.Translines.Transline[i];
+                    var transline = FixedAsset.FixedAssets.Translines.Transline[i];
                     var t2 = t1.AppendNewElement("transline");
                     t2.SetAttribute("id", (i + 1).ToString());
                     t2.AppendNewElement("code").InnerText = transline.Code;
-                    t2.AppendNewElement("number").InnerText = transline.Number;
-                    t2.AppendNewElement("line").InnerText = transline.Line;
+                    t2.AppendNewElement("number").InnerText = transline.Number.ToString();
+                    t2.AppendNewElement("line").InnerText = transline.Line.ToString();
                     t2.AppendNewElement("amount").InnerText = transline.Amount;
                     t2.AppendNewElement("period").InnerText = transline.Period;
                     t2.AppendNewElement("dim1").InnerText = transline.Dim1;
@@ -82,10 +86,6 @@ namespace DemoConnector.TwinfieldAPI.Handlers.FixedAssets
                     t2.AppendNewElement("dim6").InnerText = transline.Dim6;
                 }
             }
-
-//            var g1 = createElement.AppendNewElement("groups");
-//            g1.AppendNewElement("group").InnerText = FixedAsset.groups.Group;
-
             return command;
         }
     }

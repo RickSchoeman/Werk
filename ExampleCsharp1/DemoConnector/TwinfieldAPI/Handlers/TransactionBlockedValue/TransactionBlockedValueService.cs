@@ -23,7 +23,7 @@ namespace DemoConnector.TwinfieldAPI.Handlers.TransactionBlockedValue
             this.clientFactory = clientFactory;
         }
 
-        public void RegisterBlockedAmountForTransAction(string companyCode, string transactionCode,
+        public void RegisterBlockedAmountForTransaction(string companyCode, string transactionCode,
             decimal transactionNumber, int transactionLineId, decimal blockedValue)
         {
             try

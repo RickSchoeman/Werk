@@ -81,7 +81,7 @@ namespace DemoConnector.TwinfieldAPI.Handlers.Projects
             processXml.Process(command.ToXml());
         }
 
-        public void ActivateProjectCommand(Project project)
+        public void ActivateProject(Project project)
         {
             var command = new ActivateProjectCommand
             {

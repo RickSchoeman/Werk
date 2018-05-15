@@ -267,6 +267,7 @@ namespace Demo.Customer
                     Console.WriteLine("Address: " + (i + 1));
                     Console.WriteLine("name = {0}", address.Name);
                     Console.WriteLine("country = {0}", address.Country);
+                    Console.WriteLine("countryname = {0}", address.CountryName);
                     Console.WriteLine("city = {0}", address.City);
                     Console.WriteLine("postcode = {0}", address.Postcode);
                     Console.WriteLine("telephone = {0}", address.Telephone);

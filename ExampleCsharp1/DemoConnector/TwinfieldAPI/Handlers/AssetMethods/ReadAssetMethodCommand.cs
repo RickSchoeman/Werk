@@ -4,7 +4,7 @@ using DemoConnector.TwinfieldAPI.Controllers.Utilities;
 
 namespace DemoConnector.TwinfieldAPI.Handlers.AssetMethods
 {
-    public class ReadAssetMethodCommand
+    public class ReadAssetMethodCommand 
     {
         public string Office { get; set; }
         public string AssetMethodType { get; set; }

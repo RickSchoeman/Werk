@@ -26,7 +26,7 @@ namespace DemoConnector.TwinfieldAPI.Handlers.Extras.ReminderScenarios
             finderService = new FinderService(session, clientFactory);
         }
 
-        public List<ReminderScenarioSummary> FinReminderScenarios(string pattern, string type, int field)
+        public List<ReminderScenarioSummary> FindReminderScenarios(string pattern, string type, int field)
         {
             var query = new FinderService.Query
             {

@@ -22,7 +22,7 @@ namespace DemoConnector.TwinfieldAPI.Handlers.BankStatements
             this.clientFactory = clientFactory;
         }
 
-        public DemoConnector.TwinfieldAPI.Data.BankStatements.BankStatements FindBankBook(DateTime statementdateFrom, DateTime statementDateTo, Boolean includePostedStatements)
+        public DemoConnector.TwinfieldAPI.Data.BankStatements.BankStatements FindBankStatements(DateTime statementdateFrom, DateTime statementDateTo, Boolean includePostedStatements)
         {
             var queryyResult = Query(new GetBankStatements
             {

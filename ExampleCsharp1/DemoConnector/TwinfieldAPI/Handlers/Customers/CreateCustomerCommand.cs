@@ -1,4 +1,5 @@
-﻿using System.Xml;
+﻿using System.Globalization;
+using System.Xml;
 using DemoConnector.TwinfieldAPI.Controllers;
 using DemoConnector.TwinfieldAPI.Controllers.Utilities;
 using DemoConnector.TwinfieldAPI.Data.Customers;
@@ -11,6 +12,11 @@ namespace DemoConnector.TwinfieldAPI.Handlers.Customers
 
         internal XmlDocument ToXml()
         {
+            var type = string.Empty;
+            if (Customer.Financials.Vatcode.Type != null)
+            {
+                type = Customer.Financials.Vatcode.Type.ToString();
+            }
             var command = new XmlDocument();
             var createElement = command.AppendNewElement("dimension");
             createElement.AppendNewElement("office").InnerText = Customer.Office;
@@ -21,38 +27,37 @@ namespace DemoConnector.TwinfieldAPI.Handlers.Customers
             createElement.AppendNewElement("cocnumber").InnerText = Customer.Cocnumber;
             createElement.AppendNewElement("vatnumber").InnerText = Customer.Vatnumber;
             var f = createElement.AppendNewElement("financials");
-            f.AppendNewElement("payavailable").InnerText = Customer.Financials.Payavailable;
-            f.AppendNewElement("meansofpayment").InnerText = Customer.Financials.Meansofpayment;
+            f.AppendNewElement("payavailable").InnerText = Customer.Financials.Payavailable.ToString().ToLower();
+            f.AppendNewElement("meansofpayment").InnerText = Customer.Financials.Meansofpayment.ToString().ToLower();
             f.AppendNewElement("paycode").InnerText = Customer.Financials.Paycode;
-            f.AppendNewElement("ebilling").InnerText = Customer.Financials.Ebilling;
+            f.AppendNewElement("ebilling").InnerText = Customer.Financials.Ebilling.ToString().ToLower();
             f.AppendNewElement("ebillmail").InnerText = Customer.Financials.Ebillmail;
-           f.AppendNewElement("substitutionlevel").InnerText = Customer.Financials.Substitutionlevel;
+           f.AppendNewElement("substitutionlevel").InnerText = Customer.Financials.Substitutionlevel.ToString().ToLower();
            f.AppendNewElement("substitutewith").InnerText = Customer.Financials.Substitutewith;
-            f.AppendNewElement("relationsreference").InnerText = Customer.Financials.Relationsreference;
-            f.AppendNewElement("vattype").InnerText = Customer.Financials.Vattype;
-           f.AppendNewElement("vatcode").InnerText = Customer.Financials.Vatcode;
-            f.AppendNewElement("vatobligatory").InnerText = Customer.Financials.Vatobligatory;
-            f.AppendNewElement("performancetype").InnerText = Customer.Financials.Performancetype;
+           var v = f.AppendNewElement("vatcode");
+            v.SetAttribute("name", Customer.Financials.Vatcode.Name);
+            v.SetAttribute("shortname", Customer.Financials.Vatcode.Shortname);
+            v.SetAttribute("type", type);
+            v.SetAttribute("fixed", Customer.Financials.Vatcode.Fixed.ToString().ToLower());
             var col = f.AppendNewElement("collectmandate");
             col.AppendNewElement("id").InnerText = Customer.Financials.Collectmandate.Id;
             col.AppendNewElement("signaturedate").InnerText = Customer.Financials.Collectmandate.Signaturedate;
             col.AppendNewElement("firstrundate").InnerText = Customer.Financials.Collectmandate.Firstrundate;
-            f.AppendNewElement("collectionschema").InnerText = Customer.Financials.Collectionschema;
+            f.AppendNewElement("collectionschema").InnerText = Customer.Financials.Collectionschema.ToString().ToLower();
             var cred = createElement.AppendNewElement("creditmanagement");
             cred.AppendNewElement("responsibleuser").InnerText = Customer.Creditmanagement.Responsibleuser;
-            cred.AppendNewElement("basecreditlimit").InnerText = Customer.Creditmanagement.Basecreditlimit;
-            cred.AppendNewElement("sendreminder").InnerText = Customer.Creditmanagement.Sendreminder;
+            cred.AppendNewElement("basecreditlimit").InnerText = Customer.Creditmanagement.Basecreditlimit.ToString(CultureInfo.InvariantCulture).ToLower();
+            cred.AppendNewElement("sendreminder").InnerText = Customer.Creditmanagement.Sendreminder.ToString().ToLower();
             cred.AppendNewElement("reminderemail").InnerText = Customer.Creditmanagement.Reminderemail;
-            cred.AppendNewElement("blocked").InnerText = Customer.Creditmanagement.Blocked;
-            cred.AppendNewElement("freetext1").InnerText = Customer.Creditmanagement.Freetext1;
+            cred.AppendNewElement("blocked").InnerText = Customer.Creditmanagement.Blocked.ToString().ToLower();
+            cred.AppendNewElement("freetext1").InnerText = Customer.Creditmanagement.Freetext1.ToString().ToLower();
             cred.AppendNewElement("freetext2").InnerText = Customer.Creditmanagement.Freetext2;
             cred.AppendNewElement("freetext3").InnerText = Customer.Creditmanagement.Freetext3;
             cred.AppendNewElement("comment").InnerText = Customer.Creditmanagement.Comment;
             var a1 = createElement.AppendNewElement("addresses");
             for (int i = 0; i < Customer.Addresses.Address.Count; i++)
             {
-                if (!Customer.Addresses.Address[i].Equals(null) || Customer.Addresses.Address[i] != null ||
-                    !Customer.Addresses.Address[i].Name.Equals("") || Customer.Addresses.Address[i].Name != "")
+                if (Customer.Addresses.Address[i] != null)
                 {
                     var address = Customer.Addresses.Address[i];
 
@@ -78,8 +83,7 @@ namespace DemoConnector.TwinfieldAPI.Handlers.Customers
             var b1 = createElement.AppendNewElement("banks");
             for (int i = 0; i < Customer.Banks.Bank.Count; i++)
             {
-                if (!Customer.Banks.Bank[i].Equals(null) || Customer.Banks.Bank[i] != null ||
-                    !Customer.Banks.Bank[i].Ascription.Equals("") || Customer.Banks.Bank[i].Ascription != "")
+                if (Customer.Banks.Bank[i] != null)
                 {
                     var bank = Customer.Banks.Bank[i];
 
@@ -103,15 +107,21 @@ namespace DemoConnector.TwinfieldAPI.Handlers.Customers
 
             var p1 = createElement.AppendNewElement("paymentconditions");
 
-            var paymentcondition = Customer.Paymentconditions.Paymentcondition;
-
-            var p2 = p1.AppendNewElement("paymentcondition");
-            p2.AppendNewElement("discountdays").InnerText = paymentcondition.Discountdays;
-            p2.AppendNewElement("discountpercentage").InnerText = paymentcondition.Discountpercentage;
+            for (int i = 0; i < Customer.Paymentconditions.Paymentcondition.Count; i++)
+            {
+                if (Customer.Paymentconditions.Paymentcondition[i] != null)
+                {
+                    var paymentcondition = Customer.Paymentconditions.Paymentcondition[i];
+                    var p2 = p1.AppendNewElement("paymentcondition");
+                    p2.SetAttribute("id", (i + 1).ToString());
+                    p2.AppendNewElement("discountdays").InnerText = paymentcondition.Discountdays.ToString().ToLower();
+                    p2.AppendNewElement("discountpercentage").InnerText = paymentcondition.Discountpercentage.ToString(CultureInfo.InvariantCulture).ToLower();
+                }
+            }
             var post1 = createElement.AppendNewElement("postingrules");
             for (int i = 0; i < Customer.Postingrules.Postingrule.Count; i++)
             {
-                if (!Customer.Postingrules.Postingrule[i].Equals(null) || Customer.Postingrules.Postingrule[i] != null || !Customer.Postingrules.Postingrule[i].Currency.Equals("") || Customer.Postingrules.Postingrule[i].Currency != "")
+                if (Customer.Postingrules.Postingrule[i] != null)
                 {
                     var postingrule = Customer.Postingrules.Postingrule[i];
                     var post2 = post1.AppendNewElement("postingrule");
@@ -120,14 +130,22 @@ namespace DemoConnector.TwinfieldAPI.Handlers.Customers
                     post2.AppendNewElement("amount").InnerText = postingrule.Amount;
                     post2.AppendNewElement("description").InnerText = postingrule.Description;
                     var l1 = post2.AppendNewElement("lines");
-                    var l2 = l1.AppendNewElement("line");
-                    l2.AppendNewElement("office").InnerText = postingrule.Lines.Line.Office;
-                    l2.AppendNewElement("dimension1").InnerText = postingrule.Lines.Line.Dimension1;
-                    l2.AppendNewElement("dimension2").InnerText = postingrule.Lines.Line.Dimension2;
-                    l2.AppendNewElement("dimension3").InnerText = postingrule.Lines.Line.Dimension3;
-                    l2.AppendNewElement("ratio").InnerText = postingrule.Lines.Line.Ratio;
-                    l2.AppendNewElement("vatcode").InnerText = postingrule.Lines.Line.Vatcode;
-                    l2.AppendNewElement("description").InnerText = postingrule.Lines.Line.Description;
+                    for (int j = 0; j < postingrule.Lines.Line.Count; j++)
+                    {
+                        if (postingrule.Lines.Line[j] != null)
+                        {
+                            var l2 = l1.AppendNewElement("line");
+                            var l = postingrule.Lines.Line[j];
+                            l2.SetAttribute("id", (j + 1).ToString());
+                            l2.AppendNewElement("office").InnerText = l.Office;
+                            l2.AppendNewElement("dimension1").InnerText = l.Dimension1;
+                            l2.AppendNewElement("dimension2").InnerText = l.Dimension2;
+                            l2.AppendNewElement("dimension3").InnerText = l.Dimension3;
+                            l2.AppendNewElement("ratio").InnerText = l.Ratio.ToString();
+                            l2.AppendNewElement("vatcode").InnerText = l.Vatcode;
+                            l2.AppendNewElement("description").InnerText = l.Description;
+                        }
+                    }
                 }
             }
 
