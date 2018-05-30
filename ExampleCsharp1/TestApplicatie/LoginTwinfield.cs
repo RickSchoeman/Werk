@@ -19,6 +19,7 @@ namespace TestApplicatie
         public LoginTwinfield()
         {
             InitializeComponent();
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -44,14 +45,14 @@ namespace TestApplicatie
                 {
                     Cursor.Current = Cursors.Arrow;
                     System.Windows.Forms.MessageBox.Show(
-                        @"Kn niet inloggen \n Inloggegevens verkeerd of administratie is niet berijkbaar.");
+                        @"Kan niet inloggen \n Inloggegevens verkeerd of administratie is niet berijkbaar.");
                 }
             }
             catch (Exception exception)
             {
                 Cursor.Current = Cursors.Arrow;
                 System.Windows.Forms.MessageBox.Show(
-                    @"Kn niet inloggen \n Inloggegevens verkeerd of administratie is niet berijkbaar.");
+                    @"Kan niet inloggen \n Inloggegevens verkeerd of administratie is niet berijkbaar.");
                 Console.WriteLine(exception);
             }
 

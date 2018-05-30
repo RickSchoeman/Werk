@@ -13,7 +13,8 @@ namespace TestApplicatie.Interfaces
         SupplierResponse GetSupplierData();
         Product GetProductData();
         SalesInvoiceResponse GetSalesInvoiceData();
-        GeneralLedgerResponse GetGeneralLedgerData();
+        GeneralLedgerResponse GetBalanceSheetData();
+        GeneralLedgerResponse GetProfitAndLossData();
         CostCenterResponse GetCostCenterData();
     }
 }

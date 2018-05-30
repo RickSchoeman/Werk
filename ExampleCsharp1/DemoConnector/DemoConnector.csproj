@@ -39,6 +39,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -187,6 +188,7 @@
     <Compile Include="TwinfieldAPI\Data\Articles\ArticleSummary.cs" />
     <Compile Include="TwinfieldAPI\Data\AssetMethods\AssetMethod.cs" />
     <Compile Include="TwinfieldAPI\Data\AssetMethods\AssetMethodSummary.cs" />
+    <Compile Include="TwinfieldAPI\Data\BalanceSheet\BalanceSheet.cs" />
     <Compile Include="TwinfieldAPI\Data\BankBooks\BankBook.cs" />
     <Compile Include="TwinfieldAPI\Data\BankStatements\BankStatement.cs" />
     <Compile Include="TwinfieldAPI\Data\BankTransactions\BankTransaction.cs" />
@@ -206,6 +208,7 @@
     <Compile Include="TwinfieldAPI\Data\Dimensions\DimensionSummary.cs" />
     <Compile Include="TwinfieldAPI\Data\DimensionTypes\DimensionType.cs" />
     <Compile Include="TwinfieldAPI\Data\DimensionTypes\DimensionTypeSummary.cs" />
+    <Compile Include="TwinfieldAPI\Data\ResultMessage.cs" />
     <Compile Include="TwinfieldAPI\Data\Extras\Countries\CountrySummary.cs" />
     <Compile Include="TwinfieldAPI\Data\Extras\DistByPeriods\DistByPeriodSummary.cs" />
     <Compile Include="TwinfieldAPI\Data\Extras\InvoiceTypes\InvoiceTypeSummary.cs" />
@@ -228,6 +231,7 @@
     <Compile Include="TwinfieldAPI\Data\Offices\Office.cs" />
     <Compile Include="TwinfieldAPI\Data\Offices\OfficeSummary.cs" />
     <Compile Include="TwinfieldAPI\Data\Period\Period.cs" />
+    <Compile Include="TwinfieldAPI\Data\ProfitLoss\ProfitLoss.cs" />
     <Compile Include="TwinfieldAPI\Data\Projects\Project.cs" />
     <Compile Include="TwinfieldAPI\Data\Projects\ProjectSummary.cs" />
     <Compile Include="TwinfieldAPI\Data\PurchaseTransactions\PurchaseTransaction.cs" />
@@ -240,6 +244,7 @@
     <Compile Include="TwinfieldAPI\Data\SalesTransactions\SalesTransaction.cs" />
     <Compile Include="TwinfieldAPI\Data\SalesTransactions\SalesTransactionSummary.cs" />
     <Compile Include="TwinfieldAPI\Data\Session.cs" />
+    <Compile Include="TwinfieldAPI\Data\Summaries\Summary.cs" />
     <Compile Include="TwinfieldAPI\Data\Suppliers\Supplier.cs" />
     <Compile Include="TwinfieldAPI\Data\Suppliers\SupplierSummary.cs" />
     <Compile Include="TwinfieldAPI\Data\Users\User.cs" />
@@ -272,6 +277,7 @@
     <Compile Include="TwinfieldAPI\Handlers\Budget\BudgetService.cs" />
     <Compile Include="TwinfieldAPI\Handlers\CashBooks\CashBookService.cs" />
     <Compile Include="TwinfieldAPI\Handlers\CasheData.cs" />
+    <Compile Include="TwinfieldAPI\Handlers\ClassToXml.cs" />
     <Compile Include="TwinfieldAPI\Handlers\CostCenters\ActivateCostCenterCommand.cs" />
     <Compile Include="TwinfieldAPI\Handlers\CostCenters\CostCenterService.cs" />
     <Compile Include="TwinfieldAPI\Handlers\CostCenters\CreateCostCenterCommand.cs" />
@@ -324,13 +330,15 @@
     <Compile Include="TwinfieldAPI\Handlers\GeneralLedgers\DeleteGeneralLedgerCommand.cs" />
     <Compile Include="TwinfieldAPI\Handlers\GeneralLedgers\GeneralLedgerService.cs" />
     <Compile Include="TwinfieldAPI\Handlers\GeneralLedgers\ReadGeneralLedgerCommand.cs" />
+    <Compile Include="TwinfieldAPI\Handlers\Interfaces\IApiOperationsBase.cs" />
+    <Compile Include="TwinfieldAPI\Handlers\Interfaces\IApiSummaryBase.cs" />
     <Compile Include="TwinfieldAPI\Handlers\Interfaces\IArticleInterface.cs" />
-    <Compile Include="TwinfieldAPI\Handlers\Interfaces\ICostCenterInterface.cs" />
-    <Compile Include="TwinfieldAPI\Handlers\Interfaces\ICustomerInterface.cs" />
+    <Compile Include="TwinfieldAPI\Handlers\Interfaces\ICurrencyInterface.cs" />
     <Compile Include="TwinfieldAPI\Handlers\Interfaces\IDimensionOperations.cs" />
+    <Compile Include="TwinfieldAPI\Handlers\Interfaces\IDimensionTypeInterface.cs" />
     <Compile Include="TwinfieldAPI\Handlers\Interfaces\IGeneralLedgerInterface.cs" />
     <Compile Include="TwinfieldAPI\Handlers\Interfaces\ISalesInvoiceInterface.cs" />
-    <Compile Include="TwinfieldAPI\Handlers\Interfaces\ISupplierInterface.cs" />
+    <Compile Include="TwinfieldAPI\Handlers\Interfaces\IVatInterface.cs" />
     <Compile Include="TwinfieldAPI\Handlers\Offices\OfficeService.cs" />
     <Compile Include="TwinfieldAPI\Handlers\Offices\ReadOfficeCommand.cs" />
     <Compile Include="TwinfieldAPI\Handlers\Operations.cs" />
@@ -355,6 +363,8 @@
     <Compile Include="TwinfieldAPI\Handlers\SalesTransactions\CreateSalesTransaction.cs" />
     <Compile Include="TwinfieldAPI\Handlers\SalesTransactions\ReadSalesTransactionCommand.cs" />
     <Compile Include="TwinfieldAPI\Handlers\SalesTransactions\SalesTransactionService.cs" />
+    <Compile Include="TwinfieldAPI\Handlers\Summaries\SummaryService.cs" />
+    <Compile Include="TwinfieldAPI\Handlers\SummaryOperations.cs" />
     <Compile Include="TwinfieldAPI\Handlers\Suppliers\ActivateSupplierCommand.cs" />
     <Compile Include="TwinfieldAPI\Handlers\Suppliers\CreateSupplierCommand.cs" />
     <Compile Include="TwinfieldAPI\Handlers\Suppliers\DeletePostingRuleCommand.cs" />
@@ -372,6 +382,11 @@
     <Compile Include="TwinfieldAPI\Handlers\VATs\ReadVatCommand.cs" />
     <Compile Include="TwinfieldAPI\Handlers\VATs\VatService.cs" />
     <Compile Include="TwinfieldAPI\TwinfieldApiConnector.cs" />
+    <Compile Include="XmlTest\BankTest.cs" />
+    <Compile Include="XmlTest\CustomerResponseTest.cs" />
+    <Compile Include="XmlTest\EmailAddressTest.cs" />
+    <Compile Include="XmlTest\PhoneNumbersTest.cs" />
+    <Compile Include="XmlTest\PostalAddressesTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

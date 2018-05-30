@@ -6,86 +6,86 @@ namespace DemoConnector.Middleware
 {
     public class ExtensionValue
     {
-//        private ExtensionValueType _type;
-//        private object _value;
-//
-//        #region ctor
-//        public ExtensionValue(Boolean value)
-//        {
-//            _type = ExtensionValueType.Boolean;
-//            _value = value;
-//        }
-//
-//        public ExtensionValue(Int32 value)
-//        {
-//            _type = ExtensionValueType.Number;
-//            _value = value;
-//        }
-//
-//        public ExtensionValue(Int64 value)
-//        {
-//            _type = ExtensionValueType.BigNumber;
-//            _value = value;
-//        }
-//
-//        public ExtensionValue(Decimal value)
-//        {
-//            _type = ExtensionValueType.Decimal;
-//            _value = value;
-//        }
-//
-//        public ExtensionValue(DateTime value)
-//        {
-//            _type = ExtensionValueType.DateTime;
-//            _value = value;
-//        }
-//
-//        public ExtensionValue(String value)
-//        {
-//            _type = ExtensionValueType.String;
-//            _value = value;
-//        }
-//
-//        public ExtensionValue(Guid value)
-//        {
-//            _type = ExtensionValueType.Guid;
-//            _value = value;
-//        }
-//
-//        public ExtensionValue(TimeSpan value)
-//        {
-//            _type = ExtensionValueType.TimeSpan;
-//            _value = value;
-//        }
-//
-//        public ExtensionValue(byte[] value)
-//        {
-//            _type = ExtensionValueType.Bytes;
-//            _value = value;
-//        }
-//
-//        public ExtensionValue(IdDescriptionPair value)
-//        {
-//            _type = ExtensionValueType.IdDescriptionPair;
-//            _value = value;
-//        }
-//        #endregion
-//
-//        public override string ToString()
-//        {
-//            if (_value == null)
-//                return string.Empty;
-//
-//            return _value.ToString();
-//        }
-//
-//        public override int GetHashCode()
-//        {
-//            if (_value == null)
-//                return 0;
-//
-//            return _value.GetHashCode();
-//        }
+        private ExtensionValueType _type;
+        private object _value;
+
+        #region ctor
+        public ExtensionValue(Boolean value)
+        {
+            _type = ExtensionValueType.Boolean;
+            _value = value;
+        }
+
+        public ExtensionValue(Int32 value)
+        {
+            _type = ExtensionValueType.Number;
+            _value = value;
+        }
+
+        public ExtensionValue(Int64 value)
+        {
+            _type = ExtensionValueType.BigNumber;
+            _value = value;
+        }
+
+        public ExtensionValue(Decimal value)
+        {
+            _type = ExtensionValueType.Decimal;
+            _value = value;
+        }
+
+        public ExtensionValue(DateTime value)
+        {
+            _type = ExtensionValueType.DateTime;
+            _value = value;
+        }
+
+        public ExtensionValue(String value)
+        {
+            _type = ExtensionValueType.String;
+            _value = value;
+        }
+
+        public ExtensionValue(Guid value)
+        {
+            _type = ExtensionValueType.Guid;
+            _value = value;
+        }
+
+        public ExtensionValue(TimeSpan value)
+        {
+            _type = ExtensionValueType.TimeSpan;
+            _value = value;
+        }
+
+        public ExtensionValue(byte[] value)
+        {
+            _type = ExtensionValueType.Bytes;
+            _value = value;
+        }
+
+        public ExtensionValue(IdDescriptionPair value)
+        {
+            _type = ExtensionValueType.IdDescriptionPair;
+            _value = value;
+        }
+        #endregion
+
+        public override string ToString()
+        {
+            if (_value == null)
+                return string.Empty;
+
+            return _value.ToString();
+        }
+
+        public override int GetHashCode()
+        {
+            if (_value == null)
+                return 0;
+
+            return _value.GetHashCode();
+        }
 
         public string Value { get; set; }
 
@@ -324,14 +324,14 @@ namespace DemoConnector.Middleware
 
     public class ExtensionData
     {
-//        private string _name;
-//        private ExtensionValue _value;
-//
-//        public ExtensionData(string name, ExtensionValue value)
-//        {
-//            _name = name;
-//            _value = value;
-//        }
+        private string _name;
+        private ExtensionValue _value;
+
+        public ExtensionData(string name, ExtensionValue value)
+        {
+            _name = name;
+            _value = value;
+        }
 
         public String Name { get; set; }
 
@@ -347,10 +347,10 @@ namespace DemoConnector.Middleware
             internalcollection = new Dictionary<string, ExtensionData>();
         }
 
-//        public void Add(string name, ExtensionValue value)
-//        {
-//            Add(new ExtensionData(name, value));
-//        }
+        public void Add(string name, ExtensionValue value)
+        {
+            Add(new ExtensionData(name, value));
+        }
 
         public void Add(ExtensionData item)
         {

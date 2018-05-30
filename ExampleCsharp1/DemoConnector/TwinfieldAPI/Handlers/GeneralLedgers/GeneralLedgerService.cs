@@ -51,17 +51,17 @@ namespace DemoConnector.TwinfieldAPI.Handlers.GeneralLedgers
                 .ToList();
         }
 
-        public GeneralLedger ReadGeneralLedger(string type, string code)
-        {
-            var command = new ReadGeneralLedgerCommand
-            {
-                Office = session.Office,
-                Code = code,
-                Type = type
-            };
-            var response = processXml.Process(command.ToXml());
-            return GeneralLedger.FromXml(response);
-        }
+//        public GeneralLedger ReadGeneralLedger(string type, string code)
+//        {
+//            var command = new ReadGeneralLedgerCommand
+//            {
+//                Office = session.Office,
+//                Code = code,
+//                Type = type
+//            };
+//            var response = processXml.Process(command.ToXml());
+//            return GeneralLedger.FromXml(response);
+//        }
 
         public void CreateGeneralLedger(GeneralLedger generalLedger)
         {

@@ -14,7 +14,12 @@ using DemoConnector.TwinfieldAPI.Converters;
 using DemoConnector.TwinfieldAPI.Converters.Interfaces;
 using DemoConnector.TwinfieldAPI.Data;
 using DemoConnector.TwinfieldAPI.Data.Articles;
+using DemoConnector.TwinfieldAPI.Data.BalanceSheet;
+using DemoConnector.TwinfieldAPI.Data.CostCenters;
 using DemoConnector.TwinfieldAPI.Data.Customers;
+using DemoConnector.TwinfieldAPI.Data.GeneralLedgers;
+using DemoConnector.TwinfieldAPI.Data.ProfitLoss;
+using DemoConnector.TwinfieldAPI.Data.Suppliers;
 using DemoConnector.TwinfieldAPI.Handlers;
 using DemoConnector.TwinfieldAPI.Handlers.Interfaces;
 using TestApplicatie.InputForms;
@@ -26,12 +31,13 @@ namespace TestApplicatie
     {
         private readonly Session _session;
         public List<object> _gegevens = new List<object>();
-        private readonly ICustomerInterface _customerInterface;
-        private readonly ISupplierInterface _supplierInterface;
-        private readonly IGeneralLedgerInterface _generalLedgerInterface;
+        private readonly IApiOperationsBase<Customer> _customerInterface;
+        private readonly IApiOperationsBase<Supplier> _supplierInterface;
         private readonly IArticleInterface _articleInterface;
+        private readonly IApiOperationsBase<BalanceSheet> _balanceSheetInterface;
+        private readonly IApiOperationsBase<ProfitLoss> _profitLossInterface;
         private readonly ISalesInvoiceInterface _salesInvoiceInterface;
-        private readonly ICostCenterInterface _costCenterInterface;
+        private readonly IApiOperationsBase<CostCenter> _costCenterInterface;
         private readonly ICustomerConverter _customerConverter;
         private readonly ISupplierConverter _supplierConverter;
         private readonly IGeneralLedgerConverter _generalLedgerConverter;
@@ -39,12 +45,19 @@ namespace TestApplicatie
         private readonly ISalesInvoiceConverter _salesInvoiceConverter;
         private readonly ICostCenterConverter _costCenterConverter;
         private readonly IMiddlewareData _middlewareData;
+        private readonly List<CustomerResponse> _customers = new List<CustomerResponse>();
+        private readonly List<SupplierResponse> _suppliers = new List<SupplierResponse>();
+        private readonly List<Product> _products = new List<Product>();
+        private readonly List<SalesInvoiceResponse> _salesInvoices = new List<SalesInvoiceResponse>();
+        private readonly List<GeneralLedgerResponse> _generalLedgers = new List<GeneralLedgerResponse>();
+        private readonly List<CostCenterResponse> _costCenters = new List<CostCenterResponse>();
 
         public Twinfield(Session session)
         {
             _customerInterface = new CustomerOperations(session);
             _supplierInterface = new SupplierOperations(session);
-            _generalLedgerInterface = new GeneralLedgerOperations(session);
+            _balanceSheetInterface = new BalanceSheetOperations(session);
+            _profitLossInterface = new ProfitLossOperations(session);
             _articleInterface = new ArticleOperations(session);
             _salesInvoiceInterface = new SalesInvoiceOperations(session);
             _costCenterInterface = new CostCenterOperatons(session);
@@ -63,7 +76,8 @@ namespace TestApplicatie
                 "Suppliers",
                 "Articles",
                 "Sales Invoices",
-                "General Ledgers",
+                "Balance Sheets",
+                "Profit and Loss",
                 "Cost Centers"
             };
             var functies = new List<string> {"None"};
@@ -79,7 +93,7 @@ namespace TestApplicatie
             functieUitvoeren.Enabled = false;
             dataVeld.Enabled = false;
             functie.Enabled = false;
-
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -94,9 +108,10 @@ namespace TestApplicatie
             textBox1.Text = @"Administratie";
             createNew.Enabled = true;
             dataVeld.Enabled = false;
-            functie.Enabled = false;
-            functie.DataSource = new List<string>();
             functieUitvoeren.Enabled = false;
+            var functies = new List<string> {"Create", "Delete"};
+            functie.DataSource = functies;
+            functie.Enabled = true;
         }
 
         private void radioButton2_CheckedChanged(object sender, EventArgs e)
@@ -111,6 +126,12 @@ namespace TestApplicatie
 
         private void dataInladen_Click(object sender, EventArgs e)
         {
+            _customers.Clear();
+            _suppliers.Clear();
+            _products.Clear();
+            _salesInvoices.Clear();
+            _generalLedgers.Clear();
+            _costCenters.Clear();
             dataVeld.Items.Clear();
             _gegevens?.Clear();
             switch (data.Text)
@@ -120,15 +141,15 @@ namespace TestApplicatie
                     {
                         richTextBox1.AppendText("\r\nCustomers inladen...");
                         Cursor.Current = Cursors.WaitCursor;
-                        foreach (var c in _customerInterface.GetAll())
+                        foreach (var c in _customerInterface.GetSummaries())
                         {
                             if (!dataVeld.Items.Contains(c))
                             {
                                 _gegevens?.Add(c);
                                 dataVeld.Items.Add(c);
                             }
-
                         }
+
                         richTextBox1.AppendText("\r\nCustomers geladen");
                         Cursor.Current = Cursors.Arrow;
                         var functies = new List<string> {"Read", "Convert"};
@@ -141,13 +162,15 @@ namespace TestApplicatie
                         richTextBox1.AppendText("\r\nVoorbeeld customer inladen...");
                         Cursor.Current = Cursors.WaitCursor;
                         var customer = _middlewareData.GetCustomerData();
+                        _customers.Add(customer);
                         if (!dataVeld.Items.Contains(customer))
                         {
                             dataVeld.Items.Add(customer);
                         }
+
                         richTextBox1.AppendText("\r\nVoorbeeld customer geladen");
                         Cursor.Current = Cursors.Arrow;
-                        var functies = new List<string>{"Read", "Create", "Delete"};
+                        var functies = new List<string> {"Read", "Create", "Delete"};
                         functie.DataSource = functies;
                         dataVeld.SelectedIndex = 0;
                         dataVeld.DisplayMember = "Code";
@@ -160,7 +183,7 @@ namespace TestApplicatie
                     Cursor.Current = Cursors.WaitCursor;
                     if (!radioButton1.Checked)
                     {
-                        foreach (var s in _supplierInterface.GetAll())
+                        foreach (var s in _supplierInterface.GetSummaries())
                         {
                             if (!dataVeld.Items.Contains(s))
                             {
@@ -168,6 +191,7 @@ namespace TestApplicatie
                                 dataVeld.Items.Add(s);
                             }
                         }
+
                         richTextBox1.AppendText("\r\nSuppliers geladen");
                         Cursor.Current = Cursors.Arrow;
                         var functies = new List<string> {"Read", "Convert"};
@@ -180,17 +204,18 @@ namespace TestApplicatie
                         richTextBox1.AppendText("\r\nVoorbeeld supplier inladen...");
                         Cursor.Current = Cursors.WaitCursor;
                         var supplier = _middlewareData.GetSupplierData();
+                        _suppliers.Add(supplier);
                         if (!dataVeld.Items.Contains(supplier))
                         {
                             dataVeld.Items.Add(supplier);
                         }
+
                         richTextBox1.AppendText("\r\nVoorbeeld supplier geladen");
                         Cursor.Current = Cursors.Arrow;
-                        var functies = new List<string>{"Read", "Create", "Delete"};
+                        var functies = new List<string> {"Read", "Create", "Delete"};
                         functie.DataSource = functies;
                         dataVeld.SelectedIndex = 0;
                         dataVeld.DisplayMember = "Code";
-
                     }
 
                     richTextBox1.ScrollToCaret();
@@ -200,12 +225,12 @@ namespace TestApplicatie
                     Cursor.Current = Cursors.WaitCursor;
                     if (!radioButton1.Checked)
                     {
-                        foreach (var a in _articleInterface.GetAll())
+                        foreach (var a in _articleInterface.GetSummaries())
                         {
-                            if (!dataVeld.Items.Contains(a.Header))
+                            if (!dataVeld.Items.Contains(a))
                             {
-                                _gegevens?.Add(a.Header);
-                                dataVeld.Items.Add(a.Header);
+                                _gegevens?.Add(a);
+                                dataVeld.Items.Add(a);
                             }
                         }
 
@@ -221,13 +246,15 @@ namespace TestApplicatie
                         richTextBox1.AppendText("\r\nVoorbeeld article inladen...");
                         Cursor.Current = Cursors.WaitCursor;
                         var article = _middlewareData.GetProductData();
+                        _products.Add(article);
                         if (!dataVeld.Items.Contains(article))
                         {
                             dataVeld.Items.Add(article);
                         }
+
                         richTextBox1.AppendText("\r\nVoorbeeld article geladen");
                         Cursor.Current = Cursors.Arrow;
-                        var functies = new List<string>{"Read", "Create", "Delete"};
+                        var functies = new List<string> {"Read", "Create", "Delete"};
                         functie.DataSource = functies;
                         dataVeld.SelectedIndex = 0;
                         dataVeld.DisplayMember = "Code";
@@ -261,13 +288,15 @@ namespace TestApplicatie
                         richTextBox1.AppendText("\r\nVoorbeeld sales invoice inladen...");
                         Cursor.Current = Cursors.WaitCursor;
                         var salesInvoice = _middlewareData.GetSalesInvoiceData();
+                        _salesInvoices.Add(salesInvoice);
                         if (!dataVeld.Items.Contains(salesInvoice))
                         {
                             dataVeld.Items.Add(salesInvoice);
                         }
+
                         richTextBox1.AppendText("\r\nVoorbeeld sales invoice geladen");
                         Cursor.Current = Cursors.Arrow;
-                        var functies = new List<string>{"Read", "Create"};
+                        var functies = new List<string> {"Read", "Create"};
                         functie.DataSource = functies;
                         dataVeld.SelectedIndex = 0;
                         dataVeld.DisplayMember = "InvoiceTypeAndNumber";
@@ -275,12 +304,12 @@ namespace TestApplicatie
 
                     richTextBox1.ScrollToCaret();
                     break;
-                case @"General Ledgers":
-                    richTextBox1.AppendText("\r\nGeneral ledgers inladen...");
+                case @"Balance Sheets":
+                    richTextBox1.AppendText("\r\nBalance sheets inladen...");
                     Cursor.Current = Cursors.WaitCursor;
                     if (!radioButton1.Checked)
                     {
-                        foreach (var g in _generalLedgerInterface.GetAllBalanceSheet())
+                        foreach (var g in _balanceSheetInterface.GetSummaries())
                         {
                             if (!dataVeld.Items.Contains(g))
                             {
@@ -288,48 +317,79 @@ namespace TestApplicatie
                                 dataVeld.Items.Add(g);
                             }
                         }
-
-                        foreach (var g in _generalLedgerInterface.GetAllProfitLoss())
-                        {
-                            if (!dataVeld.Items.Contains(g))
-                            {
-                                _gegevens?.Add(g);
-                                dataVeld.Items.Add(g);
-                            }
-                        }
-
-                        richTextBox1.AppendText("\r\nGeneral ledgers geladen");
+                        richTextBox1.AppendText("\r\nBalance sheets geladen");
                         Cursor.Current = Cursors.Arrow;
-                        var functies = new List<string> {"Read", "Convert"};
+                        var functies = new List<string> { "Read", "Convert" };
                         functie.DataSource = functies;
                         dataVeld.SelectedIndex = 0;
                         dataVeld.DisplayMember = "Code";
                     }
                     else
                     {
-                        richTextBox1.AppendText("\r\nVoorbeeld general ledger inladen...");
+                        richTextBox1.AppendText("\r\nVoorbeeld balance sheet inladen...");
                         Cursor.Current = Cursors.WaitCursor;
-                        var generalLedger = _middlewareData.GetGeneralLedgerData();
+                        var generalLedger = _middlewareData.GetBalanceSheetData();
+                        _generalLedgers.Add(generalLedger);
                         if (!dataVeld.Items.Contains(generalLedger))
                         {
                             dataVeld.Items.Add(generalLedger);
                         }
-                        richTextBox1.AppendText("\r\nVoorbeeld general ledger geladen");
+
+                        richTextBox1.AppendText("\r\nVoorbeeld balance sheet geladen");
                         Cursor.Current = Cursors.Arrow;
-                        var functies = new List<string>{"Read", "Create", "Delete"};
+                        var functies = new List<string> { "Read", "Create", "Delete" };
                         functie.DataSource = functies;
                         dataVeld.SelectedIndex = 0;
                         dataVeld.DisplayMember = "Code";
                     }
-
                     richTextBox1.ScrollToCaret();
                     break;
-                case @"Cost centers":
+                case @"Profit and Loss":
+                    richTextBox1.AppendText("\r\nProfit and loss inladen...");
+                    Cursor.Current = Cursors.WaitCursor;
+                    if (!radioButton1.Checked)
+                    {
+                        foreach (var g in _profitLossInterface.GetSummaries())
+                        {
+                            if (!dataVeld.Items.Contains(g))
+                            {
+                                _gegevens?.Add(g);
+                                dataVeld.Items.Add(g);
+                            }
+                        }
+                        richTextBox1.AppendText("\r\nProfit and loss geladen");
+                        Cursor.Current = Cursors.Arrow;
+                        var functies = new List<string> { "Read", "Convert" };
+                        functie.DataSource = functies;
+                        dataVeld.SelectedIndex = 0;
+                        dataVeld.DisplayMember = "Code";
+                    }
+                    else
+                    {
+                        richTextBox1.AppendText("\r\nVoorbeeld profit and loss inladen...");
+                        Cursor.Current = Cursors.WaitCursor;
+                        var generalLedger = _middlewareData.GetProfitAndLossData();
+                        _generalLedgers.Add(generalLedger);
+                        if (!dataVeld.Items.Contains(generalLedger))
+                        {
+                            dataVeld.Items.Add(generalLedger);
+                        }
+
+                        richTextBox1.AppendText("\r\nVoorbeeld profit and loss geladen");
+                        Cursor.Current = Cursors.Arrow;
+                        var functies = new List<string> { "Read", "Create", "Delete" };
+                        functie.DataSource = functies;
+                        dataVeld.SelectedIndex = 0;
+                        dataVeld.DisplayMember = "Code";
+                    }
+                    richTextBox1.ScrollToCaret();
+                    break;
+                case @"Cost Centers":
                     richTextBox1.AppendText("\r\nCost centers inladen...");
                     Cursor.Current = Cursors.WaitCursor;
                     if (!radioButton1.Checked)
                     {
-                        foreach (var cc in _costCenterInterface.GetAll())
+                        foreach (var cc in _costCenterInterface.GetSummaries())
                         {
                             if (!dataVeld.Items.Contains(cc))
                             {
@@ -337,9 +397,10 @@ namespace TestApplicatie
                                 dataVeld.Items.Add(cc);
                             }
                         }
+
                         richTextBox1.AppendText("\r\nCost centers geladen");
                         Cursor.Current = Cursors.Arrow;
-                        var functies = new List<string>{"Read", "Convert"};
+                        var functies = new List<string> {"Read", "Convert"};
                         functie.DataSource = functies;
                         dataVeld.SelectedIndex = 0;
                         dataVeld.DisplayMember = "Code";
@@ -349,17 +410,20 @@ namespace TestApplicatie
                         richTextBox1.AppendText("\r\nVoorbeeld cost center inladen...");
                         Cursor.Current = Cursors.WaitCursor;
                         var costCenter = _middlewareData.GetCostCenterData();
+                        _costCenters.Add(costCenter);
                         if (!dataVeld.Items.Contains(costCenter))
                         {
                             dataVeld.Items.Add(costCenter);
                         }
+
                         richTextBox1.AppendText("\r\nVoorbeeld cost center geladen");
                         Cursor.Current = Cursors.Arrow;
-                        var functies = new List<string>{"Read", "Create", "Delete"};
+                        var functies = new List<string> {"Read", "Create", "Delete"};
                         functie.DataSource = functies;
                         dataVeld.SelectedIndex = 0;
                         dataVeld.DisplayMember = "Code";
                     }
+
                     richTextBox1.ScrollToCaret();
                     break;
             }
@@ -396,6 +460,7 @@ namespace TestApplicatie
                                     Cursor.Current = Cursors.Arrow;
                                     resultBar.BackColor = Color.Red;
                                 }
+
                                 richTextBox1.ScrollToCaret();
                                 break;
                             case @"Suppliers":
@@ -414,6 +479,7 @@ namespace TestApplicatie
                                     Cursor.Current = Cursors.Arrow;
                                     resultBar.BackColor = Color.Red;
                                 }
+
                                 richTextBox1.ScrollToCaret();
                                 break;
                             case @"Articles":
@@ -432,6 +498,7 @@ namespace TestApplicatie
                                     Cursor.Current = Cursors.Arrow;
                                     resultBar.BackColor = Color.Red;
                                 }
+
                                 richTextBox1.ScrollToCaret();
                                 break;
                             case @"Sales Invoices":
@@ -452,16 +519,14 @@ namespace TestApplicatie
                                     Cursor.Current = Cursors.Arrow;
                                     resultBar.BackColor = Color.Red;
                                 }
+
                                 richTextBox1.ScrollToCaret();
                                 break;
-                            case @"General Ledgers":
+                            case @"Balance Sheets":
                                 Cursor.Current = Cursors.WaitCursor;
                                 try
                                 {
-                                    var g = _generalLedgerInterface.ReadProfitLoss(
-                                                dataVeld.GetItemText(dataVeld.SelectedItem)) ??
-                                            _generalLedgerInterface.ReadBalanceSheet(
-                                                dataVeld.GetItemText(dataVeld.SelectedItem));
+                                    var g = _balanceSheetInterface.Read(dataVeld.GetItemText(dataVeld.SelectedItem));
                                     Cursor.Current = Cursors.Arrow;
                                     richTextBox1.AppendText("\r\n" + g.Name);
                                     resultBar.BackColor = Color.Chartreuse;
@@ -473,6 +538,26 @@ namespace TestApplicatie
                                     Cursor.Current = Cursors.Arrow;
                                     resultBar.BackColor = Color.Red;
                                 }
+
+                                richTextBox1.ScrollToCaret();
+                                break;
+                            case @"Profit and Loss":
+                                Cursor.Current = Cursors.WaitCursor;
+                                try
+                                {
+                                    var g = _profitLossInterface.Read(dataVeld.GetItemText(dataVeld.SelectedItem));
+                                    Cursor.Current = Cursors.Arrow;
+                                    richTextBox1.AppendText("\r\n" + g.Name);
+                                    resultBar.BackColor = Color.Chartreuse;
+                                }
+                                catch (Exception exception)
+                                {
+                                    richTextBox1.AppendText("\r\nDe data kan niet gelezen worden");
+                                    richTextBox1.AppendText("\r\nError: " + exception.Message);
+                                    Cursor.Current = Cursors.Arrow;
+                                    resultBar.BackColor = Color.Red;
+                                }
+
                                 richTextBox1.ScrollToCaret();
                                 break;
                             case @"Cost Centers":
@@ -491,6 +576,7 @@ namespace TestApplicatie
                                     Cursor.Current = Cursors.Arrow;
                                     resultBar.BackColor = Color.Red;
                                 }
+
                                 richTextBox1.ScrollToCaret();
                                 break;
                         }
@@ -518,6 +604,7 @@ namespace TestApplicatie
                                     resultBar.BackColor = Color.Red;
                                 }
 
+                                richTextBox1.ScrollToCaret();
                                 break;
                             case @"Suppliers":
                                 try
@@ -538,6 +625,7 @@ namespace TestApplicatie
                                     resultBar.BackColor = Color.Red;
                                 }
 
+                                richTextBox1.ScrollToCaret();
                                 break;
                             case @"Articles":
                                 try
@@ -571,6 +659,7 @@ namespace TestApplicatie
                                     resultBar.BackColor = Color.Red;
                                 }
 
+                                richTextBox1.ScrollToCaret();
                                 break;
                             case @"Sales Invoices":
                                 try
@@ -594,29 +683,51 @@ namespace TestApplicatie
                                     resultBar.BackColor = Color.Red;
                                 }
 
+                                richTextBox1.ScrollToCaret();
                                 break;
-                            case @"General Ledgers":
+                            case @"Balance Sheets":
                                 try
                                 {
                                     Cursor.Current = Cursors.WaitCursor;
-                                    var gl = _generalLedgerInterface.ReadProfitLoss(
-                                                 dataVeld.GetItemText(dataVeld.SelectedItem)) ??
-                                             _generalLedgerInterface.ReadBalanceSheet(
-                                                 dataVeld.GetItemText(dataVeld.SelectedItem));
-                                    var glr = _generalLedgerConverter.ConvertGeneralLedger(gl);
+                                    var gl = _balanceSheetInterface.Read(dataVeld.GetItemText(dataVeld.SelectedItem));
+                                    var glr = _generalLedgerConverter.ConvertBalanceSheet(gl);
                                     Cursor.Current = Cursors.Arrow;
                                     resultBar.BackColor = Color.Chartreuse;
-                                    richTextBox1.AppendText("\r\nGeneral ledger " + glr.Code + " created in middleware");
+                                    richTextBox1.AppendText("\r\nBalance sheet " + glr.Code +
+                                                            " created in middleware");
                                 }
                                 catch (Exception exception)
                                 {
                                     richTextBox1.AppendText(
-                                        "\r\nDe general ledger kan niet geconverteerd worden naar de middleware");
+                                        "\r\nDe balance sheet kan niet geconverteerd worden naar de middleware");
                                     richTextBox1.AppendText("\r\nError: " + exception.Message);
                                     Cursor.Current = Cursors.Arrow;
                                     resultBar.BackColor = Color.Red;
                                 }
 
+                                richTextBox1.ScrollToCaret();
+                                break;
+                            case @"Profit and Loss":
+                                try
+                                {
+                                    Cursor.Current = Cursors.WaitCursor;
+                                    var gl = _profitLossInterface.Read(dataVeld.GetItemText(dataVeld.SelectedItem));
+                                    var glr = _generalLedgerConverter.ConvertProfitLoss(gl);
+                                    Cursor.Current = Cursors.Arrow;
+                                    resultBar.BackColor = Color.Chartreuse;
+                                    richTextBox1.AppendText("\r\nProfit and loss " + glr.Code +
+                                                            " created in middleware");
+                                }
+                                catch (Exception exception)
+                                {
+                                    richTextBox1.AppendText(
+                                        "\r\nDe profit and loss kan niet geconverteerd worden naar de middleware");
+                                    richTextBox1.AppendText("\r\nError: " + exception.Message);
+                                    Cursor.Current = Cursors.Arrow;
+                                    resultBar.BackColor = Color.Red;
+                                }
+
+                                richTextBox1.ScrollToCaret();
                                 break;
                             case @"Cost Centers":
                                 try
@@ -630,11 +741,14 @@ namespace TestApplicatie
                                 }
                                 catch (Exception exception)
                                 {
-                                    richTextBox1.AppendText("\r\nCost center kan niet geconverteerd worden naar de middleware");
+                                    richTextBox1.AppendText(
+                                        "\r\nCost center kan niet geconverteerd worden naar de middleware");
                                     richTextBox1.AppendText("\r\nError: " + exception.Message);
                                     Cursor.Current = Cursors.Arrow;
                                     resultBar.BackColor = Color.Red;
                                 }
+
+                                richTextBox1.ScrollToCaret();
                                 break;
                         }
 
@@ -653,260 +767,473 @@ namespace TestApplicatie
                         {
                             case @"Customers":
                                 Cursor.Current = Cursors.WaitCursor;
-                                var customer = _middlewareData.GetCustomerData();
-                                richTextBox1.AppendText("\r\n" + customer.Name);
-                                Cursor.Current = Cursors.Arrow;
-                                resultBar.BackColor = Color.Chartreuse;
+                                foreach (var c in _customers)
+                                {
+                                    if (c.Code == dataVeld.GetItemText(dataVeld.SelectedItem))
+                                    {
+                                        richTextBox1.AppendText("\r\n" + c.Name);
+                                        Cursor.Current = Cursors.Arrow;
+                                        resultBar.BackColor = Color.Chartreuse;
+                                    }
+                                }
+
+                                richTextBox1.ScrollToCaret();
                                 break;
                             case @"Suppliers":
                                 Cursor.Current = Cursors.WaitCursor;
-                                var supplier = _middlewareData.GetSupplierData();
-                                richTextBox1.AppendText("\r\n" + supplier.Name);
-                                Cursor.Current = Cursors.Arrow;
-                                resultBar.BackColor = Color.Chartreuse;
+                                foreach (var s in _suppliers)
+                                {
+                                    if (s.Code == dataVeld.GetItemText(dataVeld.SelectedItem))
+                                    {
+                                        richTextBox1.AppendText("\r\n" + s.Name);
+                                        Cursor.Current = Cursors.Arrow;
+                                        resultBar.BackColor = Color.Chartreuse;
+                                    }
+                                }
+
+                                richTextBox1.ScrollToCaret();
                                 break;
                             case @"Articles":
                                 Cursor.Current = Cursors.WaitCursor;
-                                var product = _middlewareData.GetProductData();
-                                richTextBox1.AppendText("\r\n" + product.Description);
-                                Cursor.Current = Cursors.Arrow;
-                                resultBar.BackColor = Color.Chartreuse;
+                                foreach (var p in _products)
+                                {
+                                    if (p.Code == dataVeld.GetItemText(dataVeld.SelectedItem))
+                                    {
+                                        richTextBox1.AppendText("\r\n" + p.Description);
+                                        Cursor.Current = Cursors.Arrow;
+                                        resultBar.BackColor = Color.Chartreuse;
+                                    }
+                                }
+
+                                richTextBox1.ScrollToCaret();
                                 break;
                             case @"Sales Invoices":
                                 Cursor.Current = Cursors.WaitCursor;
-                                var salesInvoice = _middlewareData.GetSalesInvoiceData();
-                                richTextBox1.AppendText("\r\n" + salesInvoice.InvoiceTypeAndNumber);
-                                Cursor.Current = Cursors.Arrow;
-                                resultBar.BackColor = Color.Chartreuse;
+                                foreach (var s in _salesInvoices)
+                                {
+                                    if (s.InvoiceTypeAndNumber == dataVeld.GetItemText(dataVeld.SelectedItem))
+                                    {
+                                        richTextBox1.AppendText("\r\n" + s.InvoiceTypeAndNumber);
+                                        Cursor.Current = Cursors.Arrow;
+                                        resultBar.BackColor = Color.Chartreuse;
+                                    }
+                                }
+
+                                richTextBox1.ScrollToCaret();
                                 break;
-                            case @"General Ledgers":
+                            case @"Balance Sheets":
                                 Cursor.Current = Cursors.WaitCursor;
-                                var generalLedger = _middlewareData.GetGeneralLedgerData();
-                                richTextBox1.AppendText("\r\n" + generalLedger.Name);
-                                Cursor.Current = Cursors.Arrow;
-                                resultBar.BackColor = Color.Chartreuse;
+                                foreach (var g in _generalLedgers)
+                                {
+                                    if (g.Code == dataVeld.GetItemText(dataVeld.SelectedItem))
+                                    {
+                                        richTextBox1.AppendText("\r\n" + g.Name);
+                                        Cursor.Current = Cursors.Arrow;
+                                        resultBar.BackColor = Color.Chartreuse;
+                                    }
+                                }
+
+                                richTextBox1.ScrollToCaret();
+                                break;
+                            case @"Profit and Loss":
+                                Cursor.Current = Cursors.WaitCursor;
+                                foreach (var g in _generalLedgers)
+                                {
+                                    if (g.Code == dataVeld.GetItemText(dataVeld.SelectedItem))
+                                    {
+                                        richTextBox1.AppendText("\r\n" + g.Name);
+                                        Cursor.Current = Cursors.Arrow;
+                                        resultBar.BackColor = Color.Chartreuse;
+                                    }
+                                }
+
+                                richTextBox1.ScrollToCaret();
                                 break;
                             case @"Cost Centers":
                                 Cursor.Current = Cursors.WaitCursor;
-                                var costCenter = _middlewareData.GetCostCenterData();
-                                richTextBox1.AppendText("\r\n" + costCenter.Name);
-                                Cursor.Current = Cursors.Arrow;
-                                resultBar.BackColor = Color.Chartreuse;
+                                foreach (var c in _costCenters)
+                                {
+                                    if (c.Code == dataVeld.GetItemText(dataVeld.SelectedItem))
+                                    {
+                                        richTextBox1.AppendText("\r\n" + c.Name);
+                                        Cursor.Current = Cursors.Arrow;
+                                        resultBar.BackColor = Color.Chartreuse;
+                                    }
+                                }
+
+                                richTextBox1.ScrollToCaret();
                                 break;
                         }
+
                         break;
                     case @"Create":
                         switch (data.Text)
                         {
                             case @"Customers":
                                 Cursor.Current = Cursors.WaitCursor;
-                                var customers = _middlewareData.GetCustomerData();
-                                var c = _customerConverter.ConvertCustomerResponse(customers, _session.Office);
-                                var cr = _customerInterface.Create(c);
-                                Cursor.Current = Cursors.Arrow;
-                                if (cr == "Created")
+                                foreach (var x in _customers)
                                 {
-                                    resultBar.BackColor = Color.Chartreuse;
-                                    richTextBox1.AppendText("\r\nCustomer " + c.Code + " aangemaakt in administratie");
+                                    if (x.Code == dataVeld.GetItemText(dataVeld.SelectedItem))
+                                    {
+                                        var c = _customerConverter.ConvertCustomerResponse(x, _session.Office);
+                                        var cr = _customerInterface.Create(c);
+                                        Cursor.Current = Cursors.Arrow;
+                                        if (cr == "Created")
+                                        {
+                                            resultBar.BackColor = Color.Chartreuse;
+                                            richTextBox1.AppendText(
+                                                "\r\nCustomer " + c.Code + " aangemaakt in administratie");
+                                        }
+                                        else
+                                        {
+                                            resultBar.BackColor = Color.Red;
+                                            richTextBox1.AppendText(
+                                                "\r\nCustomer kan niet aangemaakt worden in administratie");
+                                            richTextBox1.AppendText("\r\nError: " + cr);
+                                        }
+                                    }
                                 }
-                                else
-                                {
-                                    resultBar.BackColor = Color.Red;
-                                    richTextBox1.AppendText("\r\nCustomer kan niet aangemaakt worden in administratie");
-                                    richTextBox1.AppendText("\r\nError: " + cr);
-                                }
+
+                                richTextBox1.ScrollToCaret();
                                 break;
                             case @"Suppliers":
                                 Cursor.Current = Cursors.WaitCursor;
-                                var suppliers = _middlewareData.GetSupplierData();
-                                var s = _supplierConverter.ConvertSupplierResponse(suppliers, _session.Office);
-                                var sr = _supplierInterface.Create(s);
-                                Cursor.Current = Cursors.Arrow;
-                                if (sr == "Created")
+                                foreach (var x in _suppliers)
                                 {
-                                    resultBar.BackColor = Color.Chartreuse;
-                                    richTextBox1.AppendText("\r\nSupplier " + s.Code + " aangemaakt in administratie");
+                                    if (x.Code == dataVeld.GetItemText(dataVeld.SelectedItem))
+                                    {
+                                        var s = _supplierConverter.ConvertSupplierResponse(x, _session.Office);
+                                        var sr = _supplierInterface.Create(s);
+                                        Cursor.Current = Cursors.Arrow;
+                                        if (sr == "Created")
+                                        {
+                                            resultBar.BackColor = Color.Chartreuse;
+                                            richTextBox1.AppendText(
+                                                "\r\nSupplier " + s.Code + " aangemaakt in administratie");
+                                        }
+                                        else
+                                        {
+                                            resultBar.BackColor = Color.Red;
+                                            richTextBox1.AppendText(
+                                                "\r\nSupplier kan niet aangemaakt worden in administratie");
+                                            richTextBox1.AppendText("\r\nError: " + sr);
+                                        }
+                                    }
                                 }
-                                else
-                                {
-                                    resultBar.BackColor = Color.Red;
-                                    richTextBox1.AppendText("\r\nSupplier kan niet aangemaakt worden in administratie");
-                                    richTextBox1.AppendText("\r\nError: " + sr);
-                                }
+
+                                richTextBox1.ScrollToCaret();
                                 break;
                             case @"Articles":
                                 Cursor.Current = Cursors.WaitCursor;
-                                var products = _middlewareData.GetProductData();
-                                var a = _articleConverter.ConvertProduct(products, _session.Office, "IN");
-                                var ar = _articleInterface.Create(a);
-                                Cursor.Current = Cursors.Arrow;
-                                if (ar == "Created")
+                                foreach (var x in _products)
                                 {
-                                    resultBar.BackColor = Color.Chartreuse;
-                                    richTextBox1.AppendText("\r\nProduct " + a.Header.Code + "aangemaakt in administratie");
+                                    if (x.Code == dataVeld.GetItemText(dataVeld.SelectedItem))
+                                    {
+                                        var a = _articleConverter.ConvertProduct(x, _session.Office, "IN");
+                                        var ar = _articleInterface.Create(a);
+                                        Cursor.Current = Cursors.Arrow;
+                                        if (ar == "Created")
+                                        {
+                                            resultBar.BackColor = Color.Chartreuse;
+                                            richTextBox1.AppendText(
+                                                "\r\nProduct " + a.Header.Code + "aangemaakt in administratie");
+                                        }
+                                        else
+                                        {
+                                            resultBar.BackColor = Color.Red;
+                                            richTextBox1.AppendText(
+                                                "\r\nProduct kan niet aangemaakt worden in administratie");
+                                            richTextBox1.AppendText("\r\nError: " + ar);
+                                        }
+                                    }
                                 }
-                                else
-                                {
-                                    resultBar.BackColor = Color.Red;
-                                    richTextBox1.AppendText("\r\nProduct kan niet aangemaakt worden in administratie");
-                                    richTextBox1.AppendText("\r\nError: " + ar);
-                                }
+
+                                richTextBox1.ScrollToCaret();
                                 break;
                             case @"Sales Invoices":
                                 Cursor.Current = Cursors.WaitCursor;
-                                var salesInvoices = _middlewareData.GetSalesInvoiceData();
-                                var si = _salesInvoiceConverter.ConvertSalesInvoiceResponse(salesInvoices, "IN");
-                                var sir = _salesInvoiceInterface.Create(si);
-                                Cursor.Current = Cursors.Arrow;
-                                if (sir == "Created")
+                                foreach (var x in _salesInvoices)
                                 {
-                                    resultBar.BackColor = Color.Chartreuse;
-                                    richTextBox1.AppendText("\r\nSales invoice " + si.Header.InvoiceTypeAndNumber + " aangemaakt in administratie");
+                                    if (x.InvoiceTypeAndNumber == dataVeld.GetItemText(dataVeld.SelectedItem))
+                                    {
+                                        var si = _salesInvoiceConverter.ConvertSalesInvoiceResponse(x, "IN");
+                                        var sir = _salesInvoiceInterface.Create(si);
+                                        Cursor.Current = Cursors.Arrow;
+                                        if (sir == "Created")
+                                        {
+                                            resultBar.BackColor = Color.Chartreuse;
+                                            richTextBox1.AppendText(
+                                                "\r\nSales invoice " + si.Header.InvoiceTypeAndNumber +
+                                                " aangemaakt in administratie");
+                                        }
+                                        else
+                                        {
+                                            resultBar.BackColor = Color.Red;
+                                            richTextBox1.AppendText(
+                                                "\r\nSales invoice kan niet aangemaakt worden in administratie");
+                                            richTextBox1.AppendText("\r\nError: " + sir);
+                                        }
+                                    }
                                 }
-                                else
-                                {
-                                    resultBar.BackColor = Color.Red;
-                                    richTextBox1.AppendText("\r\nSales invoice kan niet aangemaakt worden in administratie");
-                                    richTextBox1.AppendText("\r\nError: " + sir);
-                                }
+
+                                richTextBox1.ScrollToCaret();
                                 break;
-                            case @"General Ledgers":
+                            case @"Balance Sheets":
                                 Cursor.Current = Cursors.WaitCursor;
-                                var generalLedgers = _middlewareData.GetGeneralLedgerData();
-                                var gl = _generalLedgerConverter.ConvertGeneralLedgerResponse(generalLedgers,
-                                    _session.Office);
-                                var glr = _generalLedgerInterface.Create(gl);
-                                Cursor.Current = Cursors.Arrow;
-                                if (glr == "Created")
+                                foreach (var x in _generalLedgers)
                                 {
-                                    resultBar.BackColor = Color.Chartreuse;
-                                    richTextBox1.AppendText("\r\nGeneral ledger " + gl.Code + " aangemaakt in administratie");
+                                    if (x.Code == dataVeld.GetItemText(dataVeld.SelectedItem))
+                                    {
+                                        var gl = _generalLedgerConverter.ConvertGeneralLedgerResponseToBalanceSheet(x, _session.Office);
+                                        var glr = _balanceSheetInterface.Create(gl);
+                                        Cursor.Current = Cursors.Arrow;
+                                        if (glr == "Created")
+                                        {
+                                            resultBar.BackColor = Color.Chartreuse;
+                                            richTextBox1.AppendText(
+                                                "\r\nBalance sheet " + gl.Code + " aangemaakt in administratie");
+                                        }
+                                        else
+                                        {
+                                            resultBar.BackColor = Color.Red;
+                                            richTextBox1.AppendText(
+                                                "\r\nBalance sheet kan niet aangemaakt worden in administratie");
+                                            richTextBox1.AppendText("\r\nError: " + glr);
+                                        }
+                                    }
                                 }
-                                else
+
+                                richTextBox1.ScrollToCaret();
+                                break;
+                            case @"Profit and Loss":
+                                Cursor.Current = Cursors.WaitCursor;
+                                foreach (var x in _generalLedgers)
                                 {
-                                    resultBar.BackColor = Color.Red;
-                                    richTextBox1.AppendText("\r\nGeneral ledger kan niet aangemaakt worden in administratie");
-                                    richTextBox1.AppendText("\r\nError: " + glr);
+                                    if (x.Code == dataVeld.GetItemText(dataVeld.SelectedItem))
+                                    {
+                                        var gl = _generalLedgerConverter.ConvertGeneralLedgerResponseToProfitLoss(x, _session.Office);
+                                        var glr = _profitLossInterface.Create(gl);
+                                        Cursor.Current = Cursors.Arrow;
+                                        if (glr == "Created")
+                                        {
+                                            resultBar.BackColor = Color.Chartreuse;
+                                            richTextBox1.AppendText(
+                                                "\r\nProfit and loss " + gl.Code + " aangemaakt in administratie");
+                                        }
+                                        else
+                                        {
+                                            resultBar.BackColor = Color.Red;
+                                            richTextBox1.AppendText(
+                                                "\r\nProfit and loss kan niet aangemaakt worden in administratie");
+                                            richTextBox1.AppendText("\r\nError: " + glr);
+                                        }
+                                    }
                                 }
+
+                                richTextBox1.ScrollToCaret();
                                 break;
                             case @"Cost Centers":
                                 Cursor.Current = Cursors.WaitCursor;
-                                var costCenter = _middlewareData.GetCostCenterData();
-                                var cc = _costCenterConverter.ConvertCostCenterResponse(costCenter, _session.Office);
-                                var ccr = _costCenterInterface.Create(cc);
-                                Cursor.Current = Cursors.Arrow;
-                                if (ccr == "Created")
+                                foreach (var x in _costCenters)
                                 {
-                                    resultBar.BackColor = Color.Chartreuse;
-                                    richTextBox1.AppendText("\r\nCost center " + cc.Code + " aangemaakt in administratie");
+                                    if (x.Code == dataVeld.GetItemText(dataVeld.SelectedItem))
+                                    {
+                                        var cc = _costCenterConverter.ConvertCostCenterResponse(x, _session.Office);
+                                        var ccr = _costCenterInterface.Create(cc);
+                                        Cursor.Current = Cursors.Arrow;
+                                        if (ccr == "Created")
+                                        {
+                                            resultBar.BackColor = Color.Chartreuse;
+                                            richTextBox1.AppendText(
+                                                "\r\nCost center " + cc.Code + " aangemaakt in administratie");
+                                        }
+                                        else
+                                        {
+                                            resultBar.BackColor = Color.Red;
+                                            richTextBox1.AppendText(
+                                                "\r\nCost center kan niet aangemaakt worden in administratie");
+                                            richTextBox1.AppendText("\r\nError: " + ccr);
+                                        }
+                                    }
                                 }
-                                else
-                                {
-                                    resultBar.BackColor = Color.Red;
-                                    richTextBox1.AppendText("\r\nCost center kan niet aangemaakt worden in administratie");
-                                    richTextBox1.AppendText("\r\nError: " + ccr);
-                                }
+
+                                richTextBox1.ScrollToCaret();
                                 break;
                         }
+
                         break;
                     case @"Delete":
                         switch (data.Text)
                         {
                             case @"Customers":
                                 Cursor.Current = Cursors.WaitCursor;
-                                var customers = _middlewareData.GetCustomerData();
-                                var c = _customerConverter.ConvertCustomerResponse(customers, _session.Office);
-                                var cr = _customerInterface.Delete(c);
-                                Cursor.Current = Cursors.Arrow;
-                                if (cr == "Deleted")
+                                foreach (var x in _customers)
                                 {
-                                    resultBar.BackColor = Color.Chartreuse;
-                                    richTextBox1.AppendText("\r\nCustomer " + c.Code + " verwijderd uit administratie");
+                                    if (x.Code == dataVeld.GetItemText(dataVeld.SelectedItem))
+                                    {
+                                        var c = _customerConverter.ConvertCustomerResponse(x, _session.Office);
+                                        var cr = _customerInterface.Delete(c);
+                                        Cursor.Current = Cursors.Arrow;
+                                        if (cr == "Deleted")
+                                        {
+                                            resultBar.BackColor = Color.Chartreuse;
+                                            richTextBox1.AppendText(
+                                                "\r\nCustomer " + c.Code + " verwijderd uit administratie");
+                                        }
+                                        else
+                                        {
+                                            resultBar.BackColor = Color.Red;
+                                            richTextBox1.AppendText(
+                                                "\r\nCustomer kan niet verwijderd worden uit administratie");
+                                            richTextBox1.AppendText("\r\nError: " + cr);
+                                        }
+                                    }
                                 }
-                                else
-                                {
-                                    resultBar.BackColor = Color.Red;
-                                    richTextBox1.AppendText("\r\nCustomer kan niet verwijderd worden uit administratie");
-                                    richTextBox1.AppendText("\r\nError: " + cr);
-                                }
+
+                                richTextBox1.ScrollToCaret();
                                 break;
                             case @"Suppliers":
                                 Cursor.Current = Cursors.WaitCursor;
-                                var suppliers = _middlewareData.GetSupplierData();
-                                var s = _supplierConverter.ConvertSupplierResponse(suppliers, _session.Office);
-                                var sr = _supplierInterface.Delete(s);
-                                Cursor.Current = Cursors.Arrow;
-                                if (sr == "Deleted")
+                                foreach (var x in _suppliers)
                                 {
-                                    resultBar.BackColor = Color.Chartreuse;
-                                    richTextBox1.AppendText("\r\nSupplier " + s.Code + " verwijderd uit administratie");
+                                    if (x.Code == dataVeld.GetItemText(dataVeld.SelectedItem))
+                                    {
+                                        var s = _supplierConverter.ConvertSupplierResponse(x, _session.Office);
+                                        var sr = _supplierInterface.Delete(s);
+                                        Cursor.Current = Cursors.Arrow;
+                                        if (sr == "Deleted")
+                                        {
+                                            resultBar.BackColor = Color.Chartreuse;
+                                            richTextBox1.AppendText(
+                                                "\r\nSupplier " + s.Code + " verwijderd uit administratie");
+                                        }
+                                        else
+                                        {
+                                            resultBar.BackColor = Color.Red;
+                                            richTextBox1.AppendText(
+                                                "\r\nSupplier kan niet verwijderd worden uit administratie");
+                                            richTextBox1.AppendText("\r\nError: " + sr);
+                                        }
+                                    }
                                 }
-                                else
-                                {
-                                    resultBar.BackColor = Color.Red;
-                                    richTextBox1.AppendText("\r\nSupplier kan niet verwijderd worden uit administratie");
-                                    richTextBox1.AppendText("\r\nError: " + sr);
-                                }
+
+                                richTextBox1.ScrollToCaret();
                                 break;
                             case @"Articles":
                                 Cursor.Current = Cursors.WaitCursor;
-                                var products = _middlewareData.GetProductData();
-                                var a = _articleConverter.ConvertProduct(products, _session.Office, "IN");
-                                var ar = _articleInterface.Delete(a);
-                                Cursor.Current = Cursors.Arrow;
-                                if (ar == "Deleted")
+                                foreach (var x in _products)
                                 {
-                                    resultBar.BackColor = Color.Chartreuse;
-                                    richTextBox1.AppendText("\r\nProduct " + a.Header.Code + "verwijderd uit administratie");
+                                    if (x.Code == dataVeld.GetItemText(dataVeld.SelectedItem))
+                                    {
+                                        var a = _articleConverter.ConvertProduct(x, _session.Office, "IN");
+                                        var ar = _articleInterface.Delete(a);
+                                        Cursor.Current = Cursors.Arrow;
+                                        if (ar == "Deleted")
+                                        {
+                                            resultBar.BackColor = Color.Chartreuse;
+                                            richTextBox1.AppendText(
+                                                "\r\nProduct " + a.Header.Code + "verwijderd uit administratie");
+                                        }
+                                        else
+                                        {
+                                            resultBar.BackColor = Color.Red;
+                                            richTextBox1.AppendText(
+                                                "\r\nProduct kan niet verwijderd worden uit administratie");
+                                            richTextBox1.AppendText("\r\nError: " + ar);
+                                        }
+                                    }
                                 }
-                                else
-                                {
-                                    resultBar.BackColor = Color.Red;
-                                    richTextBox1.AppendText("\r\nProduct kan niet verwijderd worden uit administratie");
-                                    richTextBox1.AppendText("\r\nError: " + ar);
-                                }
+
+                                richTextBox1.ScrollToCaret();
                                 break;
                             case @"Sales Invoices":
-                                richTextBox1.AppendText("\r\nSales invoices kunnen niet verwijderd worden in Twinfield");
+                                richTextBox1.AppendText(
+                                    "\r\nSales invoices kunnen niet verwijderd worden in Twinfield");
                                 break;
-                            case @"General Ledgers":
+                            case @"Balance Sheets":
                                 Cursor.Current = Cursors.WaitCursor;
-                                var generalLedgers = _middlewareData.GetGeneralLedgerData();
-                                var gl = _generalLedgerConverter.ConvertGeneralLedgerResponse(generalLedgers,
-                                    _session.Office);
-                                var glr = _generalLedgerInterface.Delete(gl);
-                                Cursor.Current = Cursors.Arrow;
-                                if (glr == "Deleted")
+                                foreach (var x in _generalLedgers)
                                 {
-                                    resultBar.BackColor = Color.Chartreuse;
-                                    richTextBox1.AppendText("\r\nGeneral ledger " + gl.Code + " verwijderd uit administratie");
+                                    if (x.Code == dataVeld.GetItemText(dataVeld.SelectedItem))
+                                    {
+                                        var gl = _generalLedgerConverter.ConvertGeneralLedgerResponseToBalanceSheet(x, _session.Office);
+                                        var glr = _balanceSheetInterface.Delete(gl);
+                                        Cursor.Current = Cursors.Arrow;
+                                        if (glr == "Deleted")
+                                        {
+                                            resultBar.BackColor = Color.Chartreuse;
+                                            richTextBox1.AppendText(
+                                                "\r\nBalance sheet " + gl.Code + " verwijderd uit administratie");
+                                        }
+                                        else
+                                        {
+                                            resultBar.BackColor = Color.Red;
+                                            richTextBox1.AppendText(
+                                                "\r\nBalance sheet kan niet verwijderd worden uit administratie");
+                                            richTextBox1.AppendText("\r\nError: " + glr);
+                                        }
+                                    }
                                 }
-                                else
+
+                                richTextBox1.ScrollToCaret();
+
+                                break;
+                            case @"Profit and Loss":
+                                Cursor.Current = Cursors.WaitCursor;
+                                foreach (var x in _generalLedgers)
                                 {
-                                    resultBar.BackColor = Color.Red;
-                                    richTextBox1.AppendText("\r\nGeneral ledger kan niet verwijderd worden uit administratie");
-                                    richTextBox1.AppendText("\r\nError: " + glr);
+                                    if (x.Code == dataVeld.GetItemText(dataVeld.SelectedItem))
+                                    {
+                                        var gl = _generalLedgerConverter.ConvertGeneralLedgerResponseToProfitLoss(x, _session.Office);
+                                        var glr = _profitLossInterface.Delete(gl);
+                                        Cursor.Current = Cursors.Arrow;
+                                        if (glr == "Deleted")
+                                        {
+                                            resultBar.BackColor = Color.Chartreuse;
+                                            richTextBox1.AppendText(
+                                                "\r\nProfit and loss " + gl.Code + " verwijderd uit administratie");
+                                        }
+                                        else
+                                        {
+                                            resultBar.BackColor = Color.Red;
+                                            richTextBox1.AppendText(
+                                                "\r\nProfit and loss kan niet verwijderd worden uit administratie");
+                                            richTextBox1.AppendText("\r\nError: " + glr);
+                                        }
+                                    }
                                 }
+
+                                richTextBox1.ScrollToCaret();
                                 break;
                             case @"Cost Centers":
                                 Cursor.Current = Cursors.WaitCursor;
-                                var costCenter = _middlewareData.GetCostCenterData();
-                                var cc = _costCenterConverter.ConvertCostCenterResponse(costCenter, _session.Office);
-                                var ccr = _costCenterInterface.Delete(cc);
-                                Cursor.Current = Cursors.Arrow;
-                                if (ccr == "Deleted")
+                                foreach (var x in _costCenters)
                                 {
-                                    resultBar.BackColor = Color.Chartreuse;
-                                    richTextBox1.AppendText("\r\nCost center " + cc.Code + " verwijderd uit administratie");
+                                    if (x.Code == dataVeld.GetItemText(dataVeld.SelectedItem))
+                                    {
+                                        var cc = _costCenterConverter.ConvertCostCenterResponse(x, _session.Office);
+                                        var ccr = _costCenterInterface.Delete(cc);
+                                        Cursor.Current = Cursors.Arrow;
+                                        if (ccr == "Deleted")
+                                        {
+                                            resultBar.BackColor = Color.Chartreuse;
+                                            richTextBox1.AppendText(
+                                                "\r\nCost center " + cc.Code + " verwijderd uit administratie");
+                                        }
+                                        else
+                                        {
+                                            resultBar.BackColor = Color.Red;
+                                            richTextBox1.AppendText(
+                                                "\r\nCost center kan niet verwijderd worden uit administratie");
+                                            richTextBox1.AppendText("\r\nError: " + ccr);
+                                        }
+                                    }
                                 }
-                                else
-                                {
-                                    resultBar.BackColor = Color.Red;
-                                    richTextBox1.AppendText("\r\nCost center kan niet verwijderd worden uit administratie");
-                                    richTextBox1.AppendText("\r\nError: " + ccr);
-                                }
+
+                                richTextBox1.ScrollToCaret();
                                 break;
                         }
+
                         break;
                 }
             }
@@ -916,46 +1243,167 @@ namespace TestApplicatie
 
         private void data_SelectedIndexChanged(object sender, EventArgs e)
         {
-            createNew.Enabled = false;
+            if (!radioButton1.Checked)
+            {
+                createNew.Enabled = false;
+            }
+
             dataVeld.Enabled = false;
-            functie.Enabled = false;
             functieUitvoeren.Enabled = false;
         }
 
         private void createNew_Click(object sender, EventArgs e)
         {
-            if (functie.Text == @"Create" || functie.Text == @"Delete")
+            switch (data.Text)
             {
-                using (var customerForm = new CustomerForm())
-                {
-                    var result = customerForm.ShowDialog();
-                    if (result == DialogResult.OK)
+                case @"Customers":
+                    using (var customerForm = new CustomerForm(_session))
                     {
-                        var val = customerForm.CustomerName;
-                        richTextBox1.AppendText("\r\n" + val);
+                        Cursor.Current = Cursors.WaitCursor;
+                        var result = customerForm.ShowDialog();
+                        if (result == DialogResult.OK)
+                        {
+                            var cust = customerForm.Customer;
+                            _customers.Add(cust);
+                            richTextBox1.AppendText("\r\nCustomer " + cust.Code + " toegevoegd aan de lijst");
+                            dataVeld.Enabled = true;
+                            dataVeld.Items.Add(cust);
+                            dataVeld.DisplayMember = "Code";
+                            dataVeld.SelectedIndex = 0;
+                            functieUitvoeren.Enabled = true;
+                        }
                     }
-                }
 
+                    richTextBox1.ScrollToCaret();
+                    break;
+                case @"Suppliers":
+                    using (var supplierForm = new SupplierForm(_session))
+                    {
+                        Cursor.Current = Cursors.WaitCursor;
+                        var result = supplierForm.ShowDialog();
+                        if (result == DialogResult.OK)
+                        {
+                            var sup = supplierForm.Supplier;
+                            _suppliers.Add(sup);
+                            richTextBox1.AppendText("\r\nSupplier " + sup.Code + " toegevoegd aan de lijst");
+                            dataVeld.Enabled = true;
+                            dataVeld.Items.Add(sup);
+                            dataVeld.DisplayMember = "Code";
+                            dataVeld.SelectedIndex = 0;
+                            functieUitvoeren.Enabled = true;
+                        }
+                    }
 
+                    richTextBox1.ScrollToCaret();
+                    break;
+                case @"Articles":
+                    using (var articleForm = new ArticleForm(_session))
+                    {
+                        Cursor.Current = Cursors.WaitCursor;
+                        var result = articleForm.ShowDialog();
+                        if (result == DialogResult.OK)
+                        {
+                            var art = articleForm.Product;
+                            _products.Add(art);
+                            richTextBox1.AppendText("\r\nArticle " + art.Code + " toegevoegd aan de lijst");
+                            dataVeld.Enabled = true;
+                            dataVeld.Items.Add(art);
+                            dataVeld.DisplayMember = "Code";
+                            dataVeld.SelectedIndex = 0;
+                            functieUitvoeren.Enabled = true;
+                        }
+                    }
 
-//                Form customerForm = new CustomerForm();
-//                DialogResult dialogResult = customerForm.ShowDialog();
-//                if (dialogResult == DialogResult.OK)
-//                {
-//                    richTextBox1.AppendText("\r\nGeklikt op toevoegen");
-//                    richTextBox1.AppendText("Customer name = " + customerForm.);
-//                }
-//
-//                if (dialogResult == DialogResult.Cancel)
-//                {
-//                    richTextBox1.AppendText("\r\nGeklikt op annuleren");
-//                }
-//                dataVeld.Enabled = false;
+                    richTextBox1.ScrollToCaret();
+                    break;
+                case @"Sales Invoices":
+                    using (var salesInvoiceForm = new SalesInvoiceForm(_session))
+                    {
+                        Cursor.Current = Cursors.WaitCursor;
+                        var result = salesInvoiceForm.ShowDialog();
+                        if (result == DialogResult.OK)
+                        {
+                            var si = salesInvoiceForm.SalesInvoice;
+                            _salesInvoices.Add(si);
+                            richTextBox1.AppendText("\r\nSales invoice " + si.InvoiceTypeAndNumber +
+                                                    " toegevoegd aan de lijst");
+                            dataVeld.Enabled = true;
+                            dataVeld.Items.Add(si);
+                            dataVeld.DisplayMember = "InvoiceTypeAndNumber";
+                            dataVeld.SelectedIndex = 0;
+                            functieUitvoeren.Enabled = true;
+                        }
+                    }
+
+                    richTextBox1.ScrollToCaret();
+                    break;
+                case @"Balance Sheets":
+                    using (var generalLedgerForm = new GeneralLedgerForm(_session, "BAS"))
+                    {
+                        Cursor.Current = Cursors.WaitCursor;
+                        var result = generalLedgerForm.ShowDialog();
+                        if (result == DialogResult.OK)
+                        {
+                            var gl = generalLedgerForm.GeneralLedger;
+                            _generalLedgers.Add(gl);
+                            richTextBox1.AppendText("\r\nBalance sheet " + gl.Code + " toegevoegd aan de lijst");
+                            dataVeld.Enabled = true;
+                            dataVeld.Items.Add(gl);
+                            dataVeld.DisplayMember = "Code";
+                            dataVeld.SelectedIndex = 0;
+                            functieUitvoeren.Enabled = true;
+                        }
+                    }
+
+                    richTextBox1.ScrollToCaret();
+                    break;
+                case @"Profit and Loss":
+                    using (var generalLedgerForm = new GeneralLedgerForm(_session, "PNL"))
+                    {
+                        Cursor.Current = Cursors.WaitCursor;
+                        var result = generalLedgerForm.ShowDialog();
+                        if (result == DialogResult.OK)
+                        {
+                            var gl = generalLedgerForm.GeneralLedger;
+                            _generalLedgers.Add(gl);
+                            richTextBox1.AppendText("\r\nProit and loss " + gl.Code + " toegevoegd aan de lijst");
+                            dataVeld.Enabled = true;
+                            dataVeld.Items.Add(gl);
+                            dataVeld.DisplayMember = "Code";
+                            dataVeld.SelectedIndex = 0;
+                            functieUitvoeren.Enabled = true;
+                        }
+                    }
+
+                    richTextBox1.ScrollToCaret();
+                    break;
+                case @"Cost Centers":
+                    using (var costCenterForm = new CostCenterForm(_session))
+                    {
+                        Cursor.Current = Cursors.WaitCursor;
+                        var result = costCenterForm.ShowDialog();
+                        if (result == DialogResult.OK)
+                        {
+                            var cc = costCenterForm.CostCenter;
+                            _costCenters.Add(cc);
+                            richTextBox1.AppendText("\r\nCost center " + cc.Code + " toegevoegd aan de lijst");
+                            dataVeld.Enabled = true;
+                            dataVeld.Items.Add(cc);
+                            dataVeld.DisplayMember = "Code";
+                            dataVeld.SelectedIndex = 0;
+                            functieUitvoeren.Enabled = true;
+                        }
+                    }
+
+                    richTextBox1.ScrollToCaret();
+                    break;
             }
-            else
-            {
-                richTextBox1.AppendText("\r\nOm een nieuw veld toe te voegen moet de functie 'Create' of 'Delete' geselecteerd zijn");
-            }
+        }
+
+        private void info_Click(object sender, EventArgs e)
+        {
+            Form info = new ConsoleLarge(richTextBox1);
+            info.Show();
         }
     }
 }

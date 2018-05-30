@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DemoConnector.TwinfieldAPI.Data.Dimensions;
 using DemoConnector.TwinfieldAPI.Data.GeneralLedgers;
 
 namespace DemoConnector.TwinfieldAPI.Handlers.Interfaces
@@ -13,6 +14,8 @@ namespace DemoConnector.TwinfieldAPI.Handlers.Interfaces
         List<GeneralLedger> GetAllBalanceSheet();
         List<GeneralLedger> GetProfitLossByName(string name);
         List<GeneralLedger> GetAllProfitLoss();
+        List<DimensionSummary> GetBalanceSheetSummaries();
+        List<DimensionSummary> GetProfitLossSummaries();
         GeneralLedger ReadBalanceSheet(string code);
         GeneralLedger ReadProfitLoss(string code);
         string Create(GeneralLedger generalLedger);

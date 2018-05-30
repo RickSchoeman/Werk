@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using DemoConnector.TwinfieldAPI.Converters.Interfaces;
 using DemoConnector.TwinfieldAPI.Data;
 using DemoConnector.TwinfieldAPI.Data.Activities;
 using DemoConnector.TwinfieldAPI.Data.Articles;
 using DemoConnector.TwinfieldAPI.Data.AssetMethods;
+using DemoConnector.TwinfieldAPI.Data.BalanceSheet;
 using DemoConnector.TwinfieldAPI.Data.BankBooks;
 using DemoConnector.TwinfieldAPI.Data.BankTransactions;
 using DemoConnector.TwinfieldAPI.Data.CashBooks;
@@ -11,6 +14,7 @@ using DemoConnector.TwinfieldAPI.Data.CostCenters;
 using DemoConnector.TwinfieldAPI.Data.Currencies;
 using DemoConnector.TwinfieldAPI.Data.Customers;
 using DemoConnector.TwinfieldAPI.Data.DimensionGroups;
+using DemoConnector.TwinfieldAPI.Data.Dimensions;
 using DemoConnector.TwinfieldAPI.Data.DimensionTypes;
 using DemoConnector.TwinfieldAPI.Data.Extras.Countries;
 using DemoConnector.TwinfieldAPI.Data.Extras.DistByPeriods;
@@ -28,9 +32,11 @@ using DemoConnector.TwinfieldAPI.Data.Extras.VAT;
 using DemoConnector.TwinfieldAPI.Data.FixedAssets;
 using DemoConnector.TwinfieldAPI.Data.GeneralLedgers;
 using DemoConnector.TwinfieldAPI.Data.Period;
+using DemoConnector.TwinfieldAPI.Data.ProfitLoss;
 using DemoConnector.TwinfieldAPI.Data.Projects;
 using DemoConnector.TwinfieldAPI.Data.PurchaseTransactions;
 using DemoConnector.TwinfieldAPI.Data.SalesTransactions;
+using DemoConnector.TwinfieldAPI.Data.Summaries;
 using DemoConnector.TwinfieldAPI.Data.Suppliers;
 using DemoConnector.TwinfieldAPI.Data.Users;
 using DemoConnector.TwinfieldAPI.Data.VATs;
@@ -44,6 +50,7 @@ using DemoConnector.TwinfieldAPI.Handlers.CostCenters;
 using DemoConnector.TwinfieldAPI.Handlers.Currencies;
 using DemoConnector.TwinfieldAPI.Handlers.Customers;
 using DemoConnector.TwinfieldAPI.Handlers.DeletedTransactions;
+using DemoConnector.TwinfieldAPI.Handlers.Dimension;
 using DemoConnector.TwinfieldAPI.Handlers.DimensionGroups;
 using DemoConnector.TwinfieldAPI.Handlers.DimensionTypes;
 using DemoConnector.TwinfieldAPI.Handlers.Extras.Countries;
@@ -119,6 +126,11 @@ namespace DemoConnector.TwinfieldAPI.Handlers
             return _articleList;
         }
 
+        public List<ArticleSummary> GetSummaries()
+        {
+            return _articleService.FindHeaders("*", "ART", SearchField);
+        }
+
         public Article Read(string code)
         {
             try
@@ -188,238 +200,112 @@ namespace DemoConnector.TwinfieldAPI.Handlers
             }
         }
 
-        public List<SubArticleSummary> GetSubArticlesByArticle(string name, string article)
+        public List<SubArticleSummary> GetSubArticlesByArticle(string article)
         {
-            var subArticles = _subArticleService.FindSubArticles(name, article, SearchField);
+            var subArticles = _subArticleService.FindSubArticles("*", article, SearchField);
             return subArticles;
         }
     }
 
-    public class CustomerOperations : ICustomerInterface
+    public class ApiOperationsBase<T> : IApiOperationsBase<T> where T : class
     {
-        private readonly IDimensionOperations _dimensionOperations;
-        private readonly List<Customer> _customers = new List<Customer>();
-
-        public CustomerOperations(Session session)
+        private readonly DimensionOperations<T> _dimensionOperations;
+        private readonly string _apiCode;
+        public ApiOperationsBase( Session session,string apiObjectCode)
         {
-            _dimensionOperations = new DimensionOperations(session);
+            _apiCode = apiObjectCode;
+            _dimensionOperations = new DimensionOperations<T>(session);
+        }
+        
+        public List<T> GetByName(string name)
+        {
+            return _dimensionOperations.GetByName(name, _apiCode);
+
         }
 
-        public List<Customer> GetByName(string name)
+        public List<T> GetAll()
         {
-            _customers.Clear();
-            var customers = _dimensionOperations.GetByName(name, "DEB");
-            foreach (var c in customers)
-            {
-                _customers.Add(c as Customer);
-            }
-
-            return _customers;
+            return _dimensionOperations.GetAll(_apiCode);
         }
 
-        public List<Customer> GetAll()
+        public T Read(string code)
         {
-            _customers.Clear();
-            var customers = _dimensionOperations.GetAll("DEB");
-            foreach (var c in customers)
-            {
-                _customers.Add(c as Customer);
-            }
-
-            return _customers;
+            return _dimensionOperations.Read(_apiCode, code);
         }
 
-        public Customer Read(string code)
+        public List<DimensionSummary> GetSummaries()
         {
-            try
-            {
-                return _dimensionOperations.Read("DEB", code) as Customer;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return null;
-            }
+            return _dimensionOperations.GetSummaries(_apiCode);
         }
 
-        public string Create(Customer customer)
+        public string Create(T obj)
         {
-            return _dimensionOperations.Create(customer);
+            return _dimensionOperations.Create(obj);
         }
 
-        public string Delete(Customer customer)
+        public string Delete(T obj)
         {
-            return _dimensionOperations.Delete(customer);
+            return _dimensionOperations.Delete(obj);
         }
 
-        public string Activate(Customer customer)
+        public string Activate(T obj)
         {
-            return _dimensionOperations.Activate(customer);
-        }
-    }
-
-    public class SupplierOperations : ISupplierInterface
-    {
-        private readonly IDimensionOperations _dimensionOperations;
-        private readonly List<Supplier> _suppliers = new List<Supplier>();
-
-        public SupplierOperations(Session session)
-        {
-            _dimensionOperations = new DimensionOperations(session);
-        }
-
-        public List<Supplier> GetByName(string name)
-        {
-            _suppliers.Clear();
-            var suppliers = _dimensionOperations.GetByName(name, "CRD");
-            foreach (var s in suppliers)
-            {
-                _suppliers.Add(s as Supplier);
-            }
-
-            return _suppliers;
-        }
-
-        public List<Supplier> GetAll()
-        {
-            _suppliers.Clear();
-            var suppliers = _dimensionOperations.GetAll("CRD");
-            foreach (var s in suppliers)
-            {
-                _suppliers.Add(s as Supplier);
-            }
-
-            return _suppliers;
-        }
-
-        public Supplier Read(string code)
-        {
-            try
-            {
-                return _dimensionOperations.Read("CRD", code) as Supplier;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return null;
-            }
-        }
-
-        public string Create(Supplier supplier)
-        {
-            return _dimensionOperations.Create(supplier);
-        }
-
-        public string Delete(Supplier supplier)
-        {
-            return _dimensionOperations.Delete(supplier);
-        }
-
-        public string Activate(Supplier supplier)
-        {
-            return _dimensionOperations.Activate(supplier);
-        }
-
-    }
-
-    public class GeneralLedgerOperations : IGeneralLedgerInterface
-    {
-        private readonly IDimensionOperations _dimensionOperations;
-        private readonly List<GeneralLedger> _generalLedgers = new List<GeneralLedger>();
-
-        public GeneralLedgerOperations(Session session)
-        {
-            _dimensionOperations = new DimensionOperations(session);
-        }
-
-        public List<GeneralLedger> GetBalanceSheetByName(string name)
-        {
-            _generalLedgers.Clear();
-            var generalLedgers = _dimensionOperations.GetByName(name, "BAS");
-            foreach (var g in generalLedgers)
-            {
-                _generalLedgers.Add(g as GeneralLedger);
-            }
-
-            return _generalLedgers;
-        }
-
-        public List<GeneralLedger> GetAllBalanceSheet()
-        {
-            _generalLedgers.Clear();
-            var generalLedgers = _dimensionOperations.GetAll("BAS");
-            foreach (var g in generalLedgers)
-            {
-                _generalLedgers.Add(g as GeneralLedger);
-            }
-
-            return _generalLedgers;
-        }
-
-        public GeneralLedger ReadBalanceSheet(string code)
-        {
-            try
-            {
-                return _dimensionOperations.Read("BAS", code) as GeneralLedger;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return null;
-            }
-        }
-
-        public List<GeneralLedger> GetProfitLossByName(string name)
-        {
-            var generalLedgers = _dimensionOperations.GetByName(name, "PNL");
-            foreach (var g in generalLedgers)
-            {
-                _generalLedgers.Add(g as GeneralLedger);
-            }
-
-            return _generalLedgers;
-        }
-
-        public List<GeneralLedger> GetAllProfitLoss()
-        {
-            var generalLedgers = _dimensionOperations.GetAll("PNL");
-            foreach (var g in generalLedgers)
-            {
-                _generalLedgers.Add(g as GeneralLedger);
-            }
-
-            return _generalLedgers;
-        }
-
-        public GeneralLedger ReadProfitLoss(string code)
-        {
-            try
-            {
-                return _dimensionOperations.Read("PNL", code) as GeneralLedger;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return null;
-            }
-        }
-
-        public string Create(GeneralLedger generalLedger)
-        {
-            return _dimensionOperations.Create(generalLedger);
-        }
-
-        public string Delete(GeneralLedger generalLedger)
-        {
-            return _dimensionOperations.Delete(generalLedger);
-        }
-
-        public string Activate(GeneralLedger generalLedger)
-        {
-            return _dimensionOperations.Activate(generalLedger);
+            return _dimensionOperations.Activate(obj);
         }
     }
     
+    public class ApiSummaryBase : IApiSummaryBase
+    {
+        private readonly SummaryOperations _summaryOperations;
+        private readonly string _apiCode;
+
+        public ApiSummaryBase(Session session, string apiObjectCode)
+        {
+            _apiCode = apiObjectCode;
+            _summaryOperations = new SummaryOperations(session);
+        }
+
+        public List<Summary> GetByName(string name)
+        {
+            return _summaryOperations.GetByName(name, _apiCode);
+        }
+
+        public List<Summary> GetAll()
+        {
+            return _summaryOperations.GetAll(_apiCode);
+        }
+    }
+
+    public class CustomerOperations : ApiOperationsBase<Customer>
+    {
+
+        public CustomerOperations(Session session) : base(session, "DEB")
+        {
+        }
+
+    }
+
+    public class SupplierOperations : ApiOperationsBase<Supplier>
+    {
+        public SupplierOperations(Session session) : base(session, "CRD")
+        {
+        }
+    }
+
+    public class BalanceSheetOperations : ApiOperationsBase<BalanceSheet>
+    {
+        public BalanceSheetOperations(Session session) : base(session, "BAS")
+        {
+        }
+    }
+
+    public class ProfitLossOperations : ApiOperationsBase<ProfitLoss>
+    {
+        public ProfitLossOperations(Session session) : base(session, "PNL")
+        {
+        }
+    }
+
     public class SalesInvoiceOperations : ISalesInvoiceInterface
     {
         private readonly SalesInvoiceService _salesInvoiceService;
@@ -528,72 +414,16 @@ namespace DemoConnector.TwinfieldAPI.Handlers
         }
     }
 
-    public class CostCenterOperatons : ICostCenterInterface
+    public class CostCenterOperatons : ApiOperationsBase<CostCenter>
     {
-        private readonly IDimensionOperations _dimensionOperations;
-        private readonly List<CostCenter> _costCenterList = new List<CostCenter>();
-        public CostCenterOperatons(Session session)
+        public CostCenterOperatons(Session session) : base(session, "KPL")
         {
-            _dimensionOperations = new DimensionOperations(session);
         }
-
         
 
-        public List<CostCenter> GetByName(string name)
-        {
-            _costCenterList.Clear();
-            var costCenters = _dimensionOperations.GetByName(name, "KPL");
-            foreach (var c in costCenters)
-            {
-                _costCenterList.Add(c as CostCenter);
-            }
-
-            return _costCenterList;
-        }
-
-        public List<CostCenter> GetAll()
-        {
-            _costCenterList.Clear();
-            var costCenters = _dimensionOperations.GetAll("KPL");
-            foreach (var c in costCenters)
-            {
-                _costCenterList.Add(c as CostCenter);
-            }
-
-            return _costCenterList;
-        }
-
-        public CostCenter Read(string code)
-        {
-            try
-            {
-                return _dimensionOperations.Read("KPL", code) as CostCenter;
-                
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return null;
-            }
-        }
-
-        public string Create(CostCenter costCenter)
-        {
-            return _dimensionOperations.Create(costCenter);
-        }
-
-        public string Delete(CostCenter costCenter)
-        {
-            return _dimensionOperations.Delete(costCenter);
-        }
-
-        public string Activate(CostCenter costCenter)
-        {
-            return _dimensionOperations.Activate(costCenter);
-        }
     }
 
-    public class VatOperations
+    public class VatOperations : IVatInterface
     {
         private readonly VatService _vatService;
         private readonly VatCountryService _vatCountryService;
@@ -611,7 +441,7 @@ namespace DemoConnector.TwinfieldAPI.Handlers
 
         private readonly List<Vat> _vatList = new List<Vat>();
 
-        public List<Vat> GetVatsByName(string name)
+        public List<Vat> GetByName(string name)
         {
             _vatList.Clear();
             var vats = _vatService.FindVats(name, "VAT", SearchField);
@@ -624,7 +454,7 @@ namespace DemoConnector.TwinfieldAPI.Handlers
             return _vatList;
         }
 
-        public List<Vat> GetAllVats()
+        public List<Vat> GetAll()
         {
             _vatList.Clear();
             var vats = _vatService.FindVats("*", "VAT", SearchField);
@@ -637,7 +467,12 @@ namespace DemoConnector.TwinfieldAPI.Handlers
             return _vatList;
         }
 
-        public bool CreateVat(Vat vat)
+        public List<VatSummary> GetSummaries()
+        {
+            return _vatService.FindVats("*", "VAT", SearchField);
+        }
+
+        public bool Create(Vat vat)
         {
             try
             {
@@ -651,7 +486,7 @@ namespace DemoConnector.TwinfieldAPI.Handlers
             }
         }
 
-        public bool DeleteVat(Vat vat)
+        public bool Delete(Vat vat)
         {
             try
             {
@@ -740,6 +575,156 @@ namespace DemoConnector.TwinfieldAPI.Handlers
             return _officeList;
         }
     }
+    
+    public class CountryOperations : ApiSummaryBase
+    {
+        public CountryOperations(Session session) : base(session, "CTR")
+        {
+        }
+    }
+
+    public class CurrencyOperations : ICurrencyInterface
+    {
+        private readonly CurrenciesService _currenciesService;
+        private const int SearchField = 0;
+
+        public CurrencyOperations(Session session)
+        {
+            _currenciesService = new CurrenciesService(session);
+        }
+
+        private readonly List<Currency> _currencyList = new List<Currency>();
+
+        public List<Currency> GetByName(string name)
+        {
+            _currencyList.Clear();
+            var currencies = _currenciesService.FindCurrencies(name, "CUR", SearchField);
+            foreach (var c in currencies)
+            {
+                var currency = _currenciesService.ReadCurrencies("CUR", c.Code);
+                _currencyList.Add(currency);
+            }
+
+            return _currencyList;
+        }
+
+        public List<Currency> GetAll()
+        {
+            _currencyList.Clear();
+            var currencies = _currenciesService.FindCurrencies("*", "CUR", SearchField);
+            foreach (var c in currencies)
+            {
+                var currency = _currenciesService.ReadCurrencies("CUR", c.Code);
+                _currencyList.Add(currency);
+            }
+
+            return _currencyList;
+        }
+
+        public bool Create(Currency currency)
+        {
+            try
+            {
+                _currenciesService.CreateCurrency(currency);
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
+
+        public bool Delete(Currency currency)
+        {
+            try
+            {
+                _currenciesService.DeleteCurrency(currency);
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
+
+        public bool DeleteCurrencyRate(Currency currency)
+        {
+            try
+            {
+                _currenciesService.DeleteCurrencyRate(currency);
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
+    }
+    
+    public class InvoiceTypeOperations : ApiSummaryBase
+    {
+        public InvoiceTypeOperations(Session session) : base(session, "INV")
+        {
+        }
+    }
+    
+    public class DimensionTypeOperations :IDimensionTypeInterface
+    {
+        private readonly DimensionTypeService _dimensionTypeService;
+        private const int SearchField = 0;
+
+        public DimensionTypeOperations(Session session)
+        {
+            _dimensionTypeService = new DimensionTypeService(session);
+        }
+
+        private readonly List<DimensionType> _dimensionTypeList = new List<DimensionType>();
+
+        public List<DimensionType> GetByName(string name)
+        {
+            _dimensionTypeList.Clear();
+            var dimensionTypes = _dimensionTypeService.FindDimensionTypes(name, SearchField);
+            foreach (var d in dimensionTypes)
+            {
+                var dimensiontype = _dimensionTypeService.ReadDimensionType(d.Code);
+                _dimensionTypeList.Add(dimensiontype);
+            }
+
+            return _dimensionTypeList;
+        }
+
+        public List<DimensionType> GetAll()
+        {
+            _dimensionTypeList.Clear();
+            var dimensionTypes = _dimensionTypeService.FindDimensionTypes("*", SearchField);
+            foreach (var d in dimensionTypes)
+            {
+                var dimensionType = _dimensionTypeService.ReadDimensionType(d.Code);
+                _dimensionTypeList.Add(dimensionType);
+            }
+
+            return _dimensionTypeList;
+        }
+
+        public bool Update(DimensionType dimensionType)
+        {
+            try
+            {
+                _dimensionTypeService.UpdateDimensionType(dimensionType);
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
+    }
+
+
 
     //zijn niet in gebruik
     #region niet in gebruik
@@ -1059,85 +1044,6 @@ namespace DemoConnector.TwinfieldAPI.Handlers
         }
     }
 
-    public class CurrencyOperations
-    {
-        private readonly CurrenciesService _currenciesService;
-        private const int SearchField = 0;
-
-        public CurrencyOperations(Session session)
-        {
-            _currenciesService = new CurrenciesService(session);
-        }
-
-        private readonly List<Currency> _currencyList = new List<Currency>();
-
-        public List<Currency> GetCurrenciesByName(string name)
-        {
-            var currencies = _currenciesService.FindCurrencies(name, "CUR", SearchField);
-            foreach (var c in currencies)
-            {
-                var currency = _currenciesService.ReadCurrencies("CUR", c.Code);
-                _currencyList.Add(currency);
-            }
-
-            return _currencyList;
-        }
-
-        public List<Currency> GetAllCurrencies()
-        {
-            var currencies = _currenciesService.FindCurrencies("*", "CUR", SearchField);
-            foreach (var c in currencies)
-            {
-                var currency = _currenciesService.ReadCurrencies("CUR", c.Code);
-                _currencyList.Add(currency);
-            }
-
-            return _currencyList;
-        }
-
-        public bool CreateCurrency(Currency currency)
-        {
-            try
-            {
-                _currenciesService.CreateCurrency(currency);
-                return true;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return false;
-            }
-        }
-
-        public bool DeleteCurrency(Currency currency)
-        {
-            try
-            {
-                _currenciesService.DeleteCurrency(currency);
-                return true;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return false;
-            }
-        }
-
-        public bool DeleteCurrencyRate(Currency currency)
-        {
-            try
-            {
-                _currenciesService.DeleteCurrencyRate(currency);
-                return true;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return false;
-            }
-        }
-    }
-
     public class DimensionGroupOperations
     {
         private readonly DimensionGroupService _dimensionGroupService;
@@ -1193,57 +1099,6 @@ namespace DemoConnector.TwinfieldAPI.Handlers
             try
             {
                 _dimensionGroupService.DeleteDimensionGroup(dimensionGroup);
-                return true;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return false;
-            }
-        }
-    }
-
-    public class DimensionTypeOperations
-    {
-        private readonly DimensionTypeService _dimensionTypeService;
-        private const int SearchField = 0;
-
-        public DimensionTypeOperations(Session session)
-        {
-            _dimensionTypeService = new DimensionTypeService(session);
-        }
-
-        private readonly List<DimensionType> _dimensionTypeList = new List<DimensionType>();
-
-        public List<DimensionType> GetDimensionTypesByName(string name)
-        {
-            var dimensionTypes = _dimensionTypeService.FindDimensionTypes(name, SearchField);
-            foreach (var d in dimensionTypes)
-            {
-                var dimensiontype = _dimensionTypeService.ReadDimensionType(d.Code);
-                _dimensionTypeList.Add(dimensiontype);
-            }
-
-            return _dimensionTypeList;
-        }
-
-        public List<DimensionType> GetAllDimensionTypes()
-        {
-            var dimensionTypes = _dimensionTypeService.FindDimensionTypes("*", SearchField);
-            foreach (var d in dimensionTypes)
-            {
-                var dimensionType = _dimensionTypeService.ReadDimensionType(d.Code);
-                _dimensionTypeList.Add(dimensionType);
-            }
-
-            return _dimensionTypeList;
-        }
-
-        public bool UpdateDimensionType(DimensionType dimensionType)
-        {
-            try
-            {
-                _dimensionTypeService.UpdateDimensionType(dimensionType);
                 return true;
             }
             catch (Exception e)
@@ -1908,10 +1763,81 @@ namespace DemoConnector.TwinfieldAPI.Handlers
         }
     }
 
+    public class DistByPeriodOperations : ApiSummaryBase
+    {
+        public DistByPeriodOperations(Session session) : base(session, "SPM")
+        {
+
+        }
+    }
+
+    public class PaymentFilesOperations : ApiSummaryBase
+    {
+        public PaymentFilesOperations(Session session) : base(session, "FMT")
+        {
+
+        }
+    }
+
+    public class PaymentTypesOperations : ApiSummaryBase
+    {
+        public PaymentTypesOperations(Session session) : base(session, "PAY")
+        {
+
+        }
+    }
+
+    public class ReminderScenarioOperations : ApiSummaryBase
+    {
+        public ReminderScenarioOperations(Session session) : base(session, "RMD")
+        {
+
+        }
+    }
+
+    public class ReportOperations : ApiSummaryBase
+    {
+        public ReportOperations(Session session) : base(session, "REP")
+        {
+
+        } 
+    }
+
+    public class TaxGroupOperations : ApiSummaryBase
+    {
+        public TaxGroupOperations(Session session) : base(session, "TXG")
+        {
+
+        }
+    }
+
+    public class TimeQuantityOperations : ApiSummaryBase
+    {
+        public TimeQuantityOperations(Session session) : base(session, "TEQ")
+        {
+
+        }
+    }
+
+    public class TranslationOperations : ApiSummaryBase
+    {
+        public TranslationOperations(Session session) : base(session, "XLT")
+        {
+
+        }
+    }
+
+    public class UserRoleOperations : ApiSummaryBase
+    {
+        public UserRoleOperations(Session session) : base(session, "ROL")
+        {
+
+        }
+    }
+
     public class ExtraOperations
     {
         private readonly BankStatementService _bankStatementService;
-        private readonly CountryService _countryService;
         private readonly DistByPeriodService _distByPeriodService;
         private readonly InvoiceTypeService _invoiceTypeService;
         private readonly PaymentService _paymentService;
@@ -1927,7 +1853,6 @@ namespace DemoConnector.TwinfieldAPI.Handlers
         public ExtraOperations(Session session)
         {
             _bankStatementService = new BankStatementService(session);
-            _countryService = new CountryService(session);
             _distByPeriodService = new DistByPeriodService(session);
             _invoiceTypeService = new InvoiceTypeService(session);
             _paymentService = new PaymentService(session);
@@ -1952,114 +1877,6 @@ namespace DemoConnector.TwinfieldAPI.Handlers
 
         #endregion
 
-        #region country
-
-        public List<CountrySummary> GetCountriesByName(string name)
-        {
-            var countries = _countryService.FindCountries(name, "CTR", SearchField);
-            return countries;
-        }
-
-        public List<CountrySummary> GetAllCountries()
-        {
-            var countries = _countryService.FindCountries("*", "CTR", SearchField);
-            return countries;
-        }
-
-        #endregion
-
-        #region dist by period
-
-        public List<DistByPeriodSummary> GetDistByPeriodByName(string name)
-        {
-            var distByPeriods = _distByPeriodService.FindDistByPeriods(name, "SPM", SearchField);
-            return distByPeriods;
-        }
-
-        public List<DistByPeriodSummary> GetAllDistByPeriods()
-        {
-            var distByPeriods = _distByPeriodService.FindDistByPeriods("*", "SPM", SearchField);
-            return distByPeriods;
-        }
-
-        public List<InvoiceTypeSummary> GetInvoiceTypesByName(string name)
-        {
-            var invoiceTypes = _invoiceTypeService.FindInvoiceTypes(name, "INV", SearchField);
-            return invoiceTypes;
-        }
-
-        #endregion
-
-        #region invoicetype
-
-        public List<InvoiceTypeSummary> GetAllInvoiceTypes()
-        {
-            var invoiceTypes = _invoiceTypeService.FindInvoiceTypes("*", "INV", SearchField);
-            return invoiceTypes;
-        }
-
-        #endregion
-
-        #region payment
-
-        public List<PaymentSummary> GetPaymentFilesByName(string name)
-        {
-            var payments = _paymentService.FindPayments(name, "FMT", SearchField);
-            return payments;
-        }
-
-        public List<PaymentSummary> GetAllPaymentFiles()
-        {
-            var payments = _paymentService.FindPayments("*", "FMT", SearchField);
-            return payments;
-        }
-
-        public List<PaymentSummary> GetPaymentTypesByName(string name)
-        {
-            var payments = _paymentService.FindPayments(name, "PAY", SearchField);
-            return payments;
-        }
-
-        public List<PaymentSummary> GetAllPaymentTypes()
-        {
-            var payments = _paymentService.FindPayments("*", "PAY", SearchField);
-            return payments;
-        }
-
-        #endregion
-
-        #region reminder scenario
-
-        public List<ReminderScenarioSummary> GetReminderScenariosByName(string name)
-        {
-            var reminderScenarios = _reminderScenarioService.FindReminderScenarios(name, "RMD", SearchField);
-            return reminderScenarios;
-        }
-
-        public List<ReminderScenarioSummary> GetAllReminderScenarios()
-        {
-            var reminderScenarios = _reminderScenarioService.FindReminderScenarios("*", "RMD", SearchField);
-            return reminderScenarios;
-        }
-
-        #endregion
-
-        #region report
-
-        public List<ReportSummary> GetReportsByName(string name)
-        {
-            var reports = _reportService.FindReports(name, "REP", SearchField);
-            return reports;
-        }
-
-        public List<ReportSummary> GetAllReports()
-        {
-            var reports = _reportService.FindReports("*", "REP", SearchField);
-            return reports;
-        }
-
-        #endregion
-
         #region subarticle
 
         public List<SubArticleSummary> GetSubarticleByNameFromArticle(string name, string article)
@@ -2075,70 +1892,7 @@ namespace DemoConnector.TwinfieldAPI.Handlers
         }
 
         #endregion
-
-        #region tax group
-
-        public List<TaxGroupSummary> GetTaxGroupsByName(string name)
-        {
-            var taxGroups = _taxGroupService.FindTaxGroups(name, "TXG", SearchField);
-            return taxGroups;
-        }
-
-        public List<TaxGroupSummary> GetAllTaxGroups()
-        {
-            var taxGroups = _taxGroupService.FindTaxGroups("*", "TXG", SearchField);
-            return taxGroups;
-        }
-
-        #endregion
-
-        #region time quantity
-
-        public List<TimeQuantitySummary> GetTimeQuantitiesByName(string name)
-        {
-            var timeQuantities = _timeQuantityService.FindTimeQuantities(name, "TEQ", SearchField);
-            return timeQuantities;
-        }
-
-        public List<TimeQuantitySummary> GetAllTimeQuantities()
-        {
-            var timeQuantities = _timeQuantityService.FindTimeQuantities("*", "TEQ", SearchField);
-            return timeQuantities;
-        }
-
-        #endregion
-
-        #region translation
-
-        public List<TranslationSummary> GetTranslationsByName(string name)
-        {
-            var translations = _translationService.FindTranslations(name, "XLT", SearchField);
-            return translations;
-        }
-
-        public List<TranslationSummary> GetAllTranslations()
-        {
-            var translations = _translationService.FindTranslations("*", "XLT", SearchField);
-            return translations;
-        }
-
-        #endregion
-
-        #region user role
-
-        public List<UserRoleSummary> GetUserRolesByName(string name)
-        {
-            var userRoles = _userRoleService.FindUserRoles(name, "ROL", SearchField);
-            return userRoles;
-        }
-
-        public List<UserRoleSummary> GetAllUserRoles()
-        {
-            var userRoles = _userRoleService.FindUserRoles("*", "ROL", SearchField);
-            return userRoles;
-        }
-
-        #endregion
+        
     }
     #endregion
 }

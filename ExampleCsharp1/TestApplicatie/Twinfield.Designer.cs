@@ -46,6 +46,7 @@
             this.dataVeld = new System.Windows.Forms.ComboBox();
             this.createNew = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
+            this.infoButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button1
@@ -215,11 +216,22 @@
             this.label6.TabIndex = 19;
             this.label6.Text = "*Alleen voor middleware";
             // 
+            // infoButton
+            // 
+            this.infoButton.Location = new System.Drawing.Point(512, 375);
+            this.infoButton.Name = "infoButton";
+            this.infoButton.Size = new System.Drawing.Size(113, 23);
+            this.infoButton.TabIndex = 20;
+            this.infoButton.Text = "Meer info";
+            this.infoButton.UseVisualStyleBackColor = true;
+            this.infoButton.Click += new System.EventHandler(this.info_Click);
+            // 
             // Twinfield
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(637, 381);
+            this.ClientSize = new System.Drawing.Size(637, 403);
+            this.Controls.Add(this.infoButton);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.createNew);
             this.Controls.Add(this.dataVeld);
@@ -265,5 +277,6 @@
         private System.Windows.Forms.ComboBox dataVeld;
         private System.Windows.Forms.Button createNew;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button infoButton;
     }
 }

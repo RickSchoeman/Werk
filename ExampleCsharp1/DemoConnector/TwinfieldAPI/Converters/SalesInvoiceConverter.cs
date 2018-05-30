@@ -25,7 +25,7 @@ namespace DemoConnector.TwinfieldAPI.Converters
             var lines = new List<SalesInvoiceLine>();
             foreach (var l in salesInvoice.Lines.Line)
             {
-                var vats = (new VatOperations(session)).GetVatsByName(l.Vatcode);
+                var vats = (new VatOperations(session)).GetByName(l.Vatcode);
                 var line = new SalesInvoiceLine
             {
                 Amount = l.Units,

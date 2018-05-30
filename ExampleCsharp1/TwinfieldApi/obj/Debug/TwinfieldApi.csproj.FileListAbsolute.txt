@@ -1,7 +1,7 @@
+C:\Users\ricks\Downloads\ExampleCsharp1\Output\TwinfieldApi.dll.config
 C:\Users\ricks\Downloads\ExampleCsharp1\Output\TwinfieldApi.dll
 C:\Users\ricks\Downloads\ExampleCsharp1\Output\TwinfieldApi.pdb
 C:\Users\ricks\Downloads\ExampleCsharp1\TwinfieldApi\obj\Debug\TwinfieldApi.csprojResolveAssemblyReference.cache
 C:\Users\ricks\Downloads\ExampleCsharp1\TwinfieldApi\obj\Debug\TwinfieldApi.csproj.CoreCompileInputs.cache
 C:\Users\ricks\Downloads\ExampleCsharp1\TwinfieldApi\obj\Debug\TwinfieldApi.dll
 C:\Users\ricks\Downloads\ExampleCsharp1\TwinfieldApi\obj\Debug\TwinfieldApi.pdb
-C:\Users\ricks\Downloads\ExampleCsharp1\Output\TwinfieldApi.dll.config

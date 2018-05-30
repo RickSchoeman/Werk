@@ -15,7 +15,7 @@ namespace DemoConnector.TwinfieldAPI.Data.DimensionTypes
                 Mask = element.SelectInnerText("mask"),
                 Name = element.SelectInnerText("name"),
                 Shortname = element.SelectInnerText("shortname"),
-                address = new Address
+                Address = new Address
                 {
                     Label1 = element.SelectInnerText("address/label1"),
                     Label2 = element.SelectInnerText("address/label2"),
@@ -24,12 +24,10 @@ namespace DemoConnector.TwinfieldAPI.Data.DimensionTypes
                     Label5 = element.SelectInnerText("address/label5"),
                     Label6 = element.SelectInnerText("address/label6")
                 },
-                levels = new Levels
+                Levels = new Levels
                 {
                     Financials = element.SelectInnerText("levels/financials"),
-                    Time = element.SelectInnerText("levels/time"),
-                    Fixedassets = element.SelectInnerText("levels/fixedassets"),
-                    Invoices = element.SelectInnerText("levels/invoices")
+                    Time = element.SelectInnerText("levels/time")
                 }
                 
             };
@@ -40,8 +38,8 @@ namespace DemoConnector.TwinfieldAPI.Data.DimensionTypes
         public string Mask { get; set; }
         public string Name { get; set; }
         public string Shortname { get; set; }
-        public Address address { get; set; }
-        public Levels levels { get; set; }
+        public Address Address { get; set; }
+        public Levels Levels { get; set; }
         
         
 
@@ -68,7 +66,5 @@ namespace DemoConnector.TwinfieldAPI.Data.DimensionTypes
     {
         public string Financials { get; set; }
         public string Time { get; set; }
-        public string Fixedassets { get; set; }
-        public string Invoices { get; set; }
     }
 }

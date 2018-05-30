@@ -65,23 +65,6 @@ namespace TestApplicatie
 
         public Product GetProductData()
         {
-            var extrafields = new List<ExtensionData>();
-            var field1 = new ExtensionData
-            {
-                Value = new ExtensionValue
-                {
-                    Value = "4000"
-                }
-            };
-            var field3 = new ExtensionData
-            {
-                Value = new ExtensionValue
-                {
-                    Value = "8020"
-                }
-            };
-            extrafields.Add(field1);
-            extrafields.Add(field3);
             var product = new Product
             {
                 Code = "9999",
@@ -89,7 +72,6 @@ namespace TestApplicatie
                 MaxDiscountRate = "",
                 SupplierCode = "00006",
                 SalesPrice = "100",
-                ExtraFields = extrafields,
                 BestelEenheid = 1,
 
 
@@ -126,12 +108,24 @@ namespace TestApplicatie
             return salesinvoiceresponse;
         }
 
-        public GeneralLedgerResponse GetGeneralLedgerData()
+        public GeneralLedgerResponse GetBalanceSheetData()
         {
             var gl = new GeneralLedgerResponse
             {
                 Name = "Test",
-                Code = "BAS",
+                Code = "3999",
+                Type = "BAS"
+            };
+            return gl;
+        }
+
+        public GeneralLedgerResponse GetProfitAndLossData()
+        {
+            var gl = new GeneralLedgerResponse
+            {
+                Name = "Test",
+                Code = "9999",
+                Type = "PNL"
             };
             return gl;
         }

@@ -1,10 +1,17 @@
 ﻿using System;
+using DemoConnector.Middleware;
 using DemoConnector.TwinfieldAPI.Controllers.Services;
 using DemoConnector.TwinfieldAPI.Converters;
 using DemoConnector.TwinfieldAPI.Converters.Interfaces;
 using DemoConnector.TwinfieldAPI.Data;
+using DemoConnector.TwinfieldAPI.Data.BalanceSheet;
+using DemoConnector.TwinfieldAPI.Data.CostCenters;
+using DemoConnector.TwinfieldAPI.Data.Customers;
+using DemoConnector.TwinfieldAPI.Data.Extras.Countries;
+using DemoConnector.TwinfieldAPI.Data.Suppliers;
 using DemoConnector.TwinfieldAPI.Handlers;
 using DemoConnector.TwinfieldAPI.Handlers.Interfaces;
+using DemoConnector.XmlTest;
 
 namespace DemoConnector.TwinfieldAPI
 {
@@ -12,13 +19,16 @@ namespace DemoConnector.TwinfieldAPI
     {
         readonly IClientFactory clientFactory = new ClientFactory();
         private Session _session;
-        private ICustomerInterface _customerInterface;
-        private ISupplierInterface _supplierInterface;
-        private IGeneralLedgerInterface _generalLedgerInterface;
+        private IApiOperationsBase<Customer> _customerInterface;
+        private IApiOperationsBase<Supplier> _supplierInterface;
+        private IApiOperationsBase<BalanceSheet> _balanceSheetInterface;
         private IArticleInterface _articleInterface;
         private ISalesInvoiceInterface _salesInvoiceInterface;
-        private ICostCenterInterface _costCenterInterface;
+        private IApiOperationsBase<CostCenter> _costCenterInterface;
         private ICostCenterConverter _costCenterConverter;
+        private IGeneralLedgerConverter _generalLedgerConverter;
+        private IDimensionTypeInterface _dimensionTypeInterface;
+        private ApiSummaryBase _countryOperations;
 
         public void TestConnection(string loginServerUrl, string user, string password, string organisation,
             string office)
@@ -32,18 +42,17 @@ namespace DemoConnector.TwinfieldAPI
             {
                 return;
             }
-
-//            foreach (var a in (new OfficeOperations(_session)).GetAllOffices())
-//            {
-//                Console.WriteLine("code = {0}", a.Code);
-//                Console.WriteLine("name = {0}", a.Name);
-//                Console.WriteLine();
-//            }
-//            
-//                        if (!SwitchToOffice(Console.ReadLine()))
-//                        {
-//                            return;
-//                        }
+            //            foreach (var a in (new OfficeOperations(_session)).GetAllOffices())
+            //            {
+            //                Console.WriteLine("code = {0}", a.Code);
+            //                Console.WriteLine("name = {0}", a.Name);
+            //                Console.WriteLine();
+            //            }
+            //            
+            //                        if (!SwitchToOffice(Console.ReadLine()))
+            //                        {
+            //                            return;
+            //                        }
 
 
             //            (new OfficeDemo(_session)).Run();
@@ -64,10 +73,10 @@ namespace DemoConnector.TwinfieldAPI
             //            (new Operations(_session)).UnregisterBlockedAmountForTransaction("NLA000218", "INK", 001, 1);
             //
 
-//            foreach (var d in _costCenterInterface.GetAll())
-//            {
-//                Console.WriteLine("Code = {0}", d.Name);
-//            }
+            //            foreach (var d in _costCenterInterface.GetAll())
+            //            {
+            //                Console.WriteLine("Code = {0}", d.Name);
+            //            }
 
 
             #region customer
@@ -122,29 +131,29 @@ namespace DemoConnector.TwinfieldAPI
             //            Console.WriteLine("importallowed = {0}", customerResponse.ImportAllowed);
             //            Console.WriteLine("registrationnumber = {0}", customerResponse.RegistrationNumber);
             //            Console.WriteLine("website = {0}", customerResponse.Website);
-//
-//                        var cr = new CustomerResponse
-//                        {
-//                            Code = "1797",
-//                            Name = "testCust"
-//                        };
-//                        cr.Addresses.General = new PostalAddress
-//                        {
-//                            Address1 = "testaddress",
-//                            City = "veenendaal",
-//                            Country =
-//                            {
-//                                Code = "NL",
-//                                Name = "Nederland"
-//                            },
-//                            ZipCode = "3905GG"
-//                        };
-//                        cr.Bank.Name = "testbank";
-//                        cr.Bank.AccountHolder = "1002";
-//                        cr.Bank.AccountNumber = "12345";
-//                        var c = (new CustomerConverter()).ConvertCustomerResponse(cr, office);
-//                        Console.WriteLine(c.Addresses.Address[0].CountryName);
-//                        Console.WriteLine(_customerInterface.Create(c));
+            //
+            //                        var cr = new CustomerResponse
+            //                        {
+            //                            Code = "1797",
+            //                            Name = "testCust"
+            //                        };
+            //                        cr.Addresses.General = new PostalAddress
+            //                        {
+            //                            Address1 = "testaddress",
+            //                            City = "veenendaal",
+            //                            Country =
+            //                            {
+            //                                Code = "NL",
+            //                                Name = "Nederland"
+            //                            },
+            //                            ZipCode = "3905GG"
+            //                        };
+            //                        cr.Bank.Name = "testbank";
+            //                        cr.Bank.AccountHolder = "1002";
+            //                        cr.Bank.AccountNumber = "12345";
+            //                        var c = (new CustomerConverter()).ConvertCustomerResponse(cr, office);
+            //                        Console.WriteLine(c.Addresses.Address[0].CountryName);
+            //                        Console.WriteLine(_customerInterface.Create(c));
 
             #endregion
 
@@ -174,29 +183,29 @@ namespace DemoConnector.TwinfieldAPI
             //                Console.WriteLine("------");
             //                Console.WriteLine();
             //            }
-//                        var salesinvoicelines = new List<SalesInvoiceLine>();
-//                        var salesinvoiceline = new SalesInvoiceLine
-//                        {
-//                            Amount = 1,
-//                            Currency = "EUR",
-//                            Description = "test",
-//                            Quantity = 2,
-//                            VatPercent = 0,
-//                            VatType = "sales",
-//                            Article = "FRUIT",
-//                            Subarticle = "BANAAN"
-//                        };
-//                        salesinvoicelines.Add(salesinvoiceline);
-//            
-//                        var salesinvoiceresponse = new SalesInvoiceResponse
-//                        {
-//                            CustomerId = "1002",
-//                            Project = "",
-//                            CustomerReference = "1002",
-//                            Name = "test",
-//                            OrderNummer = "1"
-//                        };
-//                        salesinvoiceresponse.SalesInvoiceLines.SalesInvoiceLine = salesinvoicelines;
+            //                        var salesinvoicelines = new List<SalesInvoiceLine>();
+            //                        var salesinvoiceline = new SalesInvoiceLine
+            //                        {
+            //                            Amount = 1,
+            //                            Currency = "EUR",
+            //                            Description = "test",
+            //                            Quantity = 2,
+            //                            VatPercent = 0,
+            //                            VatType = "sales",
+            //                            Article = "FRUIT",
+            //                            Subarticle = "BANAAN"
+            //                        };
+            //                        salesinvoicelines.Add(salesinvoiceline);
+            //            
+            //                        var salesinvoiceresponse = new SalesInvoiceResponse
+            //                        {
+            //                            CustomerId = "1002",
+            //                            Project = "",
+            //                            CustomerReference = "1002",
+            //                            Name = "test",
+            //                            OrderNummer = "1"
+            //                        };
+            //                        salesinvoiceresponse.SalesInvoiceLines.SalesInvoiceLine = salesinvoicelines;
             //
             //            var salesInvoice = (new SalesInvoiceConverter(_session)).ConvertSalesInvoiceResponse(salesinvoiceresponse, "IN");
             //            Console.WriteLine(_salesInvoiceOperations.CreateSalesInvoice(salesInvoice));
@@ -241,36 +250,36 @@ namespace DemoConnector.TwinfieldAPI
             //                }
             //                
             //            }
-//                                    var extrafields = new List<ExtensionData>();
-//                                    var field1 = new ExtensionData
-//                                    {
-//                                        Value = new ExtensionValue
-//                                        {
-//                                            Value = "4000"
-//                                        }
-//                                    };
-//                                    var field3 = new ExtensionData
-//                                    {
-//                                        Value = new ExtensionValue
-//                                        {
-//                                            Value = "8020"
-//                                        }
-//                                    };
-//                                    extrafields.Add(field1);
-//                                    extrafields.Add(field3);
-//                                    var product = new Product
-//                                    {
-//                                        Code = "9999",
-//                                        Description = "testproduct",
-//                                        MaxDiscountRate = "",
-//                                        SupplierCode = "00006",
-//                                        SalesPrice = "100",
-//                                        ExtraFields = extrafields,
-//                                        BestelEenheid = 1,
-//                                        
-//                                        
-//                                    };
-//                                    var article = (new ArticleConverter()).ConvertProduct(product, office, "IN");
+            //                                    var extrafields = new List<ExtensionData>();
+            //                                    var field1 = new ExtensionData
+            //                                    {
+            //                                        Value = new ExtensionValue
+            //                                        {
+            //                                            Value = "4000"
+            //                                        }
+            //                                    };
+            //                                    var field3 = new ExtensionData
+            //                                    {
+            //                                        Value = new ExtensionValue
+            //                                        {
+            //                                            Value = "8020"
+            //                                        }
+            //                                    };
+            //                                    extrafields.Add(field1);
+            //                                    extrafields.Add(field3);
+            //                                    var product = new Product
+            //                                    {
+            //                                        Code = "9999",
+            //                                        Description = "testproduct",
+            //                                        MaxDiscountRate = "",
+            //                                        SupplierCode = "00006",
+            //                                        SalesPrice = "100",
+            //                                        ExtraFields = extrafields,
+            //                                        BestelEenheid = 1,
+            //                                        
+            //                                        
+            //                                    };
+            //                                    var article = (new ArticleConverter()).ConvertProduct(product, office, "IN");
             //                        Console.WriteLine(_articleOperations.CreateArticle(article));
 
             #endregion
@@ -332,32 +341,32 @@ namespace DemoConnector.TwinfieldAPI
             //                Console.WriteLine();
             //            }
 
-//                        var addresses = new List<PostalAddress>();
-//                        var address = new PostalAddress
-//                        {
-//                            Address1 = "testbedrijf",
-//                            City = "Veenendaal",
-//                            ContactPerson = "testsupplier",
-//                            ZipCode = "3903AA"
-//                        };
-//                        address.Country.Code = "NL";
-//                        address.Country.Name = "Nederland";
-//                        addresses.Add(address);
-//                        var supplierresponse = new SupplierResponse
-//                        {
-//                            Name = "testsupplier",
-//                            Code = "2790",
-//                            Comment = "test",
-//                            VatNumber = "1",
-//                            Website = "test.nl"
-//                        };
-//                        supplierresponse.Bank.Name = "Bank";
-//                        supplierresponse.Bank.AccountNumber = "12345";
-//                        supplierresponse.Bank.AccountHolder = "testsupplier";
-//                        supplierresponse.Bank.Iban = "NL32INGB0000012345";
-//                        supplierresponse.Addresses.General = address;
-//                        supplierresponse.PhoneNumbers.General = "03181111111";
-//                        supplierresponse.PhoneNumbers.Mobile = "0611111111";
+            //                        var addresses = new List<PostalAddress>();
+            //                        var address = new PostalAddress
+            //                        {
+            //                            Address1 = "testbedrijf",
+            //                            City = "Veenendaal",
+            //                            ContactPerson = "testsupplier",
+            //                            ZipCode = "3903AA"
+            //                        };
+            //                        address.Country.Code = "NL";
+            //                        address.Country.Name = "Nederland";
+            //                        addresses.Add(address);
+            //                        var supplierresponse = new SupplierResponse
+            //                        {
+            //                            Name = "testsupplier",
+            //                            Code = "2790",
+            //                            Comment = "test",
+            //                            VatNumber = "1",
+            //                            Website = "test.nl"
+            //                        };
+            //                        supplierresponse.Bank.Name = "Bank";
+            //                        supplierresponse.Bank.AccountNumber = "12345";
+            //                        supplierresponse.Bank.AccountHolder = "testsupplier";
+            //                        supplierresponse.Bank.Iban = "NL32INGB0000012345";
+            //                        supplierresponse.Addresses.General = address;
+            //                        supplierresponse.PhoneNumbers.General = "03181111111";
+            //                        supplierresponse.PhoneNumbers.Mobile = "0611111111";
             //            var supplier = (new SupplierConverter()).ConvertSupplierResponse(supplierresponse, office);
             //            Console.WriteLine(_supplierOperations.CreateSupplier(supplier));
 
@@ -365,25 +374,25 @@ namespace DemoConnector.TwinfieldAPI
 
             #region costcenter
 
-//                        foreach (var a in _costCenterInterface.GetAll())
-//                        {
-//                            var costcenter = _costCenterConverter.ConvertCostCenter(a);
-//                            Console.WriteLine("------");
-//                            Console.WriteLine("cost center:");
-//                            Console.WriteLine("name = {0}", costcenter.Name);
-//                            Console.WriteLine("code = {0}", costcenter.Code);
-//                            Console.WriteLine("comment = {0}", costcenter.Comment);
-//                            Console.WriteLine("website = {0}", costcenter.Website);
-//                            Console.WriteLine("------");
-//                            Console.WriteLine();
-//                        }
+            //                        foreach (var a in _costCenterInterface.GetAll())
+            //                        {
+            //                            var costcenter = _costCenterConverter.ConvertCostCenter(a);
+            //                            Console.WriteLine("------");
+            //                            Console.WriteLine("cost center:");
+            //                            Console.WriteLine("name = {0}", costcenter.Name);
+            //                            Console.WriteLine("code = {0}", costcenter.Code);
+            //                            Console.WriteLine("comment = {0}", costcenter.Comment);
+            //                            Console.WriteLine("website = {0}", costcenter.Website);
+            //                            Console.WriteLine("------");
+            //                            Console.WriteLine();
+            //                        }
 
-//                        var costCenterResponse = new CostCenterResponse
-//                        {
-//                            Code = "09998",
-//                            Name = "Test Cost Center",
-//                            Website = "test.nl"
-//                        };
+            //                        var costCenterResponse = new CostCenterResponse
+            //                        {
+            //                            Code = "09998",
+            //                            Name = "Test Cost Center",
+            //                            Website = "test.nl"
+            //                        };
             //
             //            var costCenter = (new CostCenterConverter()).ConvertCostCenterResponse(costCenterResponse, office);
             //
@@ -404,18 +413,64 @@ namespace DemoConnector.TwinfieldAPI
             //                Console.WriteLine();
             //            }
 
-//                        var gl = new GeneralLedgerResponse
-//                        {
-//                            Name = "Test",
-//                            Code = "BAS",
-//                            VatType = "",
-//                            VatName = ""
-//                        };
-            //
-            //            Console.WriteLine(new GeneralLedgerOperations(_session).CreateGeneralLedger((new GeneralLedgerConverter())
-            //                .ConvertGeneralLedgersResponse(gl, office)));
+            //                        var gl = new GeneralLedgerResponse
+            //                        {
+            //                            Name = "Test",
+            //                            Type = "PNL",
+            //                            Code = "4999",
+            //                            VatType = "",
+            //                            VatName = ""
+            //                        };
+            //            
+            //                        Console.WriteLine(_generalLedgerInterface.Create(_generalLedgerConverter.ConvertGeneralLedgerResponse(gl, _session.Office)));
 
             #endregion
+
+            //            foreach (var x in _dimensionTypeInterface.GetByName("BAS"))
+            //            {
+            //                Console.WriteLine("code = {0}", x.Mask);
+            //            }
+
+            var cr = new CustomerResponseTest
+            {
+                Code = "1797",
+                Name = "testCust"
+            };
+            cr.Addresses.General = new PostalAddressTest
+            {
+                Address1 = "testaddress",
+                City = "veenendaal",
+                Country =
+                {
+                    Code = "NL",
+                    Name = "Nederland"
+                },
+                ZipCode = "3905GG"
+            };
+            cr.Bank.Name = "testbank";
+            cr.Bank.AccountHolder = "1002";
+            cr.Bank.AccountNumber = "12345";
+            var adr = new PostalAddressTest
+            {
+                Address1 = "testaddress",
+                City = "veenendaal",
+                ZipCode = "3905GG"
+            };
+            var coun = new CountryTest
+            {
+                Code = "NL",
+                Name = "Nederland"
+            };
+            adr.Country.Code = coun.Code;
+            adr.Country.Name = coun.Name;
+            var xs = new PostalAddressesTest();
+            xs.General = adr;
+            cr.Addresses.Correspondence = xs.General;
+            var x = new ClassToXml<PostalAddressesTest>();
+            x.WriteXml(xs);
+
+            //            var c = _customerInterface.Read("1000");
+            //            Console.WriteLine(c.Name);
 
             LogOff();
         }
@@ -437,11 +492,15 @@ namespace DemoConnector.TwinfieldAPI
             Console.WriteLine();
             _customerInterface = new CustomerOperations(_session);
             _supplierInterface = new SupplierOperations(_session);
-            _generalLedgerInterface = new GeneralLedgerOperations(_session);
+//            _generalLedgerInterface = new GeneralLedgerOperations(_session);
             _articleInterface = new ArticleOperations(_session);
             _salesInvoiceInterface = new SalesInvoiceOperations(_session);
             _costCenterInterface = new CostCenterOperatons(_session);
             _costCenterConverter = new CostCenterConverter();
+            _generalLedgerConverter = new GeneralLedgerConverter();
+            _dimensionTypeInterface = new DimensionTypeOperations(_session);
+            _balanceSheetInterface = new BalanceSheetOperations(_session);
+            _countryOperations = new CountryOperations(_session);
             return _session;
         }
 

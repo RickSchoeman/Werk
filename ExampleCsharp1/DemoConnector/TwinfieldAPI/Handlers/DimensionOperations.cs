@@ -4,15 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DemoConnector.TwinfieldAPI.Data;
+using DemoConnector.TwinfieldAPI.Data.Customers;
+using DemoConnector.TwinfieldAPI.Data.Dimensions;
 using DemoConnector.TwinfieldAPI.Handlers.Dimension;
 using DemoConnector.TwinfieldAPI.Handlers.Interfaces;
 
 namespace DemoConnector.TwinfieldAPI.Handlers
 {
-    public class DimensionOperations : IDimensionOperations
+
+
+    public class DimensionOperations<T> : IDimensionOperations<T> where T : class
     {
         private readonly DimensionService _dimensionService;
-        private readonly List<object> _dimensionList = new List<object>();
         private const int SearchField = 0;
 
         public DimensionOperations(Session session)
@@ -20,49 +23,54 @@ namespace DemoConnector.TwinfieldAPI.Handlers
             _dimensionService = new DimensionService(session);
         }
         
-        public List<object> GetByName(string name, string type)
+        public List<T> GetByName(string name, string type)
         {
-            _dimensionList.Clear();
+            List<T> dimensionList = new List<T>();
             var objs = _dimensionService.FindDimensions(name, type, SearchField);
             foreach (var o in objs)
             {
-                var obj = _dimensionService.ReadDimension(type, o.Code);
-                _dimensionList.Add(obj);
+                var obj = _dimensionService.ReadDimension<T>(o.Code);
+                dimensionList.Add(obj);
             }
 
-            return _dimensionList;
+            return dimensionList;
         }
 
-        public List<object> GetAll(string type)
+        public List<DimensionSummary> GetSummaries(string type)
         {
-            _dimensionList.Clear();
+            return _dimensionService.FindDimensions("*", type, SearchField);
+        }
+
+        public List<T> GetAll(string type)
+        {
+            List<T> dimensionList = new List<T>();
             var objs = _dimensionService.FindDimensions("*", type, SearchField);
             foreach (var o in objs)
             {
-                var obj = _dimensionService.ReadDimension(type, o.Code);
-                _dimensionList.Add(obj);
+                var obj = _dimensionService.ReadDimension<T>(o.Code);
+                dimensionList.Add(obj);
             }
 
-            return _dimensionList;
+            return dimensionList;
         }
 
-        public object Read(string type, string code)
+        public T Read(string type, string code)
         {
             try
             {
-                return _dimensionService.ReadDimension(type, code);
+                return _dimensionService.ReadDimension<T>(code);
             }
             catch (Exception e)
             {
-                return e.Message;
+                return new ResultMessage{Code = e.Message} as T;
             }
         }
 
-        public string Create(object obj)
+        public string Create(T obj)
         {
             try
             {
-                _dimensionService.CreateDimension(obj);
+                _dimensionService.CreateDimension<T>(obj);
                 return "Created";
             }
             catch (Exception e)
@@ -71,11 +79,11 @@ namespace DemoConnector.TwinfieldAPI.Handlers
             }
         }
 
-        public string Delete(object obj)
+        public string Delete(T obj)
         {
             try
             {
-                _dimensionService.DeleteDimension(obj);
+                _dimensionService.DeleteDimension<T>(obj);
                 return "Deleted";
             }
             catch (Exception e)
@@ -84,11 +92,11 @@ namespace DemoConnector.TwinfieldAPI.Handlers
             }
         }
 
-        public string Activate(object obj)
+        public string Activate(T obj)
         {
             try
             {
-                _dimensionService.ActivateDimension(obj);
+                _dimensionService.ActivateDimension<T>(obj);
                 return "Activated";
             }
             catch (Exception e)

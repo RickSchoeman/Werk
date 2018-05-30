@@ -24,6 +24,7 @@ namespace TestApplicatie
             comboBox1.DataSource = offices;
             comboBox1.DisplayMember = "Code";
             comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
         }
 
         private void button1_Click(object sender, EventArgs e)

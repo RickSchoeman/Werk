@@ -48,6 +48,12 @@
             this.bankNameBox = new System.Windows.Forms.TextBox();
             this.accountholderBox = new System.Windows.Forms.TextBox();
             this.accountnumberBox = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.bicBox = new System.Windows.Forms.TextBox();
+            this.ibanBox = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.maskBox = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label2
@@ -55,18 +61,18 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(13, 13);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(35, 13);
+            this.label2.Size = new System.Drawing.Size(43, 13);
             this.label2.TabIndex = 0;
-            this.label2.Text = "Code:";
+            this.label2.Text = "Code:**";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(12, 41);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(38, 13);
+            this.label3.Size = new System.Drawing.Size(42, 13);
             this.label3.TabIndex = 1;
-            this.label3.Text = "Name:";
+            this.label3.Text = "Name:*";
             // 
             // label4
             // 
@@ -91,9 +97,9 @@
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(13, 121);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(46, 13);
+            this.label6.Size = new System.Drawing.Size(50, 13);
             this.label6.TabIndex = 4;
-            this.label6.Text = "Country:";
+            this.label6.Text = "Country:*";
             // 
             // label7
             // 
@@ -106,8 +112,7 @@
             // 
             // toevoegen
             // 
-            this.toevoegen.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.toevoegen.Location = new System.Drawing.Point(12, 349);
+            this.toevoegen.Location = new System.Drawing.Point(303, 381);
             this.toevoegen.Name = "toevoegen";
             this.toevoegen.Size = new System.Drawing.Size(75, 23);
             this.toevoegen.TabIndex = 6;
@@ -117,8 +122,7 @@
             // 
             // annuleren
             // 
-            this.annuleren.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.annuleren.Location = new System.Drawing.Point(303, 349);
+            this.annuleren.Location = new System.Drawing.Point(12, 381);
             this.annuleren.Name = "annuleren";
             this.annuleren.Size = new System.Drawing.Size(75, 23);
             this.annuleren.TabIndex = 7;
@@ -130,7 +134,7 @@
             // 
             this.codeBox.Location = new System.Drawing.Point(143, 10);
             this.codeBox.Name = "codeBox";
-            this.codeBox.Size = new System.Drawing.Size(121, 20);
+            this.codeBox.Size = new System.Drawing.Size(235, 20);
             this.codeBox.TabIndex = 8;
             // 
             // countryBox
@@ -138,35 +142,35 @@
             this.countryBox.FormattingEnabled = true;
             this.countryBox.Location = new System.Drawing.Point(143, 118);
             this.countryBox.Name = "countryBox";
-            this.countryBox.Size = new System.Drawing.Size(121, 21);
+            this.countryBox.Size = new System.Drawing.Size(235, 21);
             this.countryBox.TabIndex = 9;
             // 
             // nameBox
             // 
             this.nameBox.Location = new System.Drawing.Point(143, 38);
             this.nameBox.Name = "nameBox";
-            this.nameBox.Size = new System.Drawing.Size(121, 20);
+            this.nameBox.Size = new System.Drawing.Size(235, 20);
             this.nameBox.TabIndex = 10;
             // 
             // addressBox
             // 
             this.addressBox.Location = new System.Drawing.Point(143, 66);
             this.addressBox.Name = "addressBox";
-            this.addressBox.Size = new System.Drawing.Size(121, 20);
+            this.addressBox.Size = new System.Drawing.Size(235, 20);
             this.addressBox.TabIndex = 11;
             // 
             // cityBox
             // 
             this.cityBox.Location = new System.Drawing.Point(143, 92);
             this.cityBox.Name = "cityBox";
-            this.cityBox.Size = new System.Drawing.Size(121, 20);
+            this.cityBox.Size = new System.Drawing.Size(235, 20);
             this.cityBox.TabIndex = 12;
             // 
             // zipBox
             // 
             this.zipBox.Location = new System.Drawing.Point(143, 144);
             this.zipBox.Name = "zipBox";
-            this.zipBox.Size = new System.Drawing.Size(121, 20);
+            this.zipBox.Size = new System.Drawing.Size(235, 20);
             this.zipBox.TabIndex = 13;
             // 
             // label8
@@ -174,52 +178,107 @@
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(13, 170);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(61, 13);
+            this.label8.Size = new System.Drawing.Size(65, 13);
             this.label8.TabIndex = 14;
-            this.label8.Text = "Bankname:";
+            this.label8.Text = "Bankname:*";
             // 
             // label9
             // 
             this.label9.AutoSize = true;
             this.label9.Location = new System.Drawing.Point(13, 194);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(79, 13);
+            this.label9.Size = new System.Drawing.Size(83, 13);
             this.label9.TabIndex = 15;
-            this.label9.Text = "Accountholder:";
+            this.label9.Text = "Accountholder:*";
             // 
             // label10
             // 
             this.label10.AutoSize = true;
             this.label10.Location = new System.Drawing.Point(12, 220);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(85, 13);
+            this.label10.Size = new System.Drawing.Size(89, 13);
             this.label10.TabIndex = 16;
-            this.label10.Text = "Accountnumber:";
+            this.label10.Text = "Accountnumber:*";
             // 
             // bankNameBox
             // 
             this.bankNameBox.Location = new System.Drawing.Point(143, 167);
             this.bankNameBox.Name = "bankNameBox";
-            this.bankNameBox.Size = new System.Drawing.Size(121, 20);
+            this.bankNameBox.Size = new System.Drawing.Size(235, 20);
             this.bankNameBox.TabIndex = 17;
             // 
             // accountholderBox
             // 
             this.accountholderBox.Location = new System.Drawing.Point(143, 191);
             this.accountholderBox.Name = "accountholderBox";
-            this.accountholderBox.Size = new System.Drawing.Size(121, 20);
+            this.accountholderBox.Size = new System.Drawing.Size(235, 20);
             this.accountholderBox.TabIndex = 18;
             // 
             // accountnumberBox
             // 
             this.accountnumberBox.Location = new System.Drawing.Point(143, 217);
             this.accountnumberBox.Name = "accountnumberBox";
-            this.accountnumberBox.Size = new System.Drawing.Size(121, 20);
+            this.accountnumberBox.Size = new System.Drawing.Size(235, 20);
             this.accountnumberBox.TabIndex = 19;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(12, 247);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(27, 13);
+            this.label11.TabIndex = 20;
+            this.label11.Text = "BIC:";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(12, 274);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(35, 13);
+            this.label12.TabIndex = 21;
+            this.label12.Text = "IBAN:";
+            // 
+            // bicBox
+            // 
+            this.bicBox.Location = new System.Drawing.Point(143, 244);
+            this.bicBox.Name = "bicBox";
+            this.bicBox.Size = new System.Drawing.Size(235, 20);
+            this.bicBox.TabIndex = 22;
+            // 
+            // ibanBox
+            // 
+            this.ibanBox.Location = new System.Drawing.Point(143, 271);
+            this.ibanBox.Name = "ibanBox";
+            this.ibanBox.Size = new System.Drawing.Size(235, 20);
+            this.ibanBox.TabIndex = 23;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(12, 355);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(93, 13);
+            this.label13.TabIndex = 24;
+            this.label13.Text = "*Verplichte velden";
+            // 
+            // maskBox
+            // 
+            this.maskBox.AutoSize = true;
+            this.maskBox.Location = new System.Drawing.Point(13, 324);
+            this.maskBox.Name = "maskBox";
+            this.maskBox.Size = new System.Drawing.Size(0, 13);
+            this.maskBox.TabIndex = 25;
             // 
             // CustomerForm
             // 
-            this.ClientSize = new System.Drawing.Size(390, 384);
+            this.ClientSize = new System.Drawing.Size(390, 416);
+            this.Controls.Add(this.maskBox);
+            this.Controls.Add(this.label13);
+            this.Controls.Add(this.ibanBox);
+            this.Controls.Add(this.bicBox);
+            this.Controls.Add(this.label12);
+            this.Controls.Add(this.label11);
             this.Controls.Add(this.accountnumberBox);
             this.Controls.Add(this.accountholderBox);
             this.Controls.Add(this.bankNameBox);
@@ -241,6 +300,7 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Name = "CustomerForm";
+            this.Load += new System.EventHandler(this.CustomerForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -269,5 +329,11 @@
         private System.Windows.Forms.TextBox bankNameBox;
         private System.Windows.Forms.TextBox accountholderBox;
         private System.Windows.Forms.TextBox accountnumberBox;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.TextBox bicBox;
+        private System.Windows.Forms.TextBox ibanBox;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label maskBox;
     }
 }

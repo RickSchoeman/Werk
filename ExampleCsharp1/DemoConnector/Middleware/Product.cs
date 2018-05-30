@@ -33,6 +33,7 @@ namespace DemoConnector.Middleware
         public Decimal MiimumStock { get; set; }
         public Decimal PreferredStock { get; set; }
         public Boolean StockControl { get; set; }
+        public int Grootboek { get; set; }
         public List<ExtensionData> ExtraFields { get; set; }
     }
 }

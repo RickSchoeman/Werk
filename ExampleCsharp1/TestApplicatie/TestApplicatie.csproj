@@ -57,11 +57,47 @@
     <Compile Include="AdministratieVeranderen.Designer.cs">
       <DependentUpon>AdministratieVeranderen.cs</DependentUpon>
     </Compile>
+    <Compile Include="ConsoleLarge.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConsoleLarge.Designer.cs">
+      <DependentUpon>ConsoleLarge.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InputForms\ArticleForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InputForms\ArticleForm.Designer.cs">
+      <DependentUpon>ArticleForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InputForms\CostCenterForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InputForms\CostCenterForm.Designer.cs">
+      <DependentUpon>CostCenterForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="InputForms\CustomerForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="InputForms\CustomerForm.Designer.cs">
       <DependentUpon>CustomerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InputForms\GeneralLedgerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InputForms\GeneralLedgerForm.Designer.cs">
+      <DependentUpon>GeneralLedgerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InputForms\SalesInvoiceForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InputForms\SalesInvoiceForm.Designer.cs">
+      <DependentUpon>SalesInvoiceForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InputForms\SupplierForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InputForms\SupplierForm.Designer.cs">
+      <DependentUpon>SupplierForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\IMiddlewareData.cs" />
     <Compile Include="LoginTwinfield.cs">
@@ -79,14 +115,33 @@
     <Compile Include="Twinfield.Designer.cs">
       <DependentUpon>Twinfield.cs</DependentUpon>
     </Compile>
+    <Compile Include="ClassToXml.cs" />
     <EmbeddedResource Include="AdministratieSelecteren.resx">
       <DependentUpon>AdministratieSelecteren.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AdministratieVeranderen.resx">
       <DependentUpon>AdministratieVeranderen.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ConsoleLarge.resx">
+      <DependentUpon>ConsoleLarge.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InputForms\ArticleForm.resx">
+      <DependentUpon>ArticleForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InputForms\CostCenterForm.resx">
+      <DependentUpon>CostCenterForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="InputForms\CustomerForm.resx">
       <DependentUpon>CustomerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InputForms\GeneralLedgerForm.resx">
+      <DependentUpon>GeneralLedgerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InputForms\SalesInvoiceForm.resx">
+      <DependentUpon>SalesInvoiceForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InputForms\SupplierForm.resx">
+      <DependentUpon>SupplierForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LoginTwinfield.resx">
       <DependentUpon>LoginTwinfield.cs</DependentUpon>

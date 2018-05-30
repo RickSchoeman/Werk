@@ -5,15 +5,19 @@ using System.Text;
 using System.Threading.Tasks;
 using DemoConnector.Middleware;
 using DemoConnector.TwinfieldAPI.Converters.Interfaces;
+using DemoConnector.TwinfieldAPI.Data.BalanceSheet;
 using DemoConnector.TwinfieldAPI.Data.GeneralLedgers;
+using DemoConnector.TwinfieldAPI.Data.ProfitLoss;
 using DemoConnector.TwinfieldAPI.Data.Relations;
 using Type = DemoConnector.TwinfieldAPI.Data.Relations.Type;
 
 namespace DemoConnector.TwinfieldAPI.Converters
 {
+    
+
     public class GeneralLedgerConverter : IGeneralLedgerConverter
     {
-        public GeneralLedger ConvertGeneralLedgerResponse(GeneralLedgerResponse generalLedgerResponse, string office)
+        public BalanceSheet ConvertGeneralLedgerResponseToBalanceSheet(GeneralLedgerResponse generalLedgerResponse, string office)
         {
             Type type = Type.Sales;
             if (generalLedgerResponse.VatType == Type.Purchase.ToString().ToLower())
@@ -21,10 +25,11 @@ namespace DemoConnector.TwinfieldAPI.Converters
                 type = Type.Purchase;
             }
 
-            var g = new GeneralLedger
+            var g = new BalanceSheet
             {
                 Office = office,
                 Code = generalLedgerResponse.Code,
+                
                 Name = generalLedgerResponse.Name,
                 Financials = new Financials
                 {
@@ -38,18 +43,64 @@ namespace DemoConnector.TwinfieldAPI.Converters
                     }
                 }
             };
+            g.Type = generalLedgerResponse.Type;
             return g;
         }
 
-        public GeneralLedgerResponse ConvertGeneralLedger(GeneralLedger generalLedger)
+        public ProfitLoss ConvertGeneralLedgerResponseToProfitLoss(GeneralLedgerResponse generalLedgerResponse, string office)
         {
-            return new GeneralLedgerResponse
+            Type type = Type.Sales;
+            if (generalLedgerResponse.VatType == Type.Purchase.ToString().ToLower())
+            {
+                type = Type.Purchase;
+            }
+
+            var g = new ProfitLoss
+            {
+                Office = office,
+                Code = generalLedgerResponse.Code,
+
+                Name = generalLedgerResponse.Name,
+                Financials = new Financials
+                {
+                    Matchtype = MatchType.Notmatchable,
+                    Accounttype = "balance",
+                    Level = 1,
+                    Vatcode = new VatCode
+                    {
+                        Name = generalLedgerResponse.VatName,
+                        Type = type
+                    }
+                }
+            };
+            g.Type = generalLedgerResponse.Type;
+            return g;
+        }
+
+        public GeneralLedgerResponse ConvertBalanceSheet(BalanceSheet generalLedger)
+        {
+            var glr = new GeneralLedgerResponse
             {
                 Code = generalLedger.Code,
                 Name = generalLedger.Name,
                 VatName = generalLedger.Financials.Vatcode.Name,
                 VatType = generalLedger.Financials.Vatcode.Type.ToString()
             };
+            glr.Type = generalLedger.Type;
+            return glr;
+        }
+
+        public GeneralLedgerResponse ConvertProfitLoss(ProfitLoss generalLedger)
+        {
+            var glr = new GeneralLedgerResponse
+            {
+                Code = generalLedger.Code,
+                Name = generalLedger.Name,
+                VatName = generalLedger.Financials.Vatcode.Name,
+                VatType = generalLedger.Financials.Vatcode.Type.ToString()
+            };
+            glr.Type = generalLedger.Type;
+            return glr;
         }
     }
 }

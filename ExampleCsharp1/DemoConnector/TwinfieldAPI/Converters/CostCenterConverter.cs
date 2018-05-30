@@ -17,7 +17,7 @@ namespace DemoConnector.TwinfieldAPI.Converters
             { 
                 Code = costCenter.Code,
                 Name = costCenter.Name,
-                Website = costCenter.Website
+                Website = costCenter.Website,
             };
         }
 
@@ -28,6 +28,7 @@ namespace DemoConnector.TwinfieldAPI.Converters
                 Office = office,
                 Code = costCenterResponse.Code,
                 Name = costCenterResponse.Name,
+                Website = costCenterResponse.Website,
             };
         }
     }

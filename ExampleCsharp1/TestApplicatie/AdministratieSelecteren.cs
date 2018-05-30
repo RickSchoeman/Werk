@@ -23,7 +23,7 @@ namespace TestApplicatie
             administratiesystemen.Add("Voorbeeld");
             comboBox2.DataSource = administratiesystemen;
             comboBox2.DropDownStyle = ComboBoxStyle.DropDownList;
-            
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
         }
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {

@@ -12,36 +12,15 @@ namespace DemoConnector.TwinfieldAPI.Converters
             var list = new List<Product>();
             foreach (var l in article.Lines.Line)
             {
-                var extrafields = new List<ExtensionData>();
-                var freetext1 = new ExtensionData
-                {
-                    Name = "freetext1",
-                    Value = new ExtensionValue
-                    {
-                        Value = l.Freetext1,
-                        Type = ExtensionValueType.String
-                    }
-                };
-                var freetext3 = new ExtensionData
-                {
-                    Name = "freetext3",
-                    Value = new ExtensionValue
-                    {
-                        Value = l.Freetext3,
-                        Type = ExtensionValueType.String
-                    }
-                };
-                extrafields.Add(freetext1);
-                extrafields.Add(freetext3);
                 
                 var subproduct = new Product
                 {
                     Code = l.Subcode,
                     Description = l.Name,
                     SalesPrice = l.Unitspriceexcl,
-                    ExtraFields = extrafields,
                     SupplierCode = l.Freetext2,
-                    BestelEenheid = l.Units
+                    BestelEenheid = l.Units,
+                    Grootboek = int.Parse(l.Freetext1)
                 };
                 list.Add(subproduct);
             }
@@ -64,9 +43,7 @@ namespace DemoConnector.TwinfieldAPI.Converters
                     Name = product.Description,
                     Unitspriceexcl = product.SalesPrice,
                     Units = (int) product.BestelEenheid,
-                    Freetext1 = product.ExtraFields[0].Value.Value,
                     Freetext2 = product.SupplierCode,
-                    Freetext3 = product.ExtraFields[1].Value.Value
                 };
             list.Add(line);
 

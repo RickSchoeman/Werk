@@ -9,11 +9,12 @@ namespace DemoConnector.TwinfieldAPI.Handlers.Interfaces
     {
         List<Article> GetByName(string name);
         List<Article> GetAll();
+        List<ArticleSummary> GetSummaries();
         Article Read(string code);
         string Create(Article article);
         string Delete(Article article);
         string Activate(Article article);
         string DeleteSubArticle(Article article);
-        List<SubArticleSummary> GetSubArticlesByArticle(string name, string article);
+        List<SubArticleSummary> GetSubArticlesByArticle(string article);
     }
 }
