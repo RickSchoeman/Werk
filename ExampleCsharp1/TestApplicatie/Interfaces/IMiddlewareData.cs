@@ -9,12 +9,12 @@ namespace TestApplicatie.Interfaces
 {
     public interface IMiddlewareData
     {
-        CustomerResponse GetCustomerData();
-        SupplierResponse GetSupplierData();
-        Product GetProductData();
-        SalesInvoiceResponse GetSalesInvoiceData();
-        GeneralLedgerResponse GetBalanceSheetData();
-        GeneralLedgerResponse GetProfitAndLossData();
-        CostCenterResponse GetCostCenterData();
+        List<CustomerResponse> GetCustomerData();
+        List<SupplierResponse> GetSupplierData();
+        List<Product> GetProductData();
+        List<SalesInvoiceResponse> GetSalesInvoiceData();
+        List<GeneralLedgerResponse> GetBalanceSheetData();
+        List<GeneralLedgerResponse> GetProfitAndLossData();
+        List<CostCenterResponse> GetCostCenterData();
     }
 }

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using DemoConnector.Middleware;
+//using DemoConnector.Middleware;
 using DemoConnector.TwinfieldAPI.Controllers.Services;
 using DemoConnector.TwinfieldAPI.Converters;
 using DemoConnector.TwinfieldAPI.Converters.Interfaces;
@@ -11,7 +13,7 @@ using DemoConnector.TwinfieldAPI.Data.Extras.Countries;
 using DemoConnector.TwinfieldAPI.Data.Suppliers;
 using DemoConnector.TwinfieldAPI.Handlers;
 using DemoConnector.TwinfieldAPI.Handlers.Interfaces;
-using DemoConnector.XmlTest;
+using DemoConnector.Xml;
 
 namespace DemoConnector.TwinfieldAPI
 {
@@ -28,6 +30,10 @@ namespace DemoConnector.TwinfieldAPI
         private ICostCenterConverter _costCenterConverter;
         private IGeneralLedgerConverter _generalLedgerConverter;
         private IDimensionTypeInterface _dimensionTypeInterface;
+        private ICustomerConverter _customerConverter;
+        private ISupplierConverter _supplierConverter;
+        private IArticleConverter _articleConverter;
+        private ISalesInvoiceConverter _salesInvoiceConverter;
         private ApiSummaryBase _countryOperations;
 
         public void TestConnection(string loginServerUrl, string user, string password, string organisation,
@@ -132,25 +138,25 @@ namespace DemoConnector.TwinfieldAPI
             //            Console.WriteLine("registrationnumber = {0}", customerResponse.RegistrationNumber);
             //            Console.WriteLine("website = {0}", customerResponse.Website);
             //
-            //                        var cr = new CustomerResponse
-            //                        {
-            //                            Code = "1797",
-            //                            Name = "testCust"
-            //                        };
-            //                        cr.Addresses.General = new PostalAddress
-            //                        {
-            //                            Address1 = "testaddress",
-            //                            City = "veenendaal",
-            //                            Country =
-            //                            {
-            //                                Code = "NL",
-            //                                Name = "Nederland"
-            //                            },
-            //                            ZipCode = "3905GG"
-            //                        };
-            //                        cr.Bank.Name = "testbank";
-            //                        cr.Bank.AccountHolder = "1002";
-            //                        cr.Bank.AccountNumber = "12345";
+            //                                    var cr = new CustomerResponse
+            //                                    {
+            //                                        Code = "1797",
+            //                                        Name = "testCust"
+            //                                    };
+            //                                    cr.Addresses.General = new PostalAddress
+            //                                    {
+            //                                        Address1 = "testaddress",
+            //                                        City = "veenendaal",
+            //                                        Country =
+            //                                        {
+            //                                            Code = "NL",
+            //                                            Name = "Nederland"
+            //                                        },
+            //                                        ZipCode = "3905GG"
+            //                                    };
+            //                                    cr.Bank.Name = "testbank";
+            //                                    cr.Bank.AccountHolder = "1002";
+            //                                    cr.Bank.AccountNumber = "12345";
             //                        var c = (new CustomerConverter()).ConvertCustomerResponse(cr, office);
             //                        Console.WriteLine(c.Addresses.Address[0].CountryName);
             //                        Console.WriteLine(_customerInterface.Create(c));
@@ -426,51 +432,55 @@ namespace DemoConnector.TwinfieldAPI
 
             #endregion
 
+            #region xmltest
             //            foreach (var x in _dimensionTypeInterface.GetByName("BAS"))
             //            {
             //                Console.WriteLine("code = {0}", x.Mask);
             //            }
 
-            var cr = new CustomerResponseTest
-            {
-                Code = "1797",
-                Name = "testCust"
-            };
-            cr.Addresses.General = new PostalAddressTest
-            {
-                Address1 = "testaddress",
-                City = "veenendaal",
-                Country =
-                {
-                    Code = "NL",
-                    Name = "Nederland"
-                },
-                ZipCode = "3905GG"
-            };
-            cr.Bank.Name = "testbank";
-            cr.Bank.AccountHolder = "1002";
-            cr.Bank.AccountNumber = "12345";
-            var adr = new PostalAddressTest
-            {
-                Address1 = "testaddress",
-                City = "veenendaal",
-                ZipCode = "3905GG"
-            };
-            var coun = new CountryTest
-            {
-                Code = "NL",
-                Name = "Nederland"
-            };
-            adr.Country.Code = coun.Code;
-            adr.Country.Name = coun.Name;
-            var xs = new PostalAddressesTest();
-            xs.General = adr;
-            cr.Addresses.Correspondence = xs.General;
-            var x = new ClassToXml<PostalAddressesTest>();
-            x.WriteXml(xs);
+            //            var company = new Company
+            //            {
+            //                Id = "1",
+            //                Name = "albert heijn",
+            //                Stores = new List<Store> { new Store
+            //                {
+            //                    Id = "1",
+            //                    Name = "albert heijn xxl",
+            //                    Address = new Address
+            //                    {
+            //                        City = "ede",
+            //                        Country = "nederland",
+            //                        HouseNumber = "72",
+            //                        Street = "hoofdstraat",
+            //                        ZipCode = "3402zz"
+            //                    },
+            //                    Klanten = new List<Klant>{new Klant
+            //                    {
+            //                        Id = "1",
+            //                        Name = "roy",
+            //                        Email = "roydonders@mail.nl",
+            //                        Address = new Address
+            //                        {
+            //                            City = "nijkerk",
+            //                            Country = "nederland",
+            //                            HouseNumber = "7",
+            //                            Street = "grote weg",
+            //                            ZipCode = "4201ti"
+            //                        }
+            //                    } }
+            //                } }
+            //            };
+            //
+            //            var ser = new ClassToXml<Company>();
+            //            ser.WriteXml(company);
+            #endregion
+//            var x = _salesInvoiceConverter.ConvertSalesInvoice(_salesInvoiceInterface.GetByInvoiceType("FACTUUR")[0]);
+//            var convertX = (new ResponseClassToXmlClass()).ConvertSalesInvoice(x);
 
-            //            var c = _customerInterface.Read("1000");
-            //            Console.WriteLine(c.Name);
+            var s = _supplierInterface.GetAll();
+            var sr = _supplierConverter.ConvertSupplier(s[0]);
+            var ser = new ClassToXml<SupplierResponse>();
+            ser.WriteXml(sr);
 
             LogOff();
         }
@@ -501,6 +511,10 @@ namespace DemoConnector.TwinfieldAPI
             _dimensionTypeInterface = new DimensionTypeOperations(_session);
             _balanceSheetInterface = new BalanceSheetOperations(_session);
             _countryOperations = new CountryOperations(_session);
+            _customerConverter = new CustomerConverter();
+            _supplierConverter = new SupplierConverter();
+            _articleConverter = new ArticleConverter();
+            _salesInvoiceConverter = new SalesInvoiceConverter(_session);
             return _session;
         }
 

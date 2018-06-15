@@ -382,11 +382,17 @@
     <Compile Include="TwinfieldAPI\Handlers\VATs\ReadVatCommand.cs" />
     <Compile Include="TwinfieldAPI\Handlers\VATs\VatService.cs" />
     <Compile Include="TwinfieldAPI\TwinfieldApiConnector.cs" />
-    <Compile Include="XmlTest\BankTest.cs" />
-    <Compile Include="XmlTest\CustomerResponseTest.cs" />
-    <Compile Include="XmlTest\EmailAddressTest.cs" />
-    <Compile Include="XmlTest\PhoneNumbersTest.cs" />
-    <Compile Include="XmlTest\PostalAddressesTest.cs" />
+    <Compile Include="Xml\ResponseClassToXmlClass.cs" />
+    <Compile Include="Xml\XmlBank.cs" />
+    <Compile Include="Xml\XmlCostCenter.cs" />
+    <Compile Include="Xml\XmlCustomer.cs" />
+    <Compile Include="Xml\XmlGeneralLedger.cs" />
+    <Compile Include="Xml\XmlMailAddresses.cs" />
+    <Compile Include="Xml\XmlPhoneNumbers.cs" />
+    <Compile Include="Xml\XmlPostalAddresses.cs" />
+    <Compile Include="Xml\XmlProducts.cs" />
+    <Compile Include="Xml\XmlSalesInvoice.cs" />
+    <Compile Include="Xml\XmlSupplier.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

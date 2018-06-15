@@ -12,8 +12,6 @@ namespace DemoConnector.TwinfieldAPI.Handlers.Summaries
 {
     public class SummaryService
     {
-        private readonly Session _session;
-        private readonly ProcessXmlService _processXml;
         private readonly FinderService _finderService;
 
         public SummaryService(Session session) : this(session, new ClientFactory())
@@ -23,8 +21,6 @@ namespace DemoConnector.TwinfieldAPI.Handlers.Summaries
 
         public SummaryService(Session session, IClientFactory clientFactory)
         {
-            _session = session;
-            _processXml = new ProcessXmlService(session, clientFactory);
             _finderService = new FinderService(session, clientFactory);
         }
 

@@ -13,13 +13,13 @@ namespace DemoConnector.TwinfieldAPI.Handlers.Interfaces
         List<Vat> GetByName(string name);
         List<Vat> GetAll();
         List<VatSummary> GetSummaries();
-        bool Create(Vat vat);
-        bool Delete(Vat vat);
-        List<VatCountrySummary> GetVatCountriesByName(string name);
-        List<VatCountrySummary> GetAllVatCountries();
-        List<VatGroupSummary> GetVatGroupsByName(string name);
-        List<VatGroupSummary> GetAllVatGroups();
-        List<VatNrOfRelationsSummary> GetVatNrOfRelationsByName(string name);
-        List<VatNrOfRelationsSummary> GetAllVatNrOfRelations();
+        string Create(Vat vat);
+        string Delete(Vat vat);
+//        List<VatCountrySummary> GetVatCountriesByName(string name);
+//        List<VatCountrySummary> GetAllVatCountries();
+//        List<VatGroupSummary> GetVatGroupsByName(string name);
+//        List<VatGroupSummary> GetAllVatGroups();
+//        List<VatNrOfRelationsSummary> GetVatNrOfRelationsByName(string name);
+//        List<VatNrOfRelationsSummary> GetAllVatNrOfRelations();
     }
 }

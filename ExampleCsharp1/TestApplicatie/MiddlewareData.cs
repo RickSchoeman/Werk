@@ -10,7 +10,7 @@ namespace TestApplicatie
 {
     public class MiddlewareData : IMiddlewareData
     {
-        public CustomerResponse GetCustomerData()
+        public List<CustomerResponse> GetCustomerData()
         {
             var cr = new CustomerResponse
             {
@@ -31,10 +31,10 @@ namespace TestApplicatie
             cr.Bank.Name = "testbank";
             cr.Bank.AccountHolder = "1002";
             cr.Bank.AccountNumber = "12345";
-            return cr;
+            return new List<CustomerResponse> { cr };
         }
 
-        public SupplierResponse GetSupplierData()
+        public List<SupplierResponse> GetSupplierData()
         {
             var address = new PostalAddress
             {
@@ -60,10 +60,10 @@ namespace TestApplicatie
             supplierresponse.Addresses.General = address;
             supplierresponse.PhoneNumbers.General = "03181111111";
             supplierresponse.PhoneNumbers.Mobile = "0611111111";
-            return supplierresponse;
+            return new List<SupplierResponse>{supplierresponse};
         }
 
-        public Product GetProductData()
+        public List<Product> GetProductData()
         {
             var product = new Product
             {
@@ -76,10 +76,10 @@ namespace TestApplicatie
 
 
             };
-            return product;
+            return new List<Product>{product};
         }
 
-        public SalesInvoiceResponse GetSalesInvoiceData()
+        public List<SalesInvoiceResponse> GetSalesInvoiceData()
         {
             var salesinvoicelines = new List<SalesInvoiceLine>();
             var salesinvoiceline = new SalesInvoiceLine
@@ -105,10 +105,10 @@ namespace TestApplicatie
                 OrderType = "FACTUUR"
             };
             salesinvoiceresponse.SalesInvoiceLines.SalesInvoiceLine = salesinvoicelines;
-            return salesinvoiceresponse;
+            return new List<SalesInvoiceResponse>{salesinvoiceresponse};
         }
 
-        public GeneralLedgerResponse GetBalanceSheetData()
+        public List<GeneralLedgerResponse> GetBalanceSheetData()
         {
             var gl = new GeneralLedgerResponse
             {
@@ -116,10 +116,10 @@ namespace TestApplicatie
                 Code = "3999",
                 Type = "BAS"
             };
-            return gl;
+            return new List<GeneralLedgerResponse>{gl};
         }
 
-        public GeneralLedgerResponse GetProfitAndLossData()
+        public List<GeneralLedgerResponse> GetProfitAndLossData()
         {
             var gl = new GeneralLedgerResponse
             {
@@ -127,10 +127,10 @@ namespace TestApplicatie
                 Code = "9999",
                 Type = "PNL"
             };
-            return gl;
+            return new List<GeneralLedgerResponse>{gl};
         }
 
-        public CostCenterResponse GetCostCenterData()
+        public List<CostCenterResponse> GetCostCenterData()
         {
             var costCenterResponse = new CostCenterResponse
             {
@@ -138,7 +138,7 @@ namespace TestApplicatie
                 Name = "Test Cost Center",
                 Website = "test.nl"
             };
-            return costCenterResponse;
+            return new List<CostCenterResponse>{costCenterResponse};
         }
     }
 }

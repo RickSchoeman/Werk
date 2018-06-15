@@ -63,6 +63,7 @@
     <Compile Include="ConsoleLarge.Designer.cs">
       <DependentUpon>ConsoleLarge.cs</DependentUpon>
     </Compile>
+    <Compile Include="Functies\DataFunctions.cs" />
     <Compile Include="InputForms\ArticleForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -115,7 +116,18 @@
     <Compile Include="Twinfield.Designer.cs">
       <DependentUpon>Twinfield.cs</DependentUpon>
     </Compile>
-    <Compile Include="ClassToXml.cs" />
+    <Compile Include="Xml\ClassToXml.cs" />
+    <Compile Include="Xml\ResponseClassToXmlClass.cs" />
+    <Compile Include="Xml\XmlBank.cs" />
+    <Compile Include="Xml\XmlCostCenter.cs" />
+    <Compile Include="Xml\XmlCustomer.cs" />
+    <Compile Include="Xml\XmlGeneralLedger.cs" />
+    <Compile Include="Xml\XmlMailAddresses.cs" />
+    <Compile Include="Xml\XmlPhoneNumbers.cs" />
+    <Compile Include="Xml\XmlPostalAddresses.cs" />
+    <Compile Include="Xml\XmlProducts.cs" />
+    <Compile Include="Xml\XmlSalesInvoice.cs" />
+    <Compile Include="Xml\XmlSupplier.cs" />
     <EmbeddedResource Include="AdministratieSelecteren.resx">
       <DependentUpon>AdministratieSelecteren.cs</DependentUpon>
     </EmbeddedResource>

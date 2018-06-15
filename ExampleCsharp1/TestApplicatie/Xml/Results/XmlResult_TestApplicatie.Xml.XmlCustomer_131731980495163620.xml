@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<XmlCustomer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Code>1000</Code>
+  <Name>De heer Janssen</Name>
+  <Bank>
+    <AccountHolder>De heer Janssen</AccountHolder>
+    <AccountNumber />
+    <Name />
+    <BicCode />
+    <IBan />
+  </Bank>
+  <Addresses>
+    <General>
+      <ContactPerson>De heer Janssen</ContactPerson>
+      <Address1>Adres</Address1>
+      <Address2>Adres 2</Address2>
+      <ZipCode>Postcode</ZipCode>
+      <City>Amsterdam</City>
+      <Country>
+        <Name>Nederland</Name>
+        <Code>NL</Code>
+      </Country>
+      <IsEmpty>false</IsEmpty>
+    </General>
+  </Addresses>
+  <PhoneNumbers>
+    <General>Telefoon</General>
+    <Fax>Fax</Fax>
+    <Mobile />
+  </PhoneNumbers>
+  <EMailAddresses>
+    <General>
+      <To>test@test.nl</To>
+      <IsEmpty>false</IsEmpty>
+    </General>
+    <Invoice>
+      <To>test@test.nl</To>
+      <IsEmpty>false</IsEmpty>
+    </Invoice>
+    <InvoiceReminder>
+      <To />
+      <IsEmpty>false</IsEmpty>
+    </InvoiceReminder>
+  </EMailAddresses>
+  <VATNumber />
+  <ImportAllowed>false</ImportAllowed>
+  <Website />
+</XmlCustomer>

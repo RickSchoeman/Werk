@@ -30,7 +30,7 @@ namespace DemoConnector.Middleware
         public Decimal BestelEenheid { get; set; }
         public String SupplierCode { get; set; }
         public Boolean Voorraadcontrole { get; set; }
-        public Decimal MiimumStock { get; set; }
+        public Decimal MinimumStock { get; set; }
         public Decimal PreferredStock { get; set; }
         public Boolean StockControl { get; set; }
         public int Grootboek { get; set; }

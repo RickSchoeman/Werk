@@ -11,8 +11,8 @@ namespace DemoConnector.TwinfieldAPI.Handlers.Interfaces
     {
         List<Currency> GetByName(string name);
         List<Currency> GetAll();
-        bool Create(Currency currency);
-        bool Delete(Currency currency);
+        string Create(Currency currency);
+        string Delete(Currency currency);
         bool DeleteCurrencyRate(Currency currency);
     }
 }

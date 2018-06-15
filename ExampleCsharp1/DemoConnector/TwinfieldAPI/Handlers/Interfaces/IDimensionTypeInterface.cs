@@ -11,6 +11,6 @@ namespace DemoConnector.TwinfieldAPI.Handlers.Interfaces
     {
         List<DimensionType> GetByName(string name);
         List<DimensionType> GetAll();
-        bool Update(DimensionType dimensionType);
+        string Update(DimensionType dimensionType);
     }
 }

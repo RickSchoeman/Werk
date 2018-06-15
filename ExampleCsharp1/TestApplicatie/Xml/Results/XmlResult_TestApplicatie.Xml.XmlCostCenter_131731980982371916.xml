@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<XmlCostCenter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Code>00000</Code>
+  <Name>Apeldoorn</Name>
+  <Website />
+</XmlCostCenter>

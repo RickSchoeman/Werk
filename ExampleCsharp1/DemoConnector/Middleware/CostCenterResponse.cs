@@ -8,8 +8,6 @@ namespace DemoConnector.Middleware
 {
     public class CostCenterResponse
     {
-
-
         public string Code { get; set; }
         public string Name { get; set; }
         public string Comment { get; set; }

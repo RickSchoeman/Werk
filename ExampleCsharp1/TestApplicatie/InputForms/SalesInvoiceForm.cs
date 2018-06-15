@@ -86,7 +86,7 @@ namespace TestApplicatie.InputForms
                     CustomerReference = customerBox.GetItemText(customerBox.SelectedItem),
                     OrderType = typeBox.GetItemText(typeBox.SelectedItem)
                 };
-                this.SalesInvoice.SalesInvoiceLines.SalesInvoiceLine[0] = new SalesInvoiceLine
+                var sl = new SalesInvoiceLine
                 {
                     Amount = decimal.Parse(unitsBox.Text),
                     Currency = currencyBox.GetItemText(currencyBox.SelectedItem),
@@ -95,6 +95,9 @@ namespace TestApplicatie.InputForms
                     Article = articleBox.GetItemText(articleBox.SelectedItem),
                     Subarticle = subarticleBox.GetItemText(subarticleBox.SelectedItem)
                 };
+                var sll = new List<SalesInvoiceLine>();
+                sll.Add(sl);
+                this.SalesInvoice.SalesInvoiceLines.SalesInvoiceLine = sll;
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }

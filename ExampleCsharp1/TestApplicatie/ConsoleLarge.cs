@@ -17,7 +17,17 @@ namespace TestApplicatie
             InitializeComponent();
             foreach (var x in richTextBox.Lines)
             {
-                richTextBox1.AppendText("\r\n" + x);
+                if (x.StartsWith("<") || x.StartsWith(" "))
+                {
+                    richTextBox1.SelectionColor = Color.Blue;
+                    richTextBox1.AppendText("\r\n" + x);
+                }
+                else
+                {
+                    richTextBox1.AppendText("\r\n" + x);
+                }
+
+                richTextBox1.SelectionColor = Color.Black;
             }
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
         }

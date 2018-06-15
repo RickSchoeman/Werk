@@ -33,20 +33,21 @@
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.label2 = new System.Windows.Forms.Label();
-            this.data = new System.Windows.Forms.ComboBox();
+            this.DataComboBox = new System.Windows.Forms.ComboBox();
             this.dataInladen = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.functie = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.functieUitvoeren = new System.Windows.Forms.Button();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.LogBox = new System.Windows.Forms.RichTextBox();
             this.resultBar = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.dataVeld = new System.Windows.Forms.ComboBox();
             this.createNew = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.infoButton = new System.Windows.Forms.Button();
+            this.results = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button1
@@ -99,14 +100,14 @@
             this.label2.TabIndex = 6;
             this.label2.Text = "Data";
             // 
-            // data
+            // DataComboBox
             // 
-            this.data.FormattingEnabled = true;
-            this.data.Location = new System.Drawing.Point(401, 82);
-            this.data.Name = "data";
-            this.data.Size = new System.Drawing.Size(121, 21);
-            this.data.TabIndex = 7;
-            this.data.SelectedIndexChanged += new System.EventHandler(this.data_SelectedIndexChanged);
+            this.DataComboBox.FormattingEnabled = true;
+            this.DataComboBox.Location = new System.Drawing.Point(401, 82);
+            this.DataComboBox.Name = "DataComboBox";
+            this.DataComboBox.Size = new System.Drawing.Size(121, 21);
+            this.DataComboBox.TabIndex = 7;
+            this.DataComboBox.SelectedIndexChanged += new System.EventHandler(this.data_SelectedIndexChanged);
             // 
             // dataInladen
             // 
@@ -163,14 +164,14 @@
             this.functieUitvoeren.UseVisualStyleBackColor = true;
             this.functieUitvoeren.Click += new System.EventHandler(this.functieUitvoeren_Click);
             // 
-            // richTextBox1
+            // LogBox
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(12, 272);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.ReadOnly = true;
-            this.richTextBox1.Size = new System.Drawing.Size(613, 97);
-            this.richTextBox1.TabIndex = 14;
-            this.richTextBox1.Text = "";
+            this.LogBox.Location = new System.Drawing.Point(12, 272);
+            this.LogBox.Name = "LogBox";
+            this.LogBox.ReadOnly = true;
+            this.LogBox.Size = new System.Drawing.Size(613, 97);
+            this.LogBox.TabIndex = 14;
+            this.LogBox.Text = "";
             // 
             // resultBar
             // 
@@ -226,25 +227,36 @@
             this.infoButton.UseVisualStyleBackColor = true;
             this.infoButton.Click += new System.EventHandler(this.info_Click);
             // 
+            // results
+            // 
+            this.results.Location = new System.Drawing.Point(12, 375);
+            this.results.Name = "results";
+            this.results.Size = new System.Drawing.Size(113, 23);
+            this.results.TabIndex = 21;
+            this.results.Text = "Open resultaten";
+            this.results.UseVisualStyleBackColor = true;
+            this.results.Click += new System.EventHandler(this.results_Click);
+            // 
             // Twinfield
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(637, 403);
+            this.Controls.Add(this.results);
             this.Controls.Add(this.infoButton);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.createNew);
             this.Controls.Add(this.dataVeld);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.resultBar);
-            this.Controls.Add(this.richTextBox1);
+            this.Controls.Add(this.LogBox);
             this.Controls.Add(this.functieUitvoeren);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.functie);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.dataInladen);
-            this.Controls.Add(this.data);
+            this.Controls.Add(this.DataComboBox);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.radioButton2);
             this.Controls.Add(this.radioButton1);
@@ -264,19 +276,20 @@
         private System.Windows.Forms.RadioButton radioButton1;
         private System.Windows.Forms.RadioButton radioButton2;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox data;
+        private System.Windows.Forms.ComboBox DataComboBox;
         private System.Windows.Forms.Button dataInladen;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox functie;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Button functieUitvoeren;
-        private System.Windows.Forms.RichTextBox richTextBox1;
-        private System.Windows.Forms.TextBox resultBar;
+        public System.Windows.Forms.Button functieUitvoeren;
+        public System.Windows.Forms.RichTextBox LogBox;
+        public System.Windows.Forms.TextBox resultBar;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.ComboBox dataVeld;
+        public System.Windows.Forms.ComboBox dataVeld;
         private System.Windows.Forms.Button createNew;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button infoButton;
+        private System.Windows.Forms.Button results;
     }
 }

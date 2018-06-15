@@ -90,12 +90,14 @@ namespace DemoConnector.TwinfieldAPI.Handlers
     {
         private readonly ArticleService _articleService;
         private readonly SubArticleService _subArticleService;
+        private readonly ApiOperationsBase<Article> _apiOperations;
         private const int SearchField = 0;
 
         public ArticleOperations(Session session)
         {
             _articleService = new ArticleService(session);
             _subArticleService = new SubArticleService(session);
+            _apiOperations = new ApiOperationsBase<Article>(session, "ART");
         }
 
         private readonly List<Article> _articleList = new List<Article>();
@@ -146,44 +148,17 @@ namespace DemoConnector.TwinfieldAPI.Handlers
 
         public string Create(Article article)
         {
-            try
-            {
-                _articleService.CreateArticle(article);
-                return "Created";
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return e.Message;
-            }
+            return _apiOperations.Create(article);
         }
 
         public string Delete(Article article)
         {
-            try
-            {
-                _articleService.DeleteArticle(article);
-                return "Deleted";
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return e.Message;
-            }
+            return _apiOperations.Delete(article);
         }
 
         public string Activate(Article article)
         {
-            try
-            {
-                _articleService.ActivateArticle(article);
-                return "Activated";
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return e.Message;
-            }
+            return _apiOperations.Activate(article);
         }
 
         public string DeleteSubArticle(Article article)
@@ -211,7 +186,7 @@ namespace DemoConnector.TwinfieldAPI.Handlers
     {
         private readonly DimensionOperations<T> _dimensionOperations;
         private readonly string _apiCode;
-        public ApiOperationsBase( Session session,string apiObjectCode)
+        public ApiOperationsBase(Session session, string apiObjectCode)
         {
             _apiCode = apiObjectCode;
             _dimensionOperations = new DimensionOperations<T>(session);
@@ -310,12 +285,14 @@ namespace DemoConnector.TwinfieldAPI.Handlers
     {
         private readonly SalesInvoiceService _salesInvoiceService;
         private readonly InvoiceTypeService _invoiceTypeService;
+        private readonly ApiOperationsBase<Data.SalesInvoice.SalesInvoice> _apiOperations;
         private const int SearchField = 0;
 
         public SalesInvoiceOperations(Session session)
         {
             _salesInvoiceService = new SalesInvoiceService(session);
             _invoiceTypeService = new InvoiceTypeService(session);
+            _apiOperations = new ApiOperationsBase<Data.SalesInvoice.SalesInvoice>(session, "INV");
         }
 
         private readonly List<Data.SalesInvoice.SalesInvoice> _salesInvoiceList =
@@ -401,6 +378,7 @@ namespace DemoConnector.TwinfieldAPI.Handlers
 
         public string Create(Data.SalesInvoice.SalesInvoice salesInvoice)
         {
+            return _apiOperations.Create(salesInvoice);
             try
             {
                 _salesInvoiceService.CreateSalesInvoice(salesInvoice);
@@ -426,17 +404,13 @@ namespace DemoConnector.TwinfieldAPI.Handlers
     public class VatOperations : IVatInterface
     {
         private readonly VatService _vatService;
-        private readonly VatCountryService _vatCountryService;
-        private readonly VatGroupService _vatGroupService;
-        private readonly VatNrOfRelationsService _vatNrOfRelationsService;
+        private readonly ApiOperationsBase<Vat> _apiOperations;
         private const int SearchField = 0;
 
         public VatOperations(Session session)
         {
             _vatService = new VatService(session);
-            _vatCountryService = new VatCountryService(session);
-            _vatGroupService = new VatGroupService(session);
-            _vatNrOfRelationsService = new VatNrOfRelationsService(session);
+            _apiOperations = new ApiOperationsBase<Vat>(session, "VAT");
         }
 
         private readonly List<Vat> _vatList = new List<Vat>();
@@ -472,69 +446,51 @@ namespace DemoConnector.TwinfieldAPI.Handlers
             return _vatService.FindVats("*", "VAT", SearchField);
         }
 
-        public bool Create(Vat vat)
+        public string Create(Vat vat)
         {
-            try
-            {
-                _vatService.CreateVat(vat);
-                return true;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return false;
-            }
+            return _apiOperations.Create(vat);
         }
 
-        public bool Delete(Vat vat)
+        public string Delete(Vat vat)
         {
-            try
-            {
-                _vatService.CreateVat(vat);
-                return true;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return false;
-            }
+            return _apiOperations.Delete(vat);
         }
 
-        public List<VatCountrySummary> GetVatCountriesByName(string name)
-        {
-            var vatCountries = _vatCountryService.FindVatCountries(name, "VGM", SearchField);
-            return vatCountries;
-        }
-
-        public List<VatCountrySummary> GetAllVatCountries()
-        {
-            var vatCountries = _vatCountryService.FindVatCountries("*", "VGM", SearchField);
-            return vatCountries;
-        }
-
-        public List<VatGroupSummary> GetVatGroupsByName(string name)
-        {
-            var vatGroups = _vatGroupService.FindVatGroups(name, "VTB", SearchField);
-            return vatGroups;
-        }
-
-        public List<VatGroupSummary> GetAllVatGroups()
-        {
-            var vatGroups = _vatGroupService.FindVatGroups("*", "VTB", SearchField);
-            return vatGroups;
-        }
-
-        public List<VatNrOfRelationsSummary> GetVatNrOfRelationsByName(string name)
-        {
-            var vatNrOfRelations = _vatNrOfRelationsService.FindVatNrOfRelations(name, "VATN", SearchField);
-            return vatNrOfRelations;
-        }
-
-        public List<VatNrOfRelationsSummary> GetAllVatNrOfRelations()
-        {
-            var vatNrOfRelations = _vatNrOfRelationsService.FindVatNrOfRelations("*", "VATN", SearchField);
-            return vatNrOfRelations;
-        }
+//        public List<VatCountrySummary> GetVatCountriesByName(string name)
+//        {
+//            var vatCountries = _vatCountryService.FindVatCountries(name, "VGM", SearchField);
+//            return vatCountries;
+//        }
+//
+//        public List<VatCountrySummary> GetAllVatCountries()
+//        {
+//            var vatCountries = _vatCountryService.FindVatCountries("*", "VGM", SearchField);
+//            return vatCountries;
+//        }
+//
+//        public List<VatGroupSummary> GetVatGroupsByName(string name)
+//        {
+//            var vatGroups = _vatGroupService.FindVatGroups(name, "VTB", SearchField);
+//            return vatGroups;
+//        }
+//
+//        public List<VatGroupSummary> GetAllVatGroups()
+//        {
+//            var vatGroups = _vatGroupService.FindVatGroups("*", "VTB", SearchField);
+//            return vatGroups;
+//        }
+//
+//        public List<VatNrOfRelationsSummary> GetVatNrOfRelationsByName(string name)
+//        {
+//            var vatNrOfRelations = _vatNrOfRelationsService.FindVatNrOfRelations(name, "VATN", SearchField);
+//            return vatNrOfRelations;
+//        }
+//
+//        public List<VatNrOfRelationsSummary> GetAllVatNrOfRelations()
+//        {
+//            var vatNrOfRelations = _vatNrOfRelationsService.FindVatNrOfRelations("*", "VATN", SearchField);
+//            return vatNrOfRelations;
+//        }
     }
 
     public class OfficeOperations
@@ -586,11 +542,13 @@ namespace DemoConnector.TwinfieldAPI.Handlers
     public class CurrencyOperations : ICurrencyInterface
     {
         private readonly CurrenciesService _currenciesService;
+        private readonly ApiOperationsBase<Currency> _apiOperations;
         private const int SearchField = 0;
 
         public CurrencyOperations(Session session)
         {
             _currenciesService = new CurrenciesService(session);
+            _apiOperations = new ApiOperationsBase<Currency>(session, "CUR");
         }
 
         private readonly List<Currency> _currencyList = new List<Currency>();
@@ -621,32 +579,14 @@ namespace DemoConnector.TwinfieldAPI.Handlers
             return _currencyList;
         }
 
-        public bool Create(Currency currency)
+        public string Create(Currency currency)
         {
-            try
-            {
-                _currenciesService.CreateCurrency(currency);
-                return true;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return false;
-            }
+            return _apiOperations.Create(currency);
         }
 
-        public bool Delete(Currency currency)
+        public string Delete(Currency currency)
         {
-            try
-            {
-                _currenciesService.DeleteCurrency(currency);
-                return true;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return false;
-            }
+            return _apiOperations.Delete(currency);
         }
 
         public bool DeleteCurrencyRate(Currency currency)
@@ -674,11 +614,13 @@ namespace DemoConnector.TwinfieldAPI.Handlers
     public class DimensionTypeOperations :IDimensionTypeInterface
     {
         private readonly DimensionTypeService _dimensionTypeService;
+        private readonly ApiOperationsBase<DimensionType> _apiOperations;
         private const int SearchField = 0;
 
         public DimensionTypeOperations(Session session)
         {
             _dimensionTypeService = new DimensionTypeService(session);
+            _apiOperations = new ApiOperationsBase<DimensionType>(session, "DMT");
         }
 
         private readonly List<DimensionType> _dimensionTypeList = new List<DimensionType>();
@@ -709,18 +651,9 @@ namespace DemoConnector.TwinfieldAPI.Handlers
             return _dimensionTypeList;
         }
 
-        public bool Update(DimensionType dimensionType)
+        public string Update(DimensionType dimensionType)
         {
-            try
-            {
-                _dimensionTypeService.UpdateDimensionType(dimensionType);
-                return true;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return false;
-            }
+            return _apiOperations.Create(dimensionType);
         }
     }
 

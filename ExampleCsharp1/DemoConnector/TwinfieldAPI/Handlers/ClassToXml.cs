@@ -9,7 +9,7 @@ namespace DemoConnector.TwinfieldAPI.Handlers
     {
         XmlSerializer ser = new XmlSerializer(typeof(T));
 
-        public void GenerateXml(T obj)
+        public string GenerateXml(T obj)
         {
             var xml = string.Empty;
             using (var sww = new StringWriter())
@@ -20,14 +20,15 @@ namespace DemoConnector.TwinfieldAPI.Handlers
                     xml = sww.ToString();
                 }
             }
-            Console.WriteLine(xml);
+
+            return xml;
         }
 
         public void WriteXml(T obj)
         {
             XmlSerializer ser = new XmlSerializer(typeof(T));
-            var folder = Directory.CreateDirectory(@"./Xml");
-            var file = File.Create("./Xml/XmlResult.xml");
+            var folder = Directory.CreateDirectory(@"../../Xml/Results");
+            var file = File.Create("../../Xml/Results/XmlResult_" + typeof(T) + "_"  + DateTime.Now.ToFileTime() + ".xml");
             ser.Serialize(file, obj);
             file.Close();
         }

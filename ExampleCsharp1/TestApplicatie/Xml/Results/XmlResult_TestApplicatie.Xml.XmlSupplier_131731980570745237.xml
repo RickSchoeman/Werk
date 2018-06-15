@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<XmlSupplier xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>Dhr. Joosten</Name>
+  <Code>2001</Code>
+  <Bank />
+  <Addresses>
+    <General>
+      <ContactPerson />
+      <Address1>Joosten Corp</Address1>
+      <ZipCode>Postcode</ZipCode>
+      <City>Bunschoten</City>
+      <Country>
+        <Name>Nederland</Name>
+        <Code>NL</Code>
+      </Country>
+      <IsEmpty>false</IsEmpty>
+    </General>
+  </Addresses>
+  <PhoneNumbers>
+    <General>Telefoon</General>
+    <Fax>Fax</Fax>
+    <Mobile />
+  </PhoneNumbers>
+  <MailAddresses>
+    <General>
+      <To />
+      <IsEmpty>false</IsEmpty>
+    </General>
+    <Invoice>
+      <To />
+      <IsEmpty>false</IsEmpty>
+    </Invoice>
+    <InvoiceReminder>
+      <IsEmpty>false</IsEmpty>
+    </InvoiceReminder>
+  </MailAddresses>
+  <VatNumber />
+  <Website />
+</XmlSupplier>

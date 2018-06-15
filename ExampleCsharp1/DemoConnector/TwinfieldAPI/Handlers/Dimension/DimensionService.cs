@@ -8,15 +8,24 @@ using DemoConnector.TwinfieldAPI.Data;
 using DemoConnector.TwinfieldAPI.Data.Articles;
 using DemoConnector.TwinfieldAPI.Data.BalanceSheet;
 using DemoConnector.TwinfieldAPI.Data.CostCenters;
+using DemoConnector.TwinfieldAPI.Data.Currencies;
 using DemoConnector.TwinfieldAPI.Data.Customers;
 using DemoConnector.TwinfieldAPI.Data.Dimensions;
+using DemoConnector.TwinfieldAPI.Data.DimensionTypes;
 using DemoConnector.TwinfieldAPI.Data.GeneralLedgers;
 using DemoConnector.TwinfieldAPI.Data.ProfitLoss;
 using DemoConnector.TwinfieldAPI.Data.Suppliers;
+using DemoConnector.TwinfieldAPI.Data.VATs;
+using DemoConnector.TwinfieldAPI.Handlers.Articles;
 using DemoConnector.TwinfieldAPI.Handlers.CostCenters;
+using DemoConnector.TwinfieldAPI.Handlers.Currencies;
 using DemoConnector.TwinfieldAPI.Handlers.Customers;
+using DemoConnector.TwinfieldAPI.Handlers.DimensionGroups;
+using DemoConnector.TwinfieldAPI.Handlers.DimensionTypes;
 using DemoConnector.TwinfieldAPI.Handlers.GeneralLedgers;
+using DemoConnector.TwinfieldAPI.Handlers.SalesInvoice;
 using DemoConnector.TwinfieldAPI.Handlers.Suppliers;
+using DemoConnector.TwinfieldAPI.Handlers.VATs;
 using DemoConnector.TwinfieldFinderService;
 
 namespace DemoConnector.TwinfieldAPI.Handlers.Dimension
@@ -159,39 +168,54 @@ namespace DemoConnector.TwinfieldAPI.Handlers.Dimension
                 };
                 _processXml.Process(command.ToXml());
             }
+
+            if (resultType == typeof(Article))
+            {
+                var command = new CreateArticleCommand
+                {
+                    Article = obj as Article
+                };
+                _processXml.Process(command.ToXml());
+            }
+
+            if (resultType == typeof(Data.SalesInvoice.SalesInvoice))
+            {
+                var command = new CreateSalesInvoiceCommand
+                {
+                    SalesInvoice = obj as Data.SalesInvoice.SalesInvoice
+                };
+                _processXml.Process(command.ToXml());
+            }
+
+            if (resultType == typeof(Vat))
+            {
+                var command = new CreateVatCommand
+                {
+                    Vat = obj as Vat
+                };
+                _processXml.Process(command.ToXml());
+            }
+
+            if (resultType == typeof(Currency))
+            {
+                var command = new CreateCurrencyCommand
+                {
+                    Currency = obj as Currency
+                };
+                _processXml.Process(command.ToXml());
+            }
+
+            if (resultType == typeof(DimensionType))
+            {
+                var command = new UpdateDimensionTypeCommand
+                {
+                    DimensionType = obj as DimensionType
+                };
+                _processXml.Process(command.ToXml());
+            }
         }
 
-        //        public void CreateDimension(object obj)
-        //        {
-        //            switch (obj)
-        //            {
-        //                case Customer _:
-        //                    var cCommand = new CreateCustomerCommand
-        //                    {
-        //                        Customer = obj as Customer
-        //                    };
-        //                    _processXml.Process(cCommand.ToXml());
-        //                    break;
-        //                case Supplier _:
-        //                    var sCommand = new CreateSupplierCommand
-        //                    {
-        //                        Supplier = obj as Supplier
-        //                    };
-        //                    _processXml.Process(sCommand.ToXml());
-        //                    break;
-        //                case GeneralLedger _:
-        //                    var gCommand = new CreateGeneralLedgerCommand
-        //                    {
-        //                        GeneralLedger = obj as GeneralLedger
-        //                    };
-        //                    _processXml.Process(gCommand.ToXml());
-        //                    break;
-        //                case Article _:
-        //                    break;
-        //            }
-        //        }
-
-        public void DeleteDimension<TResult>(object obj) where TResult : class
+        public void DeleteDimension<TResult>(TResult obj) where TResult : class
         {
             var resultType = typeof(TResult);
             if (resultType == typeof(Customer))
@@ -238,37 +262,36 @@ namespace DemoConnector.TwinfieldAPI.Handlers.Dimension
                 };
                 _processXml.Process(command.ToXml());
             }
+
+            if (resultType == typeof(Article))
+            {
+                var command = new DeleteArticleCommand
+                {
+                    Article = obj as Article
+                };
+                _processXml.Process(command.ToXml());
+            }
+
+            if (resultType == typeof(Vat))
+            {
+                var command = new DeleteVatCommand
+                {
+                    Vat = obj as Vat
+                };
+                _processXml.Process(command.ToXml());
+            }
+
+            if (resultType == typeof(Currency))
+            {
+                var command = new DeleteCurrencyCommand
+                {
+                    Currency = obj as Currency
+                };
+                _processXml.Process(command.ToXml());
+            }
         }
 
-        //        public void DeleteDimension(object obj)
-        //        {
-        //            switch (obj)
-        //            {
-        //                case Customer _:
-        //                    var cCommand = new DeleteCustomerCommand
-        //                    {
-        //                        Customer = obj as Customer
-        //                    };
-        //                    _processXml.Process(cCommand.ToXml());
-        //                    break;
-        //                case Supplier _:
-        //                    var sCommand = new DeleteSupplierCommand
-        //                    {
-        //                        Supplier = obj as Supplier
-        //                    };
-        //                    _processXml.Process(sCommand.ToXml());
-        //                    break;
-        //                case GeneralLedger _:
-        //                    var gCommand = new DeleteGeneralLedgerCommand
-        //                    {
-        //                        GeneralLedger = obj as GeneralLedger
-        //                    };
-        //                    _processXml.Process(gCommand.ToXml());
-        //                    break;
-        //            }
-        //        }
-
-        public void ActivateDimension<TResult>(object obj) where TResult : class
+        public void ActivateDimension<TResult>(TResult obj) where TResult : class
         {
             var resultType = typeof(TResult);
             if (resultType == typeof(Customer))
@@ -315,35 +338,16 @@ namespace DemoConnector.TwinfieldAPI.Handlers.Dimension
                 };
                 _processXml.Process(command.ToXml());
             }
-        }
 
-//        public void ActivateDimension(object obj)
-//        {
-//            switch (obj)
-//            {
-//                case Customer _:
-//                    var cCommand = new ActivateCustomerCommand
-//                    {
-//                        Customer = obj as Customer
-//                    };
-//                    _processXml.Process(cCommand.ToXml());
-//                    break;
-//                case Supplier _:
-//                    var sCommand = new ActivateSupplierCommand
-//                    {
-//                        Supplier = obj as Supplier
-//                    };
-//                    _processXml.Process(sCommand.ToXml());
-//                    break;
-//                case GeneralLedger _:
-//                    var gCommand = new ActivateGeneralLedgerCommand
-//                    {
-//                        GeneralLedger = obj as GeneralLedger
-//                    };
-//                    _processXml.Process(gCommand.ToXml());
-//                    break;
-//            }
-//        }
+            if (resultType == typeof(Article))
+            {
+                var command = new ActivateArticleCommand
+                {
+                    Article = obj as Article
+                };
+                _processXml.Process(command.ToXml());
+            }
+        }
 
     }
 }
