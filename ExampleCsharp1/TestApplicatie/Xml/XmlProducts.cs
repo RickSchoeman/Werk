@@ -25,7 +25,7 @@ namespace TestApplicatie.Xml
         public decimal MinimumStock { get; set; }
         public decimal PreferedStock { get; set; }
         public bool StockControl { get; set; }
-        public int Grootboek { get; set; }
+        public string Grootboek { get; set; }
     }
 
     public enum XmlPriceType

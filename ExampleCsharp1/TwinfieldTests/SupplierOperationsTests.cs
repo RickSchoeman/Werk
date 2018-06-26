@@ -31,7 +31,7 @@ namespace TwinfieldTests
         }
 
         [TestMethod]
-        public void Shuld_find_all_supplier_summaries()
+        public void Should_find_all_supplier_summaries()
         {
             var suppliers = _supplierInterface.GetSummaries();
             Assert.IsNotNull(suppliers);

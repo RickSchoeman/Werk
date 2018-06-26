@@ -40,13 +40,6 @@ namespace TestApplicatie.InputForms
             supplierBox.DataSource = sups;
             supplierBox.DropDownStyle = ComboBoxStyle.DropDownList;
             supplierBox.DisplayMember = "Code";
-            foreach (var g in _balanceSheetInterface.GetSummaries())
-            {
-                if (!ledgerBox.Items.Contains(g))
-                {
-                    ledgerBox.Items.Add(g);
-                }
-            }
 
             foreach (var g in _profitLossInterface.GetSummaries())
             {
@@ -82,6 +75,7 @@ namespace TestApplicatie.InputForms
                     SalesPrice = priceBox.Text,
                     BestelEenheid = decimal.Parse(unitBox.Text),
                     SupplierCode = supplierBox.GetItemText(supplierBox.SelectedItem),
+                    Grootboek = ledgerBox.Text
                 };
                 this.DialogResult = DialogResult.OK;
                 this.Close();

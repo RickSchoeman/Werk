@@ -59,9 +59,11 @@
     <Compile Include="GeneralLedgerOperationTests.cs" />
     <Compile Include="IMiddlewareData.cs" />
     <Compile Include="MiddlewareData.cs" />
+    <Compile Include="SalesInvoiceConverterTests.cs" />
     <Compile Include="SalesInvoiceOperationsTests.cs" />
     <Compile Include="SessionServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SupplierConverterTests.cs" />
     <Compile Include="SupplierOperationsTests.cs" />
     <Compile Include="Utilities.cs" />
   </ItemGroup>

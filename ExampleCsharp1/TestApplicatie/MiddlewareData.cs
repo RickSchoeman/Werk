@@ -73,7 +73,7 @@ namespace TestApplicatie
                 SupplierCode = "00006",
                 SalesPrice = "100",
                 BestelEenheid = 1,
-
+                Grootboek = "4080"
 
             };
             return new List<Product>{product};

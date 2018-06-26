@@ -217,38 +217,35 @@ namespace TestApplicatie.Functies
                     var x = t as GeneralLedgerResponse;
                     if (x.Code == _form.dataVeld.GetItemText(_form.dataVeld.SelectedItem))
                     {
-                        var gl = _generalLedgerConverter.ConvertGeneralLedgerResponseToBalanceSheet(x,
+                        var glb = _generalLedgerConverter.ConvertGeneralLedgerResponseToBalanceSheet(x,
                             _session.Office);
-                        if (changeType == Twinfield.DataChangeTypes.Create)
-                        {
-                            response = _balanceSheetInterface.Create(gl);
-                        }
-
-                        if (changeType == Twinfield.DataChangeTypes.Delete)
-                        {
-                            response = _balanceSheetInterface.Delete(gl);
-                        }
-                    }
-                }
-            }
-            if (dataType == typeof(GeneralLedgerResponse))
-            {
-                foreach (var t in item)
-                {
-                    var x = t as GeneralLedgerResponse;
-                    if (x.Code == _form.dataVeld.GetItemText(_form.dataVeld.SelectedItem))
-                    {
-                        var gl = _generalLedgerConverter.ConvertGeneralLedgerResponseToProfitLoss(x,
+                        var glp = _generalLedgerConverter.ConvertGeneralLedgerResponseToProfitLoss(x,
                             _session.Office);
-                        if (changeType == Twinfield.DataChangeTypes.Create)
+                        if (int.Parse(glb.Code) <= 3999)
                         {
-                            response = _profitLossInterface.Create(gl);
-                        }
+                            if (changeType == Twinfield.DataChangeTypes.Create)
+                            {
+                                response = _balanceSheetInterface.Create(glb);
+                            }
 
-                        if (changeType == Twinfield.DataChangeTypes.Delete)
-                        {
-                            response = _profitLossInterface.Delete(gl);
+                            if (changeType == Twinfield.DataChangeTypes.Delete)
+                            {
+                                response = _balanceSheetInterface.Delete(glb);
+                            }
                         }
+                        else
+                            {
+                                if (changeType == Twinfield.DataChangeTypes.Create)
+                                {
+                                    response = _profitLossInterface.Create(glp);
+                                }
+
+                                if (changeType == Twinfield.DataChangeTypes.Delete)
+                                {
+                                    response = _profitLossInterface.Delete(glp);
+                                }
+                            }
+                        
                     }
                 }
             }
@@ -375,15 +372,25 @@ namespace TestApplicatie.Functies
         public void ConvertData<T>(T item) where T : class
         {
             var resultType = typeof(T);
-            var xml = String.Empty;
+            var xml = string.Empty;
+            var json = string.Empty;
+            var code = string.Empty;
+            bool art = false;
             if (resultType == typeof(Customer))
             {
                 var x = item as Customer;
                 var r = _customerConverter.ConvertCustomer(x);
+                code = r.Code;
                 var customer = (new ResponseClassToXmlClass()).ConvertCustomer(r);
-                var ser = new Xml.ClassToXml<XmlCustomer>();
-                xml = ser.WriteXml(customer);
-                _form.LogBox.AppendText("\r\nCustomer " + r.Code + " created in middleware.");
+                if (_form.XmlCheckBox.Checked)
+                {
+                    xml = (new Xml.ClassToXml<XmlCustomer>()).WriteXml(customer);
+                }
+
+                if (_form.JsonCheckBox.Checked)
+                {
+                    json = (new ClassToJson<XmlCustomer>()).WriteJson(customer);
+                }
 
             }
 
@@ -391,18 +398,35 @@ namespace TestApplicatie.Functies
             {
                 var x = item as Supplier;
                 var rs = _supplierConverter.ConvertSupplier(x);
+                code = rs.Code;
                 var supplier = (new ResponseClassToXmlClass()).ConvertSupplier(rs);
-                xml = (new Xml.ClassToXml<XmlSupplier>()).WriteXml(supplier);
-                _form.LogBox.AppendText("\r\nSupplier " + rs.Code + " created in middleware");
+                if (_form.XmlCheckBox.Checked)
+                {
+                    xml = (new Xml.ClassToXml<XmlSupplier>()).WriteXml(supplier);
+                }
+
+                if (_form.JsonCheckBox.Checked)
+                {
+                    json = (new ClassToJson<XmlSupplier>()).WriteJson(supplier);
+                }
             }
 
             if (resultType == typeof(Article))
             {
+                art = true;
                 var x = item as Article;
                 var ar = _articleConverter.ConvertArticle(x);
                 var product = (new ResponseClassToXmlClass()).ConvertProducts(ar);
-                xml = (new Xml.ClassToXml<XmlProducts>()).WriteXml(product);
-                _form.LogBox.AppendText("\r\nArticle(s) ");
+                if (_form.XmlCheckBox.Checked)
+                {
+                    xml = (new Xml.ClassToXml<XmlProducts>()).WriteXml(product);
+                }
+
+                if (_form.JsonCheckBox.Checked)
+                {
+                    json = (new ClassToJson<XmlProducts>()).WriteJson(product);
+                }
+                _form.LogBox.AppendText("\r\nData ");
                 for (int i = 0; i < ar.Count; i++)
                 {
                     if (i == 0)
@@ -421,8 +445,17 @@ namespace TestApplicatie.Functies
             {
                 var x = item as SalesInvoice;
                 var sir = _salesInvoiceConverter.ConvertSalesInvoice(x);
+                code = sir.OrderNummer;
                 var salesInvoice = (new ResponseClassToXmlClass()).ConvertSalesInvoice(sir);
-                xml = (new Xml.ClassToXml<XmlSalesInvoice>()).WriteXml(salesInvoice);
+                if (_form.XmlCheckBox.Checked)
+                {
+                    xml = (new Xml.ClassToXml<XmlSalesInvoice>()).WriteXml(salesInvoice);
+                }
+
+                if (_form.JsonCheckBox.Checked)
+                {
+                    json = (new ClassToJson<XmlSalesInvoice>()).WriteJson(salesInvoice);
+                }
                 _form.LogBox.AppendText("\r\nSales invoice " + sir.OrderNummer + " created in middleware");
             }
 
@@ -430,65 +463,73 @@ namespace TestApplicatie.Functies
             {
                 var x = item as BalanceSheet;
                 var glr = _generalLedgerConverter.ConvertBalanceSheet(x);
+                code = glr.Code;
                 var balanceSheet = (new ResponseClassToXmlClass()).ConvertGeneralLedger(glr);
-                xml = (new Xml.ClassToXml<XmlGeneralLedger>()).WriteXml(balanceSheet);
-                _form.LogBox.AppendText("\r\nBalance sheet " + glr.Code + " created in middleware");
+                if (_form.XmlCheckBox.Checked)
+                {
+                    xml = (new Xml.ClassToXml<XmlGeneralLedger>()).WriteXml(balanceSheet);
+                }
+
+                if (_form.JsonCheckBox.Checked)
+                {
+                    json = (new ClassToJson<XmlGeneralLedger>()).WriteJson(balanceSheet);
+                }
             }
 
             if (resultType == typeof(ProfitLoss))
             {
                 var x = item as ProfitLoss;
                 var glr = _generalLedgerConverter.ConvertProfitLoss(x);
+                code = glr.Code;
                 var profitLoss = (new ResponseClassToXmlClass()).ConvertGeneralLedger(glr);
-                xml = (new Xml.ClassToXml<XmlGeneralLedger>()).WriteXml(profitLoss);
-                _form.LogBox.AppendText("\r\nProfit and loss " + glr.Code + " created in middleware");
+                if (_form.XmlCheckBox.Checked)
+                {
+                    xml = (new Xml.ClassToXml<XmlGeneralLedger>()).WriteXml(profitLoss);
+                }
+
+                if (_form.JsonCheckBox.Checked)
+                {
+                    json = (new ClassToJson<XmlGeneralLedger>()).WriteJson(profitLoss);
+                }
             }
 
             if (resultType == typeof(CostCenter))
             {
                 var x = item as CostCenter;
                 var ccr = _costCenterConverter.ConvertCostCenter(x);
+                code = ccr.Code;
                 var costcenter = (new ResponseClassToXmlClass()).ConvertCostCenter(ccr);
-                xml = (new Xml.ClassToXml<XmlCostCenter>()).WriteXml(costcenter);
-                _form.LogBox.AppendText("\r\nCost center " + ccr.Code + " created in middleware");
+                if (_form.XmlCheckBox.Checked)
+                {
+                    xml = (new Xml.ClassToXml<XmlCostCenter>()).WriteXml(costcenter);
+                }
+
+                if (_form.JsonCheckBox.Checked)
+                {
+                    json = (new ClassToJson<XmlCostCenter>()).WriteJson(costcenter);
+                }
             }
 
-            _form.LogBox.AppendText("\r\nXml file '" + xml + "' created with the following results:");
-            var node = XElement.Load("../../Xml/Results/" + xml);
-            var nd = node.FirstNode;
-            while (nd != null)
+            if (!art)
             {
-                var text = FormatXml(nd);
-                _form.LogBox.SelectionColor = Color.Blue;
-                _form.LogBox.AppendText("\r\n" + text);
-                nd = nd.NextNode;
-                _form.LogBox.ScrollToCaret();
+                _form.LogBox.AppendText("\r\nData " + code + " created in middleware");
+            }
+
+        
+            if (_form.XmlCheckBox.Checked)
+            {
+                _form.LogBox.AppendText("\r\nXml file '" + xml + "' created");
+            }
+
+            if (_form.JsonCheckBox.Checked)
+            {
+                _form.LogBox.AppendText("\r\nJson file '" + json + "' created");
             }
 
             _form.LogBox.SelectionColor = Color.Black;
             Cursor.Current = Cursors.Arrow;
             _form.resultBar.BackColor = Color.Chartreuse;
             _form.LogBox.ScrollToCaret();
-        }
-
-        protected string FormatXml(XNode xmlNode)
-        {
-            StringBuilder bob = new StringBuilder();
-
-
-            // We will use stringWriter to push the formated xml into our StringBuilder bob.
-            using (StringWriter stringWriter = new StringWriter(bob))
-            {
-                // We will use the Formatting of our xmlTextWriter to provide our indentation.
-                using (XmlTextWriter xmlTextWriter = new XmlTextWriter(stringWriter))
-                {
-                    xmlTextWriter.Formatting = Formatting.Indented;
-                    xmlNode.WriteTo(xmlTextWriter);
-                }
-            }
-
-
-            return bob.ToString();
         }
 
         public void AddData(string displayType, string objectType, Form form, System.Type dataType)

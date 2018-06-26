@@ -1,0 +1,1 @@
+{"CustomerId":"1002","Project":null,"CustomerReference":"1002","Name":null,"OrderNummer":"7","OrderType":"FACTUUR","InvoiceTypeAndNumber":null,"SalesInvoiceLines":[{"Article":"FRUIT","Subarticle":"BANAAN","Amount":1.0,"Currency":"EUR","Description":"Banaan","Quantity":2.0,"VatPercentage":0.0,"VatType":"sales"}]}

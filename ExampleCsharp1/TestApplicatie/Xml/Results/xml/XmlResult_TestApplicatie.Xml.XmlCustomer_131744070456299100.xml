@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<XmlCustomer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Code>1234</Code>
+  <Name>Liz Anja</Name>
+  <Bank>
+    <AccountHolder>1001</AccountHolder>
+    <AccountNumber>123456</AccountNumber>
+    <Name>ing</Name>
+    <BicCode />
+    <IBan />
+  </Bank>
+  <Addresses>
+    <General>
+      <Country />
+      <IsEmpty>false</IsEmpty>
+    </General>
+  </Addresses>
+  <PhoneNumbers>
+    <General />
+    <Fax />
+    <Mobile />
+  </PhoneNumbers>
+  <EMailAddresses>
+    <General>
+      <To />
+      <IsEmpty>false</IsEmpty>
+    </General>
+    <Invoice>
+      <To />
+      <IsEmpty>false</IsEmpty>
+    </Invoice>
+    <InvoiceReminder>
+      <To />
+      <IsEmpty>false</IsEmpty>
+    </InvoiceReminder>
+  </EMailAddresses>
+  <VATNumber />
+  <ImportAllowed>false</ImportAllowed>
+  <Website />
+</XmlCustomer>

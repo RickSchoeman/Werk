@@ -101,6 +101,22 @@ namespace TestApplicatie
             }
         }
 
+        private const string ReadText = "Read";
+        private const string CreateText = "Create";
+        private const string DeleteText = "Delete";
+        private const string ConvertText = "Convert";
+
+        private static string FunctionTypeDisplayName(FunctionEnum value)
+        {
+            switch (value)
+            {
+                case FunctionEnum.Read: return ReadText;
+                case FunctionEnum.Create: return CreateText;
+                case FunctionEnum.Delete: return DeleteText;
+                case FunctionEnum.Convert: return ConvertText;
+                default: return value.ToString();
+            }
+        }
 
         public Twinfield(Session session)
         {
@@ -155,6 +171,7 @@ namespace TestApplicatie
             functieUitvoeren.Enabled = false;
             SetFunctions(FunctionEnum.Read, FunctionEnum.Create, FunctionEnum.Delete);
             functie.Enabled = true;
+            dataVeld.Items.Clear();
         }
 
         private void radioButton2_CheckedChanged(object sender, EventArgs e)
@@ -165,6 +182,7 @@ namespace TestApplicatie
             functie.Enabled = false;
             functie.DataSource = new List<string>();
             functieUitvoeren.Enabled = false;
+            dataVeld.Items.Clear();
         }
 
         private void dataInladen_Click(object sender, EventArgs e)
@@ -295,11 +313,14 @@ namespace TestApplicatie
                 functieUitvoeren.Enabled = true;
                 dataVeld.Enabled = true;
                 this.Cursor = Cursors.Arrow;
+                resultBar.BackColor = Color.Chartreuse;
             }
             catch (Exception ex)
             {
                 this.Cursor = Cursors.Arrow;
-                MessageBox.Show(ex.Message);
+                resultBar.BackColor = Color.Red;
+                LogBox.AppendText("\r\nDe data kan niet ingeladen worden");
+                LogBox.AppendText("\r\nError: " + ex.Message);
             }
         }
 
@@ -330,7 +351,7 @@ namespace TestApplicatie
             {
                 switch (functie.Text)
                 {
-                    case @"Read":
+                    case ReadText:
 
                         try
                         {
@@ -372,7 +393,7 @@ namespace TestApplicatie
                             LogBox.AppendText("\r\nError: " + ex.Message);
                             break;
                         }
-                    case @"Convert":
+                    case ConvertText:
                         try
                         {
                             switch (DataComboBox.Text)
@@ -421,7 +442,7 @@ namespace TestApplicatie
             {
                 switch (functie.Text)
                 {
-                    case @"Read":
+                    case ReadText:
                         switch (DataComboBox.Text)
                         {
                             case CustomersText:
@@ -449,7 +470,7 @@ namespace TestApplicatie
                         }
 
                         break;
-                    case @"Create":
+                    case CreateText:
                         switch (DataComboBox.Text)
                         {
                             case CustomersText:
@@ -476,7 +497,7 @@ namespace TestApplicatie
                         }
 
                         break;
-                    case @"Delete":
+                    case DeleteText:
                         switch (DataComboBox.Text)
                         {
                             case CustomersText:
@@ -564,6 +585,20 @@ namespace TestApplicatie
                 {
                     Process.Start(p);
                 }
+            }
+        }
+
+        private void functie_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (functie.Text == ConvertText)
+            {
+                XmlCheckBox.Visible = true;
+                JsonCheckBox.Visible = true;
+            }
+            else
+            {
+                XmlCheckBox.Visible = false;
+                JsonCheckBox.Visible = false;
             }
         }
     }

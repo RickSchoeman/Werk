@@ -20,7 +20,7 @@ namespace DemoConnector.TwinfieldAPI.Converters
                     SalesPrice = l.Unitspriceexcl,
                     SupplierCode = l.Freetext2,
                     BestelEenheid = l.Units,
-                    Grootboek = int.Parse(l.Freetext1)
+                    Grootboek = l.Freetext1
                 };
                 list.Add(subproduct);
             }
@@ -43,7 +43,8 @@ namespace DemoConnector.TwinfieldAPI.Converters
                     Name = product.Description,
                     Unitspriceexcl = product.SalesPrice,
                     Units = (int) product.BestelEenheid,
-                    Freetext2 = product.SupplierCode,
+                    Freetext1 = product.Grootboek,
+                    Freetext2 = product.SupplierCode
                 };
             list.Add(line);
 

@@ -48,6 +48,8 @@
             this.label6 = new System.Windows.Forms.Label();
             this.infoButton = new System.Windows.Forms.Button();
             this.results = new System.Windows.Forms.Button();
+            this.XmlCheckBox = new System.Windows.Forms.CheckBox();
+            this.JsonCheckBox = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // button1
@@ -135,6 +137,7 @@
             this.functie.Name = "functie";
             this.functie.Size = new System.Drawing.Size(121, 21);
             this.functie.TabIndex = 10;
+            this.functie.SelectedIndexChanged += new System.EventHandler(this.functie_SelectedIndexChanged);
             // 
             // label4
             // 
@@ -237,11 +240,35 @@
             this.results.UseVisualStyleBackColor = true;
             this.results.Click += new System.EventHandler(this.results_Click);
             // 
+            // XmlCheckBox
+            // 
+            this.XmlCheckBox.AutoSize = true;
+            this.XmlCheckBox.Location = new System.Drawing.Point(140, 217);
+            this.XmlCheckBox.Name = "XmlCheckBox";
+            this.XmlCheckBox.Size = new System.Drawing.Size(81, 17);
+            this.XmlCheckBox.TabIndex = 22;
+            this.XmlCheckBox.Text = "Export XML";
+            this.XmlCheckBox.UseVisualStyleBackColor = true;
+            this.XmlCheckBox.Visible = false;
+            // 
+            // JsonCheckBox
+            // 
+            this.JsonCheckBox.AutoSize = true;
+            this.JsonCheckBox.Location = new System.Drawing.Point(227, 217);
+            this.JsonCheckBox.Name = "JsonCheckBox";
+            this.JsonCheckBox.Size = new System.Drawing.Size(87, 17);
+            this.JsonCheckBox.TabIndex = 23;
+            this.JsonCheckBox.Text = "Export JSON";
+            this.JsonCheckBox.UseVisualStyleBackColor = true;
+            this.JsonCheckBox.Visible = false;
+            // 
             // Twinfield
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(637, 403);
+            this.Controls.Add(this.JsonCheckBox);
+            this.Controls.Add(this.XmlCheckBox);
             this.Controls.Add(this.results);
             this.Controls.Add(this.infoButton);
             this.Controls.Add(this.label6);
@@ -291,5 +318,7 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button infoButton;
         private System.Windows.Forms.Button results;
+        public System.Windows.Forms.CheckBox XmlCheckBox;
+        public System.Windows.Forms.CheckBox JsonCheckBox;
     }
 }

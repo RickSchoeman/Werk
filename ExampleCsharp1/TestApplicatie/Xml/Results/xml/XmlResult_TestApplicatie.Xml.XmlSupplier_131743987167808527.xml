@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<XmlSupplier xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>test</Name>
+  <Code>2002</Code>
+  <Bank>
+    <AccountHolder>test</AccountHolder>
+    <AccountNumber>1234567</AccountNumber>
+    <Name>testbank</Name>
+    <BicCode />
+    <IBan />
+  </Bank>
+  <Addresses>
+    <General>
+      <ContactPerson />
+      <Address1 />
+      <ZipCode />
+      <City />
+      <Country>
+        <Name>Nederland</Name>
+        <Code />
+      </Country>
+      <IsEmpty>false</IsEmpty>
+    </General>
+  </Addresses>
+  <PhoneNumbers>
+    <General />
+    <Fax />
+    <Mobile />
+  </PhoneNumbers>
+  <MailAddresses>
+    <General>
+      <To />
+      <IsEmpty>false</IsEmpty>
+    </General>
+    <Invoice>
+      <To />
+      <IsEmpty>false</IsEmpty>
+    </Invoice>
+    <InvoiceReminder>
+      <IsEmpty>false</IsEmpty>
+    </InvoiceReminder>
+  </MailAddresses>
+  <VatNumber />
+  <Website />
+</XmlSupplier>
