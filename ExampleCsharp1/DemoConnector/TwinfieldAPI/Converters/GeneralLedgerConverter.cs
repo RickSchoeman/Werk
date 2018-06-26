@@ -7,9 +7,9 @@ using DemoConnector.Middleware;
 using DemoConnector.TwinfieldAPI.Converters.Interfaces;
 using DemoConnector.TwinfieldAPI.Data.BalanceSheet;
 using DemoConnector.TwinfieldAPI.Data.GeneralLedgers;
+using DemoConnector.TwinfieldAPI.Data.NotImplemented.Relations;
 using DemoConnector.TwinfieldAPI.Data.ProfitLoss;
-using DemoConnector.TwinfieldAPI.Data.Relations;
-using Type = DemoConnector.TwinfieldAPI.Data.Relations.Type;
+using Type = DemoConnector.TwinfieldAPI.Data.NotImplemented.Relations.Type;
 
 namespace DemoConnector.TwinfieldAPI.Converters
 {
@@ -65,14 +65,12 @@ namespace DemoConnector.TwinfieldAPI.Converters
                 {
                     Matchtype = MatchType.Notmatchable,
                     Accounttype = "balance",
-                    Level = 1,
-                    Vatcode = new VatCode
-                    {
-                        Name = generalLedgerResponse.VatName,
-                        Type = type
-                    }
+                    Level = 1
                 }
             };
+            var fin = new VatCode();
+            fin.Name = generalLedgerResponse.VatName;
+            fin.Type = type;
             g.Type = generalLedgerResponse.Type;
             return g;
         }

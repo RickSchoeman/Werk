@@ -3,13 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using DemoConnector.TwinfieldAPI.Converters.Interfaces;
 using DemoConnector.TwinfieldAPI.Data;
-using DemoConnector.TwinfieldAPI.Data.Activities;
 using DemoConnector.TwinfieldAPI.Data.Articles;
-using DemoConnector.TwinfieldAPI.Data.AssetMethods;
 using DemoConnector.TwinfieldAPI.Data.BalanceSheet;
-using DemoConnector.TwinfieldAPI.Data.BankBooks;
-using DemoConnector.TwinfieldAPI.Data.BankTransactions;
-using DemoConnector.TwinfieldAPI.Data.CashBooks;
 using DemoConnector.TwinfieldAPI.Data.CostCenters;
 using DemoConnector.TwinfieldAPI.Data.Currencies;
 using DemoConnector.TwinfieldAPI.Data.Customers;
@@ -31,25 +26,24 @@ using DemoConnector.TwinfieldAPI.Data.Extras.UserRoles;
 using DemoConnector.TwinfieldAPI.Data.Extras.VAT;
 using DemoConnector.TwinfieldAPI.Data.FixedAssets;
 using DemoConnector.TwinfieldAPI.Data.GeneralLedgers;
-using DemoConnector.TwinfieldAPI.Data.Period;
+using DemoConnector.TwinfieldAPI.Data.NotImplemented.Activities;
+using DemoConnector.TwinfieldAPI.Data.NotImplemented.AssetMethods;
+using DemoConnector.TwinfieldAPI.Data.NotImplemented.BankBooks;
+using DemoConnector.TwinfieldAPI.Data.NotImplemented.BankTransactions;
+using DemoConnector.TwinfieldAPI.Data.NotImplemented.CashBooks;
+using DemoConnector.TwinfieldAPI.Data.NotImplemented.Period;
+using DemoConnector.TwinfieldAPI.Data.NotImplemented.Projects;
+using DemoConnector.TwinfieldAPI.Data.NotImplemented.PurchaseTransactions;
+using DemoConnector.TwinfieldAPI.Data.NotImplemented.SalesTransactions;
+using DemoConnector.TwinfieldAPI.Data.NotImplemented.Summaries;
 using DemoConnector.TwinfieldAPI.Data.ProfitLoss;
-using DemoConnector.TwinfieldAPI.Data.Projects;
-using DemoConnector.TwinfieldAPI.Data.PurchaseTransactions;
-using DemoConnector.TwinfieldAPI.Data.SalesTransactions;
-using DemoConnector.TwinfieldAPI.Data.Summaries;
 using DemoConnector.TwinfieldAPI.Data.Suppliers;
 using DemoConnector.TwinfieldAPI.Data.Users;
 using DemoConnector.TwinfieldAPI.Data.VATs;
-using DemoConnector.TwinfieldAPI.Handlers.Activities;
 using DemoConnector.TwinfieldAPI.Handlers.Articles;
-using DemoConnector.TwinfieldAPI.Handlers.AssetMethods;
-using DemoConnector.TwinfieldAPI.Handlers.BankStatements;
-using DemoConnector.TwinfieldAPI.Handlers.BankTransactions;
-using DemoConnector.TwinfieldAPI.Handlers.CashBooks;
 using DemoConnector.TwinfieldAPI.Handlers.CostCenters;
 using DemoConnector.TwinfieldAPI.Handlers.Currencies;
 using DemoConnector.TwinfieldAPI.Handlers.Customers;
-using DemoConnector.TwinfieldAPI.Handlers.DeletedTransactions;
 using DemoConnector.TwinfieldAPI.Handlers.Dimension;
 using DemoConnector.TwinfieldAPI.Handlers.DimensionGroups;
 using DemoConnector.TwinfieldAPI.Handlers.DimensionTypes;
@@ -69,20 +63,27 @@ using DemoConnector.TwinfieldAPI.Handlers.Extras.VAT;
 using DemoConnector.TwinfieldAPI.Handlers.FixedAssets;
 using DemoConnector.TwinfieldAPI.Handlers.GeneralLedgers;
 using DemoConnector.TwinfieldAPI.Handlers.Interfaces;
+using DemoConnector.TwinfieldAPI.Handlers.NotImplemented.Activities;
+using DemoConnector.TwinfieldAPI.Handlers.NotImplemented.AssetMethods;
+using DemoConnector.TwinfieldAPI.Handlers.NotImplemented.BankStatements;
+using DemoConnector.TwinfieldAPI.Handlers.NotImplemented.BankTransactions;
+using DemoConnector.TwinfieldAPI.Handlers.NotImplemented.CashBooks;
+using DemoConnector.TwinfieldAPI.Handlers.NotImplemented.DeletedTransactions;
+using DemoConnector.TwinfieldAPI.Handlers.NotImplemented.Period;
+using DemoConnector.TwinfieldAPI.Handlers.NotImplemented.Projects;
+using DemoConnector.TwinfieldAPI.Handlers.NotImplemented.PurchaseTransactions;
+using DemoConnector.TwinfieldAPI.Handlers.NotImplemented.Rates;
+using DemoConnector.TwinfieldAPI.Handlers.NotImplemented.SalesTransactions;
+using DemoConnector.TwinfieldAPI.Handlers.NotImplemented.TransactionBlockedValue;
 using DemoConnector.TwinfieldAPI.Handlers.Offices;
-using DemoConnector.TwinfieldAPI.Handlers.Period;
-using DemoConnector.TwinfieldAPI.Handlers.Projects;
-using DemoConnector.TwinfieldAPI.Handlers.PurchaseTransactions;
-using DemoConnector.TwinfieldAPI.Handlers.Rates;
 using DemoConnector.TwinfieldAPI.Handlers.SalesInvoice;
-using DemoConnector.TwinfieldAPI.Handlers.SalesTransactions;
 using DemoConnector.TwinfieldAPI.Handlers.Suppliers;
-using DemoConnector.TwinfieldAPI.Handlers.TransactionBlockedValue;
 using DemoConnector.TwinfieldAPI.Handlers.Users;
 using DemoConnector.TwinfieldAPI.Handlers.VATs;
 using DemoConnector.TwinfieldBankBookService;
-using BankBookService = DemoConnector.TwinfieldAPI.Handlers.BankBooks.BankBookService;
+using BankBookService = DemoConnector.TwinfieldAPI.Handlers.NotImplemented.BankBooks.BankBookService;
 using Office = DemoConnector.TwinfieldAPI.Data.Offices.Office;
+using Rate = DemoConnector.TwinfieldAPI.Data.NotImplemented.Rates.Rate;
 
 namespace DemoConnector.TwinfieldAPI.Handlers
 {
@@ -1330,9 +1331,9 @@ namespace DemoConnector.TwinfieldAPI.Handlers
             _rateService = new RateService(session);
         }
 
-        private readonly List<Data.Rates.Rate> _rateList = new List<Data.Rates.Rate>();
+        private readonly List<Rate> _rateList = new List<Rate>();
 
-        public List<Data.Rates.Rate> GetRatesByName(string name)
+        public List<Rate> GetRatesByName(string name)
         {
             var rates = _rateService.FindRates(name, "TRT", SearchField);
             foreach (var r in rates)
@@ -1344,7 +1345,7 @@ namespace DemoConnector.TwinfieldAPI.Handlers
             return _rateList;
         }
 
-        public List<Data.Rates.Rate> GetAllRates()
+        public List<Rate> GetAllRates()
         {
             var rates = _rateService.FindRates("*", "TRT", SearchField);
             foreach (var r in rates)
@@ -1356,7 +1357,7 @@ namespace DemoConnector.TwinfieldAPI.Handlers
             return _rateList;
         }
 
-        public bool CreateRate(Data.Rates.Rate rate)
+        public bool CreateRate(Rate rate)
         {
             try
             {
@@ -1370,7 +1371,7 @@ namespace DemoConnector.TwinfieldAPI.Handlers
             }
         }
 
-        public bool DeleteRate(Data.Rates.Rate rate)
+        public bool DeleteRate(Rate rate)
         {
             try
             {
@@ -1384,7 +1385,7 @@ namespace DemoConnector.TwinfieldAPI.Handlers
             }
         }
 
-        public bool ActivateRate(Data.Rates.Rate rate)
+        public bool ActivateRate(Rate rate)
         {
             try
             {
@@ -1398,7 +1399,7 @@ namespace DemoConnector.TwinfieldAPI.Handlers
             }
         }
 
-        public bool DeleteRateChange(Data.Rates.Rate rate)
+        public bool DeleteRateChange(Rate rate)
         {
             try
             {
@@ -1549,7 +1550,7 @@ namespace DemoConnector.TwinfieldAPI.Handlers
             }
         }
 
-        public Data.DeletedTransactions.DeletedTransactions GetDeletedTransactionsByType(string type, DateTime dateFrom,
+        public Data.NotImplemented.DeletedTransactions.DeletedTransactions GetDeletedTransactionsByType(string type, DateTime dateFrom,
             DateTime dateTo)
         {
             var deletedTransactions =
@@ -1800,7 +1801,7 @@ namespace DemoConnector.TwinfieldAPI.Handlers
 
         #region bank statement
 
-        public Data.BankStatements.BankStatements GetBankStatements(DateTime statementDateFrom,
+        public Data.NotImplemented.BankStatements.BankStatements GetBankStatements(DateTime statementDateFrom,
             DateTime statementDateTo, Boolean includePostedStatements)
         {
             var bankStatement =

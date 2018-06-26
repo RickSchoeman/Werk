@@ -32,6 +32,7 @@ namespace TestApplicatie
             Cursor.Current = Cursors.WaitCursor;
             var twinfield = new TwinfieldApiConnector();
             twinfield.SwitchToOffice(comboBox1.Text, _session);
+            
             Form twinfieldForm = new Twinfield(_session);
             Cursor.Current = Cursors.Arrow;
             this.Close();

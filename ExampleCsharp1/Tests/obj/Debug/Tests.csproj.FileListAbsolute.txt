@@ -1,6 +1,0 @@
-C:\Users\ricks\Downloads\ExampleCsharp1\Output\Tests.dll
-C:\Users\ricks\Downloads\ExampleCsharp1\Output\Tests.pdb
-C:\Users\ricks\Downloads\ExampleCsharp1\Tests\obj\Debug\Tests.csprojResolveAssemblyReference.cache
-C:\Users\ricks\Downloads\ExampleCsharp1\Tests\obj\Debug\Tests.csproj.CoreCompileInputs.cache
-C:\Users\ricks\Downloads\ExampleCsharp1\Tests\obj\Debug\Tests.dll
-C:\Users\ricks\Downloads\ExampleCsharp1\Tests\obj\Debug\Tests.pdb

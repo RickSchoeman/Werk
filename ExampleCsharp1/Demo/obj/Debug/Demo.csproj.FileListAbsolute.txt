@@ -1,6 +1,0 @@
-C:\Users\ricks\Downloads\ExampleCsharp1\Output\Demo.exe
-C:\Users\ricks\Downloads\ExampleCsharp1\Output\Demo.pdb
-C:\Users\ricks\Downloads\ExampleCsharp1\Demo\obj\Debug\Demo.csprojResolveAssemblyReference.cache
-C:\Users\ricks\Downloads\ExampleCsharp1\Demo\obj\Debug\Demo.csproj.CoreCompileInputs.cache
-C:\Users\ricks\Downloads\ExampleCsharp1\Demo\obj\Debug\Demo.exe
-C:\Users\ricks\Downloads\ExampleCsharp1\Demo\obj\Debug\Demo.pdb

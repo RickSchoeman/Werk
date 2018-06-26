@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using DemoConnector.Middleware;
 using DemoConnector.TwinfieldAPI.Converters.Interfaces;
+using DemoConnector.TwinfieldAPI.Data.NotImplemented.Relations;
 using DemoConnector.TwinfieldAPI.Data.Suppliers;
-using DemoConnector.TwinfieldAPI.Data.Relations;
-using Bank = DemoConnector.TwinfieldAPI.Data.Relations.Bank;
+using Bank = DemoConnector.TwinfieldAPI.Data.NotImplemented.Relations.Bank;
 using BankM = DemoConnector.Middleware.Bank;
 
 namespace DemoConnector.TwinfieldAPI.Converters

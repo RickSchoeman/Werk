@@ -25,6 +25,7 @@ namespace DemoConnector.TwinfieldAPI.Handlers.GeneralLedgers
             f.AppendNewElement("subanalyse").InnerText = GeneralLedger.Financials.Subanalyse.ToString();
             f.AppendNewElement("level").InnerText = GeneralLedger.Financials.Level.ToString();
             var v = f.AppendNewElement("vatcode");
+            v.InnerText = GeneralLedger.Financials.Vatcode.Name;
             v.SetAttribute("name", GeneralLedger.Financials.Vatcode.Name);
             v.SetAttribute("shortname", GeneralLedger.Financials.Vatcode.Shortname);
             v.SetAttribute("type", GeneralLedger.Financials.Vatcode.Type.ToString());

@@ -219,10 +219,10 @@ namespace TestApplicatie.Functies
                     {
                         var glb = _generalLedgerConverter.ConvertGeneralLedgerResponseToBalanceSheet(x,
                             _session.Office);
-                        var glp = _generalLedgerConverter.ConvertGeneralLedgerResponseToProfitLoss(x,
-                            _session.Office);
-                        if (int.Parse(glb.Code) <= 3999)
-                        {
+//                        var glp = _generalLedgerConverter.ConvertGeneralLedgerResponseToProfitLoss(x,
+//                            _session.Office);
+//                        if (int.Parse(glb.Code) <= 3999)
+//                        {
                             if (changeType == Twinfield.DataChangeTypes.Create)
                             {
                                 response = _balanceSheetInterface.Create(glb);
@@ -232,19 +232,19 @@ namespace TestApplicatie.Functies
                             {
                                 response = _balanceSheetInterface.Delete(glb);
                             }
-                        }
-                        else
-                            {
-                                if (changeType == Twinfield.DataChangeTypes.Create)
-                                {
-                                    response = _profitLossInterface.Create(glp);
-                                }
-
-                                if (changeType == Twinfield.DataChangeTypes.Delete)
-                                {
-                                    response = _profitLossInterface.Delete(glp);
-                                }
-                            }
+//                        }
+//                        else
+//                        {
+//                            if (changeType == Twinfield.DataChangeTypes.Create)
+//                            {
+//                                response = _profitLossInterface.Create(glp);
+//                            }
+//
+//                            if (changeType == Twinfield.DataChangeTypes.Delete)
+//                            {
+//                                response = _profitLossInterface.Delete(glp);
+//                            }
+//                        }
                         
                     }
                 }
@@ -609,6 +609,7 @@ namespace TestApplicatie.Functies
 
             if (x != null)
             {
+//                _form.Gegevens.Clear();
                 _form.Gegevens.Add(x);
                 _form.dataVeld.Items.Add(x);
                 _form.LogBox.AppendText("\r\n" + objectType + " toegevoegd aan de lijst");

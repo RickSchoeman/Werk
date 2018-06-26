@@ -2,11 +2,11 @@
 using System.Xml;
 using DemoConnector.TwinfieldAPI.Controllers;
 using DemoConnector.TwinfieldAPI.Controllers.Utilities;
-using DemoConnector.TwinfieldAPI.Data.Relations;
+using DemoConnector.TwinfieldAPI.Data.NotImplemented.Relations;
 
 namespace DemoConnector.TwinfieldAPI.Data.FixedAssets
 {
-    public class FixedAsset : Relations.Relation
+    public class FixedAsset : Relation
     {
         internal static FixedAsset FromXml(XmlElement element)
         {
@@ -80,8 +80,8 @@ namespace DemoConnector.TwinfieldAPI.Data.FixedAssets
             Subanalyse subAnalyse = Subanalyse.False;
             Status status = Status.Inactive;
             bool inuse = false;
-            Relations.Behaviour behaviour = Behaviour.Normal;
-            Relations.Type type = Relations.Type.Purchase;
+            Behaviour behaviour = Behaviour.Normal;
+            Type type = NotImplemented.Relations.Type.Purchase;
             bool Fixed = false;
             MatchType matchType = MatchType.Notmatchable;
 
@@ -115,19 +115,19 @@ namespace DemoConnector.TwinfieldAPI.Data.FixedAssets
                 inuse = true;
             }
 
-            if (element.SelectInnerText("behaviour") == Relations.Behaviour.System.ToString().ToLower())
+            if (element.SelectInnerText("behaviour") == Behaviour.System.ToString().ToLower())
             {
                 behaviour = Behaviour.System;
             }
 
-            if (element.SelectInnerText("behaviour") == Relations.Behaviour.Template.ToString().ToLower())
+            if (element.SelectInnerText("behaviour") == Behaviour.Template.ToString().ToLower())
             {
                 behaviour = Behaviour.Template;
             }
 
-            if (element.SelectSingleNode("//financials/vatcode/@type")?.Value == Relations.Type.Sales.ToString().ToLower())
+            if (element.SelectSingleNode("//financials/vatcode/@type")?.Value == NotImplemented.Relations.Type.Sales.ToString().ToLower())
             {
-                type = Relations.Type.Sales;
+                type = NotImplemented.Relations.Type.Sales;
             }
 
             if (element.SelectSingleNode("//financials/vatcode/@fixed")?.Value == "true")

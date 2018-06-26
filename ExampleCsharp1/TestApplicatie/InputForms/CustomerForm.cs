@@ -11,7 +11,6 @@ using DemoConnector.Middleware;
 using DemoConnector.TwinfieldAPI.Data;
 using DemoConnector.TwinfieldAPI.Data.Customers;
 using DemoConnector.TwinfieldAPI.Data.Extras.Countries;
-using DemoConnector.TwinfieldAPI.Data.Relations;
 using DemoConnector.TwinfieldAPI.Handlers;
 using DemoConnector.TwinfieldAPI.Handlers.Interfaces;
 

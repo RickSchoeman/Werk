@@ -75,7 +75,7 @@ namespace DemoConnector.TwinfieldAPI.Converters
                 {
                     Invoicetype = salesInvoiceResponse.OrderType,
                     Customer = salesInvoiceResponse.CustomerId,
-                    Invoicenumber = int.Parse(salesInvoiceResponse.OrderNummer),
+//                    Invoicenumber = int.Parse(salesInvoiceResponse.OrderNummer),
                     Currency = salesInvoiceResponse.SalesInvoiceLines.SalesInvoiceLine[0].Currency,
                 },
                 Lines = new Lines

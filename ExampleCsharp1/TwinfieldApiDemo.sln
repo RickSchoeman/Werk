@@ -3,10 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwinfieldApi", "TwinfieldApi\TwinfieldApi.csproj", "{AE7D0120-0DF2-4564-A43D-99A547D113BD}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo", "Demo\Demo.csproj", "{7B99BFD3-690D-4C21-9B22-D6BBFD3F245B}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoConnector", "DemoConnector\DemoConnector.csproj", "{0A4DB7A5-1996-4DFC-AFDF-55103DDB3899}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApplicatie", "TestApplicatie\TestApplicatie.csproj", "{62C2A668-63A1-4BCA-B27A-23A61A70EC5A}"
@@ -19,14 +15,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{AE7D0120-0DF2-4564-A43D-99A547D113BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AE7D0120-0DF2-4564-A43D-99A547D113BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AE7D0120-0DF2-4564-A43D-99A547D113BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AE7D0120-0DF2-4564-A43D-99A547D113BD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7B99BFD3-690D-4C21-9B22-D6BBFD3F245B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7B99BFD3-690D-4C21-9B22-D6BBFD3F245B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7B99BFD3-690D-4C21-9B22-D6BBFD3F245B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7B99BFD3-690D-4C21-9B22-D6BBFD3F245B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0A4DB7A5-1996-4DFC-AFDF-55103DDB3899}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0A4DB7A5-1996-4DFC-AFDF-55103DDB3899}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0A4DB7A5-1996-4DFC-AFDF-55103DDB3899}.Release|Any CPU.ActiveCfg = Release|Any CPU

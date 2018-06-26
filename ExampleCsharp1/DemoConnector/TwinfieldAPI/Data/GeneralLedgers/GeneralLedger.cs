@@ -1,7 +1,7 @@
 ﻿using System.Xml;
 using DemoConnector.TwinfieldAPI.Controllers;
 using DemoConnector.TwinfieldAPI.Controllers.Utilities;
-using DemoConnector.TwinfieldAPI.Data.Relations;
+using DemoConnector.TwinfieldAPI.Data.NotImplemented.Relations;
 
 namespace DemoConnector.TwinfieldAPI.Data.GeneralLedgers
 {

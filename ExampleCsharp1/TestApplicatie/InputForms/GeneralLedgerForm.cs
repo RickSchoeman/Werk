@@ -52,7 +52,7 @@ namespace TestApplicatie.InputForms
                 this.GeneralLedger = new GeneralLedgerResponse
                 {
                     Code = codeBox.Text,
-                    Name = nameBox.Name,
+                    Name = nameBox.Text,
                     VatName = vatName,
                     VatType = vatType,
                     Type = Type

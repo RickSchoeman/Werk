@@ -2,7 +2,7 @@
 using System.Xml;
 using DemoConnector.TwinfieldAPI.Controllers;
 using DemoConnector.TwinfieldAPI.Controllers.Utilities;
-using DemoConnector.TwinfieldAPI.Data.Relations;
+using DemoConnector.TwinfieldAPI.Data.NotImplemented.Relations;
 
 namespace DemoConnector.TwinfieldAPI.Data.CostCenters
 {
@@ -11,7 +11,7 @@ namespace DemoConnector.TwinfieldAPI.Data.CostCenters
         internal static CostCenter FromXml(XmlElement element)
         {
             bool inuse = false;
-            Relations.Behaviour behaviour = Behaviour.Normal;
+            Behaviour behaviour = Behaviour.Normal;
 
 
             if (element.SelectInnerText("inuse") == "true")
@@ -19,7 +19,7 @@ namespace DemoConnector.TwinfieldAPI.Data.CostCenters
                 inuse = true;
             }
 
-            if (element.SelectInnerText("behaviour") == Relations.Behaviour.System.ToString().ToLower())
+            if (element.SelectInnerText("behaviour") == Behaviour.System.ToString().ToLower())
             {
                 behaviour = Behaviour.System;
             }

@@ -106,18 +106,6 @@ namespace TestApplicatie
         private const string DeleteText = "Delete";
         private const string ConvertText = "Convert";
 
-        private static string FunctionTypeDisplayName(FunctionEnum value)
-        {
-            switch (value)
-            {
-                case FunctionEnum.Read: return ReadText;
-                case FunctionEnum.Create: return CreateText;
-                case FunctionEnum.Delete: return DeleteText;
-                case FunctionEnum.Convert: return ConvertText;
-                default: return value.ToString();
-            }
-        }
-
         public Twinfield(Session session)
         {
             _customerInterface = new CustomerOperations(session);
@@ -536,7 +524,8 @@ namespace TestApplicatie
             {
                 createNew.Enabled = false;
             }
-
+            Gegevens.Clear();
+            dataVeld.Items.Clear();
             dataVeld.Enabled = false;
             functieUitvoeren.Enabled = false;
         }

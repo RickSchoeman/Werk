@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DemoConnector.TwinfieldAPI.Data;
-using DemoConnector.TwinfieldAPI.Data.Summaries;
+using DemoConnector.TwinfieldAPI.Data.NotImplemented.Summaries;
 using DemoConnector.TwinfieldAPI.Handlers.Extras.Countries;
 using DemoConnector.TwinfieldAPI.Handlers.Extras.InvoiceTypes;
-using DemoConnector.TwinfieldAPI.Handlers.Summaries;
+using DemoConnector.TwinfieldAPI.Handlers.NotImplemented.Summaries;
 
 namespace DemoConnector.TwinfieldAPI.Handlers
 {
